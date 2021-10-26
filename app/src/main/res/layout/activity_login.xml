@@ -1,14 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_app"
     tools:context=".activitiy.LoginActivity">
-    <Button
-        android:id="@+id/btn_login"
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="LOGIN"/>
-</RelativeLayout>
+        android:text="LOGIN"
+        android:layout_gravity="center"
+        android:textSize="36dp"
+        android:letterSpacing="0.3"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        android:textColor="#3d5a80"
+        />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="550dp"
+        android:layout_height="450dp"
+        android:src="@drawable/g_login"
+        android:layout_gravity="center"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="#98C1D9"
+        app:cardCornerRadius="15dp"
+        android:elevation="12dp">
+
+        <EditText
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#98C1D9"
+            android:paddingLeft="20dp"
+            android:text="Tài khoản"
+            android:textColor="#3D5A80"/>
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="#98C1D9"
+        android:layout_marginTop="15dp"
+        app:cardCornerRadius="15dp"
+        android:elevation="12dp">
+    <EditText
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:text="Mật khẩu"
+        android:background="#98C1D9"
+        android:paddingLeft="20dp"
+        android:layout_gravity="center"
+        android:textColor="#3D5A80"
+        />
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quên mật khẩu?"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="50dp"
+        android:textColor="#4882B6"
+        android:textStyle="bold"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="#98C1D9"
+        android:layout_marginTop="15dp"
+        app:cardCornerRadius="15dp"
+        android:elevation="10dp"
+        >
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="320dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:background="#3D5A80"
+            android:text="LOGIN"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bạn chưa có tài khoản? Click here!"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="#4882B6"
+        android:textStyle="bold"/>
+
+</LinearLayout>
