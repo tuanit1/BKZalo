@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.bkzalo.R;
+import com.example.bkzalo.utils.Constant;
 
 public class FragmentProfile extends Fragment {
 
