@@ -16,6 +16,8 @@ import com.example.bkzalo.R;
 import com.example.bkzalo.adapters.ChatListAdapter;
 import com.example.bkzalo.asynctasks.LoadChatListAsync;
 import com.example.bkzalo.listeners.ChatListListener;
+import com.example.bkzalo.models.Participant;
+import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Methods;
 
@@ -28,6 +30,8 @@ public class FragmentMessage extends Fragment {
     private View view;
     private RecyclerView rv_chat;
     private Methods methods;
+    private ArrayList<Participant> arrayList_parti;
+    private ArrayList<Room> arrayList_room;
     private ArrayList<User> arrayList_user;
     private ChatListAdapter adapter;
 
@@ -39,6 +43,8 @@ public class FragmentMessage extends Fragment {
 
         methods = new Methods(getContext());
 
+        arrayList_parti = new ArrayList<>();
+        arrayList_room = new ArrayList<>();
         arrayList_user = new ArrayList<>();
 
         LoadChatList();
@@ -66,10 +72,12 @@ public class FragmentMessage extends Fragment {
             }
 
             @Override
-            public void onEnd(boolean status, ArrayList<User> arrayList) {
+            public void onEnd(boolean status, ArrayList<Participant> array_parti, ArrayList<Room> array_room , ArrayList<User> array_user) {
                 if(methods.isNetworkConnected()){
                     if(status){
-                        arrayList_user.addAll(arrayList);
+                        arrayList_parti.addAll(array_parti);
+                        arrayList_room.addAll(array_room);
+                        arrayList_user.addAll(array_user);
                         SetAdapter();
                     }else {
                         Toast.makeText(getContext(), "Lỗi server!", Toast.LENGTH_SHORT).show();
