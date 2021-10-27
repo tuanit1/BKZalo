@@ -21,8 +21,8 @@
         />
 
     <pl.droidsonroids.gif.GifImageView
-        android:layout_width="550dp"
-        android:layout_height="450dp"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
         android:src="@drawable/g_login"
         android:layout_gravity="center"/>
 
@@ -102,7 +102,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bạn chưa có tàii khoản? Click here!"
+        android:text="Bạn chưa có tài khoản? Click here!"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:textColor="#4882B6"
