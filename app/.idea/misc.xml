@@ -3,9 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Nam3/DoAn/PBL4/BKZalo/app/src/main/res/layout/activity_login.xml" value="0.33" />
-        <entry key="..\:/Nam3/DoAn/PBL4/BKZalo/app/src/main/res/layout/activity_main.xml" value="0.346875" />
-        <entry key="..\:/Nam3/DoAn/PBL4/BKZalo/app/src/main/res/layout/fragment_message.xml" value="0.346875" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25052083333333336" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_login.xml" value="0.234375" />
       </map>
     </option>
   </component>
