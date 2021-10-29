@@ -41,6 +41,12 @@ public class Methods {
             postObj.addProperty("uid", uid);
         }
 
+        if(method_name.equals("method_get_list_friend")){
+            int uid = bundle.getInt("uid");
+            postObj.addProperty("uid", uid);
+        }
+
+
         String post_data = postObj.toString();
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);

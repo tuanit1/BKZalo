@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BKZalo"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activitiy.AddGroupActivity"></activity>
         <activity
             android:name=".activitiy.SignupActivity"
             android:exported="false" />

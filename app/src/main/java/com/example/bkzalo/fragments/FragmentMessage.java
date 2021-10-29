@@ -1,5 +1,6 @@
 package com.example.bkzalo.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,16 +10,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.bkzalo.R;
+import com.example.bkzalo.activitiy.AddGroupActivity;
 import com.example.bkzalo.adapters.ChatListAdapter;
 import com.example.bkzalo.asynctasks.LoadChatListAsync;
 import com.example.bkzalo.listeners.ChatListListener;
 import com.example.bkzalo.models.Participant;
 import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
+import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
 
 import java.util.ArrayList;
@@ -29,6 +33,7 @@ public class FragmentMessage extends Fragment {
 
     private View view;
     private RecyclerView rv_chat;
+    private ImageView iv_add_group;
     private Methods methods;
     private ArrayList<Participant> arrayList_parti;
     private ArrayList<Room> arrayList_room;
@@ -54,14 +59,20 @@ public class FragmentMessage extends Fragment {
 
     private void AnhXa() {
         rv_chat = view.findViewById(R.id.rv_chat);
+        iv_add_group = view.findViewById(R.id.iv_add_group);
+        iv_add_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AddGroupActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void LoadChatList() {
 
-        int uid = 1;
-
         Bundle bundle = new Bundle();
-        bundle.putInt("uid", uid);
+        bundle.putInt("uid", Constant.UID);
 
         RequestBody requestBody = methods.getRequestBody("method_get_chat_list", bundle, null);
 
@@ -94,7 +105,7 @@ public class FragmentMessage extends Fragment {
 
     private void SetAdapter(){
 
-        adapter = new ChatListAdapter(arrayList_user, getContext());
+        adapter = new ChatListAdapter(arrayList_parti, arrayList_room, arrayList_user, getContext());
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rv_chat.setLayoutManager(llm);
