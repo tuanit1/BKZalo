@@ -52,6 +52,8 @@ public class SelectUserApdater extends RecyclerView.Adapter<SelectUserApdater.My
 
         holder.tv_name.setText(user.getName());
 
+        holder.tv_phone.setText(user.getPhone());
+
         String img_path = Constant.SERVER_URL + "image/image_user/" + user.getImage();
 
         Picasso.get()
@@ -82,13 +84,14 @@ public class SelectUserApdater extends RecyclerView.Adapter<SelectUserApdater.My
 
         ImageView imageview;
         CheckBox ckb;
-        TextView tv_name;
+        TextView tv_name, tv_phone;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             imageview = itemView.findViewById(R.id.imageview);
             tv_name = itemView.findViewById(R.id.tv_name);
+            tv_phone = itemView.findViewById(R.id.tv_phone);
             ckb = itemView.findViewById(R.id.ckb);
 
         }

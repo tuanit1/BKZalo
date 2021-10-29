@@ -1,9 +1,13 @@
 package com.example.bkzalo.activitiy;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,7 +26,11 @@ import com.example.bkzalo.models.User;
 import com.example.bkzalo.models.UserSelect;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
+import com.example.bkzalo.utils.PathUtil;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import okhttp3.RequestBody;
@@ -32,10 +40,14 @@ public class AddGroupActivity extends AppCompatActivity {
     private ImageView iv_back, iv_image;
     private RecyclerView rv_friend;
     private EditText edt_name, edt_search;
-    private TextView tv_xacnhan;
+    private TextView tv_xacnhan, tv_delete_img;
     private Methods methods;
     private ArrayList<User> arrayList_friend;
     private ArrayList<UserSelect> arrayList_checklist;
+    private final int PICK_IMAGE_CODE = 1;
+    private boolean isChangeImage = false;
+    private Uri picked_image;
+    private File file_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +66,15 @@ public class AddGroupActivity extends AppCompatActivity {
 
     private void AnhXa() {
         iv_image = findViewById(R.id.iv_image);
+        iv_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(Intent.createChooser(intent, "Select Video"), PICK_IMAGE_CODE);
+            }
+        });
         iv_back = findViewById(R.id.iv_back);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +93,48 @@ public class AddGroupActivity extends AppCompatActivity {
                 AddGroup();
             }
         });
+        tv_delete_img = findViewById(R.id.tv_delete_img);
+        tv_delete_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isChangeImage = false;
 
+                Picasso.get()
+                        .load(R.drawable.ic_image)
+                        .into(iv_image);
 
+                tv_delete_img.setVisibility(View.GONE);
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                picked_image = data.getData();
+
+                try{
+                    String filePath = PathUtil.getPath(this, picked_image);
+                    file_image = new File(filePath);
+                }catch (Exception e){
+                    Toast.makeText(this, "Không thể sử dụng ảnh này, vui lòng chọn lại!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                isChangeImage = true;
+
+                Picasso.get()
+                        .load(picked_image)
+                        .into(iv_image);
+
+                tv_delete_img.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void AddGroup() {
@@ -96,7 +157,20 @@ public class AddGroupActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this, "Oke", Toast.LENGTH_SHORT).show();
+        ArrayList<Integer> arrayList_id = new ArrayList<>();
+
+        for(UserSelect u : arrayList_selected){
+            arrayList_id.add(u.getId());
+        }
+
+        String json_member_id = new Gson().toJson(arrayList_id);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("json_member_id", json_member_id);
+        bundle.putString("group_name", edt_name.getText().toString());
+        bundle.putBoolean("is_change_image", isChangeImage);
+        bundle.putInt("admin_id", Constant.UID);
+
     }
 
     private void LoadListFriend(){
@@ -133,7 +207,7 @@ public class AddGroupActivity extends AppCompatActivity {
     private void SetAdapter() {
 
         for(User u : arrayList_friend){
-            arrayList_checklist.add(new UserSelect(u.getId(), u.getName(), u.getImage(), false));
+            arrayList_checklist.add(new UserSelect(u.getId(), u.getName(), u.getPhone(), u.getImage(), false));
         }
 
         UserSelectListener listener = new UserSelectListener() {
@@ -164,7 +238,8 @@ public class AddGroupActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 for(UserSelect u : arrayList_checklist){
-                    if(u.getName().toLowerCase().contains(s.toString().toLowerCase())){
+                    if(u.getName().toLowerCase().contains(s.toString().toLowerCase())
+                    || u.getPhone().contains(s.toString())){
                         arrayList_search.add(u);
                     }
                 }

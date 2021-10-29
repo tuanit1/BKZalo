@@ -39,14 +39,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp">
-                <TextView
-                    android:id="@+id/tv_name"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color"
-                    android:layout_centerVertical="true"
-                    android:textSize="20dp"
-                    android:text="Name"/>
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:text="Name"/>
+                    <TextView
+                        android:id="@+id/tv_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="phone"/>
+                </LinearLayout>
+
                 <CheckBox
                     android:id="@+id/ckb"
                     android:layout_width="wrap_content"

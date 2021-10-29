@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -14,6 +15,7 @@ import com.example.bkzalo.fragments.FragmentMessage;
 import com.example.bkzalo.fragments.FragmentPhonebook;
 import com.example.bkzalo.fragments.FragmentProfile;
 import com.example.bkzalo.fragments.FragmentSetting;
+import com.example.bkzalo.utils.Constant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Constant.verifyStoragePermissions(this);
 
         AnhXa();
 
