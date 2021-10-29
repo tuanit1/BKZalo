@@ -3,14 +3,24 @@ package com.example.bkzalo.models;
 public class UserSelect {
     private int id;
     private String name;
+    private String phone;
     private String image;
     private boolean isChecked;
 
-    public UserSelect(int id, String name, String image, boolean isChecked) {
+    public UserSelect(int id, String name, String phone, String image, boolean isChecked) {
         this.id = id;
         this.name = name;
+        this.phone = phone;
         this.image = image;
         this.isChecked = isChecked;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getId() {

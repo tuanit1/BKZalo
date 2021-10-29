@@ -16,6 +16,7 @@ import okhttp3.RequestBody;
 public class Methods {
 
     private Context context;
+    private boolean isImageChange = false;
 
     public Methods(Context context){
         this.context = context;
@@ -46,11 +47,27 @@ public class Methods {
             postObj.addProperty("uid", uid);
         }
 
+        if(method_name.equals("method_add_group")){
+            isImageChange = bundle.getBoolean("is_change_image");
+            int admin_id = bundle.getInt("admin_in");
+            String json_member_id = bundle.getString("json_member_id");
+            String group_name = bundle.getString("group_name");
+
+            postObj.addProperty("admin_id", admin_id);
+            postObj.addProperty("json_member_id", json_member_id);
+            postObj.addProperty("group_name", group_name);
+            postObj.addProperty("is_change_image", isImageChange?"true":"false");
+        }
+
 
         String post_data = postObj.toString();
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         builder.addFormDataPart("data", post_data);
+
+        if(isImageChange){
+            builder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
+        }
 
         return builder.build();
     }
