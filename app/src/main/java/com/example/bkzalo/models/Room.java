@@ -1,6 +1,8 @@
 package com.example.bkzalo.models;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
     private int id;
     private String name;
     private String image;

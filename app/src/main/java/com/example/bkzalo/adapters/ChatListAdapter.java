@@ -1,6 +1,8 @@
 package com.example.bkzalo.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bkzalo.R;
+import com.example.bkzalo.listeners.ClickChatListListener;
+import com.example.bkzalo.models.Message;
 import com.example.bkzalo.models.Participant;
 import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
@@ -28,15 +32,21 @@ import java.util.ArrayList;
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyViewHolder>{
 
     private ArrayList<Participant> arrayList_participant;
+    private ClickChatListListener listener;
     private ArrayList<Room> arrayList_room;
     private ArrayList<User> arrayList_user;
+    private ArrayList<Message> arrayList_message;
     private Context context;
+    private String type = "";
 
-    public ChatListAdapter(ArrayList<Participant> arrayList_participant, ArrayList<Room> arrayList_room, ArrayList<User> arrayList_user, Context context) {
+    public ChatListAdapter(String type, ArrayList<Participant> arrayList_participant, ArrayList<Room> arrayList_room, ArrayList<User> arrayList_user, ArrayList<Message> arrayList_message, Context context, ClickChatListListener listener) {
         this.arrayList_participant = arrayList_participant;
+        this.listener = listener;
         this.arrayList_room = arrayList_room;
         this.arrayList_user = arrayList_user;
+        this.arrayList_message = arrayList_message;
         this.context = context;
+        this.type = type;
     }
 
     @NonNull
@@ -54,21 +64,35 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
         Room room = arrayList_room.get(position);
 
+        if(type.equals("hide_list")){
+            holder.tv_hide.setVisibility(View.VISIBLE);
+            holder.tv_hide.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.unHide(room.getId());
+                }
+            });
+        }
+
         if(room.getType().equals("private")){
 
             //private
             holder.img_group.setVisibility(View.GONE);
             holder.img_private.setVisibility(View.VISIBLE);
+            holder.iv_group_ic.setVisibility(View.GONE);
 
             Participant parti = GetParti(room);
 
             User user = GetFriendByRoomId(room.getId());
 
+            String name = "";
 
             if(parti.getNickname().equals("")){
                 holder.tv_name.setText(user.getName());
+                name = user.getName();
             }else {
                 holder.tv_name.setText(parti.getNickname());
+                name = parti.getNickname();
             }
 
             String image_path = Constant.SERVER_URL + "image/image_user/" + user.getImage();
@@ -77,6 +101,13 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
                     .load(image_path)
                     .placeholder(R.drawable.message_placeholder_ic)
                     .into(holder.img_private);
+
+            holder.rv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(room.getId(),"private", user.getImage(), parti.getNickname().equals("")?user.getName(): parti.getNickname());
+                }
+            });
         }else {
 
             //group
@@ -120,7 +151,113 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
             }
 
+            holder.rv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(room.getId(), "group", room.getImage(), room.getName());
+                }
+            });
+
         }
+
+        Message message = GetMessage(room);
+
+        if(message != null){
+
+            String name = "";
+
+            if(message.getNickname().equals("")){
+                name = message.getName();
+            }else {
+                name = message.getNickname();
+            }
+
+            switch (message.getType()){
+                case "text":
+                    if(message.getUser_id() == Constant.UID){
+                        if(message.isRemove()){
+                            holder.tv_text.setText("Bạn đã gỡ một tin nhắn");
+                        }else {
+                            holder.tv_text.setText("Bạn: " + message.getMessage());
+                        }
+
+                    }else {
+                        if(room.getType().equals("group")){
+                            if(message.isRemove()){
+                                holder.tv_text.setText(name + " đã gỡ một tin nhắn");
+                            }else {
+                                holder.tv_text.setText(name + ": " + message.getMessage());
+                            }
+
+                        }else {
+                            if(message.isRemove()){
+                                holder.tv_text.setText("đã gỡ một tin nhắn");
+                            }else {
+                                holder.tv_text.setText(message.getMessage());
+                            }
+                        }
+
+                        if(!message.isSeen()){
+                            holder.tv_text.setTextColor(context.getResources().getColor(R.color.text_color));
+                            holder.tv_text.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
+                        }
+                    }
+
+                    break;
+                case "image":
+
+                    if(message.getUser_id() == Constant.UID){
+                        if(message.isRemove()){
+                            holder.tv_text.setText("Bạn đã gỡ một tin nhắn");
+                        }else {
+                            holder.tv_text.setText("Bạn: " + "đã gửi một hình ảnh");
+                        }
+
+                    }else {
+                        if(room.getType().equals("group")){
+                            if(message.isRemove()){
+                                holder.tv_text.setText(name + " đã gỡ một tin nhắn");
+                            }else {
+                                holder.tv_text.setText(name + ": đã gửi một hình ảnh");
+                            }
+
+                        }else {
+                            if(message.isRemove()){
+                                holder.tv_text.setText("đã gỡ một tin nhắn");
+                            }else {
+                                holder.tv_text.setText("đã gửi một hình ảnh");
+                            }
+                        }
+
+                        if(!message.isSeen()){
+                            holder.tv_text.setTextColor(context.getResources().getColor(R.color.text_color));
+                            holder.tv_text.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
+                        }
+                    }
+
+                    break;
+                case "noti":
+
+                    if(message.getUser_id() == Constant.UID){
+                        holder.tv_text.setText("Bạn đã " + message.getMessage());
+                    }else {
+                        holder.tv_text.setText(name + " đã " + message.getMessage());
+
+                        if(!message.isSeen()){
+                            holder.tv_text.setTextColor(context.getResources().getColor(R.color.text_color));
+                            holder.tv_text.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
+                        }
+                    }
+
+
+
+                    break;
+            }
+        }else {
+            holder.tv_text.setText("Không có tin nhắn nào");
+        }
+
+
 
     }
 
@@ -129,19 +266,24 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
         return arrayList_room.size();
     }
 
-
+    public void setAdapterData(ArrayList<Room> arrayList){
+        this.arrayList_room = arrayList;
+    }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView img_private, iv_group_ic;
         CardView img_group;
-        TextView tv_name, tv_text, tv_name_group;
+        TextView tv_name, tv_text, tv_name_group, tv_hide;
+        RelativeLayout rv_item;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
+            rv_item = itemView.findViewById(R.id.rv_item);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_text = itemView.findViewById(R.id.tv_text);
+            tv_hide = itemView.findViewById(R.id.tv_hide);
             tv_name_group = itemView.findViewById(R.id.tv_name_group);
             img_private = itemView.findViewById(R.id.img_private);
             img_group = itemView.findViewById(R.id.img_group);
@@ -154,6 +296,16 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
         for(Participant participant : arrayList_participant){
             if(participant.getRoom_id() == room.getId() && participant.getUser_id() != Constant.UID){
                 return participant;
+            }
+        }
+
+        return null;
+    }
+
+    public Message GetMessage(Room room){
+        for(Message m : arrayList_message){
+            if(m.getRoom_id() == room.getId()){
+                return m;
             }
         }
 

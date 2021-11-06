@@ -3,7 +3,8 @@ package com.example.bkzalo.asynctasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.bkzalo.listeners.ChatListListener;
+import com.example.bkzalo.listeners.LoadChatListListener;
+import com.example.bkzalo.models.Message;
 import com.example.bkzalo.models.Participant;
 import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
@@ -13,7 +14,6 @@ import com.example.bkzalo.utils.JsonUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,17 +23,19 @@ import okhttp3.RequestBody;
 public class LoadChatListAsync extends AsyncTask<Void, String, Boolean> {
 
     private RequestBody requestBody;
-    private ChatListListener listener;
+    private LoadChatListListener listener;
     private ArrayList<Participant> arrayList_participant;
     private ArrayList<Room> arrayList_room;
     private ArrayList<User> arrayList_user;
+    private ArrayList<Message> arrayList_message;
 
-    public LoadChatListAsync(RequestBody requestBody, ChatListListener listener) {
+    public LoadChatListAsync(RequestBody requestBody, LoadChatListListener listener) {
         this.requestBody = requestBody;
         this.listener = listener;
         arrayList_participant = new ArrayList<>();
         arrayList_room = new ArrayList<>();
         arrayList_user = new ArrayList<>();
+        arrayList_message = new ArrayList<>();
     }
 
     @Override
@@ -55,6 +57,7 @@ public class LoadChatListAsync extends AsyncTask<Void, String, Boolean> {
             JSONArray jsonArray_parti = jsonObject.getJSONArray("array_participant");
             JSONArray jsonArray_room = jsonObject.getJSONArray("array_room");
             JSONArray jsonArray_user = jsonObject.getJSONArray("array_user");
+            JSONArray jsonArray_message = jsonObject.getJSONArray("array_message");
 
             for(int i = 0; i < jsonArray_parti.length(); i++){
                 JSONObject obj = jsonArray_parti.getJSONObject(i);
@@ -121,6 +124,29 @@ public class LoadChatListAsync extends AsyncTask<Void, String, Boolean> {
                 arrayList_user.add(user);
             }
 
+            for(int i = 0; i < jsonArray_message.length(); i++){
+                JSONObject obj = jsonArray_message.getJSONObject(i);
+
+                int id = obj.getInt("id");
+                int user_id = obj.getInt("user_id");
+                int room_id = obj.getInt("room_id");
+                String type = obj.getString("type");
+                String message = obj.getString("message");
+
+                String date_string = obj.getString("time");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date time = sdf.parse(date_string);
+
+                boolean isRemove = obj.getInt("isRemove") == 1;
+                boolean isSeen = obj.getInt("isSeen") == 1;
+                String name = obj.getString("name");
+                String image = obj.getString("image");
+                String nickname = obj.getString("nickname");
+
+                Message m = new Message(id, user_id, room_id, type, message, time, isRemove, isSeen, name, image, nickname);
+                arrayList_message.add(m);
+            }
+
             return  true;
 
         }catch (Exception e){
@@ -133,7 +159,7 @@ public class LoadChatListAsync extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean status) {
-        listener.onEnd(status, arrayList_participant, arrayList_room,  arrayList_user);
+        listener.onEnd(status, arrayList_participant, arrayList_room,  arrayList_user, arrayList_message);
         super.onPostExecute(status);
     }
 }

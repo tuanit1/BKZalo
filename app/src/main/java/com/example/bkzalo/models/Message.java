@@ -11,8 +11,11 @@ public class Message {
     private Date time;
     private boolean isRemove;
     private boolean isSeen;
+    private String name;
+    private String image;
+    private String nickname;
 
-    public Message(int id, int user_id, int room_id, String type, String message, Date time, boolean isRemove, boolean isSeen) {
+    public Message(int id, int user_id, int room_id, String type, String message, Date time, boolean isRemove, boolean isSeen, String name, String image, String nickname) {
         this.id = id;
         this.user_id = user_id;
         this.room_id = room_id;
@@ -21,6 +24,17 @@ public class Message {
         this.time = time;
         this.isRemove = isRemove;
         this.isSeen = isSeen;
+        this.name = name;
+        this.image = image;
+        this.nickname = nickname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {
@@ -85,5 +99,21 @@ public class Message {
 
     public void setSeen(boolean seen) {
         isSeen = seen;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

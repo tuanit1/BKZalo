@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:clickable="true"
     android:layout_marginBottom="1dp"
     android:background="@color/main_color"
+    android:id="@+id/rv_item"
     android:foreground="?attr/selectableItemBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -88,12 +90,18 @@
         </LinearLayout>
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0.4px"-->
-<!--        android:layout_marginLeft="5dp"-->
-<!--        android:layout_marginRight="5dp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:background="@color/theme_color"/>-->
+    <TextView
+        android:id="@+id/tv_hide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="#B71C1C"
+        android:layout_below="@id/ll"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:text="Bỏ ẩn"
+        android:textColor="@color/white"
+        android:textSize="18dp"/>
 
 </RelativeLayout>

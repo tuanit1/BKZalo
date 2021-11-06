@@ -8,7 +8,7 @@ import androidx.core.app.ActivityCompat;
 
 public class Constant {
     public static int UID = 1;
-    public static String SERVER_URL = "http://192.168.0.127/bkzalo/";
+    public static String SERVER_URL = "http://192.168.1.11/bkzalo/";
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;

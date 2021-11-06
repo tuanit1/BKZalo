@@ -1,13 +1,10 @@
 package com.example.bkzalo.activitiy;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,123 +25,61 @@ import com.example.bkzalo.models.User;
 import com.example.bkzalo.models.UserSelect;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
-import com.example.bkzalo.utils.PathUtil;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import okhttp3.RequestBody;
 
-public class AddGroupActivity extends AppCompatActivity {
+public class AddMemberActivity extends AppCompatActivity {
 
-    private ImageView iv_back, iv_image;
+    private ImageView iv_back;
+    private TextView tv_xacnhan;
+    private EditText edt_search;
     private RecyclerView rv_friend;
-    private EditText edt_name, edt_search;
-    private TextView tv_xacnhan, tv_delete_img;
     private Methods methods;
     private ArrayList<User> arrayList_friend;
     private ArrayList<UserSelect> arrayList_checklist;
-    private final int PICK_IMAGE_CODE = 1;
-    private boolean isChangeImage = false;
-    private Uri picked_image;
-    private File file_image;
+    private int ROOM_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_group);
-
-        AnhXa();
+        setContentView(R.layout.activity_add_member);
 
         methods = new Methods(this);
-
         arrayList_friend = new ArrayList<>();
         arrayList_checklist = new ArrayList<>();
 
+        Intent intent = getIntent();
+        if(intent != null){
+            ROOM_ID = intent.getIntExtra("room_id", 0);
+        }
+
+        AnhXa();
         LoadListFriend();
     }
 
-    private void AnhXa() {
-        iv_image = findViewById(R.id.iv_image);
-        iv_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_CODE);
-            }
-        });
+    private void AnhXa(){
         iv_back = findViewById(R.id.iv_back);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddGroupActivity.super.onBackPressed();
+                AddMemberActivity.super.onBackPressed();
             }
         });
-
-        edt_name = findViewById(R.id.edt_name);
-        edt_search = findViewById(R.id.edt_search);
-        rv_friend = findViewById(R.id.rv_friend);
         tv_xacnhan = findViewById(R.id.tv_xacnhan);
         tv_xacnhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddGroup();
+                AddMember();
             }
         });
-        tv_delete_img = findViewById(R.id.tv_delete_img);
-        tv_delete_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isChangeImage = false;
-
-                Picasso.get()
-                        .load(R.drawable.ic_image)
-                        .into(iv_image);
-
-                tv_delete_img.setVisibility(View.GONE);
-
-            }
-        });
-
+        edt_search = findViewById(R.id.edt_search);
+        rv_friend = findViewById(R.id.rv_friend);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-
-                picked_image = data.getData();
-
-                try{
-                    String filePath = PathUtil.getPath(this, picked_image);
-                    file_image = new File(filePath);
-                }catch (Exception e){
-                    Toast.makeText(this, "Không thể sử dụng ảnh này, vui lòng chọn lại!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                isChangeImage = true;
-
-                Picasso.get()
-                        .load(picked_image)
-                        .into(iv_image);
-
-                tv_delete_img.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private void AddGroup() {
-
-        if(edt_name.getText().toString().isEmpty()){
-            edt_name.setError("Vui lòng nhập tên nhóm!");
-            return;
-        }
+    private void AddMember() {
 
         ArrayList<UserSelect> arrayList_selected = new ArrayList<>();
 
@@ -154,8 +89,8 @@ public class AddGroupActivity extends AppCompatActivity {
             }
         }
 
-        if(arrayList_selected.size() < 2){
-            Toast.makeText(this, "Vui lòng chọn tối thiểu 2 thành viên", Toast.LENGTH_SHORT).show();
+        if(arrayList_selected.size() < 1){
+            Toast.makeText(this, "Vui lòng chọn tối thiểu 1 thành viên", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -169,11 +104,10 @@ public class AddGroupActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putString("json_member_id", json_member_id);
-        bundle.putString("group_name", edt_name.getText().toString());
-        bundle.putBoolean("is_change_image", isChangeImage);
-        bundle.putInt("admin_id", Constant.UID);
+        bundle.putInt("user_id", Constant.UID);
+        bundle.putInt("room_id", ROOM_ID);
 
-        RequestBody requestBody = methods.getRequestBody("method_add_group", bundle, file_image);
+        RequestBody requestBody = methods.getRequestBody("method_add_member", bundle, null);
 
         ExecuteQueryListener listener = new ExecuteQueryListener() {
             @Override
@@ -184,12 +118,12 @@ public class AddGroupActivity extends AppCompatActivity {
             @Override
             public void onEnd(boolean status) {
                 if(status){
-                    Toast.makeText(AddGroupActivity.this, "Tạo nhóm thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddMemberActivity.this, "Thêm thành viên thành công!", Toast.LENGTH_SHORT).show();
                     Intent returnIntent = new Intent();
                     setResult(RESULT_OK, returnIntent);
                     finish();
                 }else {
-                    Toast.makeText(AddGroupActivity.this, "Lỗi server!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddMemberActivity.this, "Lỗi server!", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -200,9 +134,10 @@ public class AddGroupActivity extends AppCompatActivity {
 
     private void LoadListFriend(){
         Bundle bundle = new Bundle();
-        bundle.putInt("uid", Constant.UID);
+        bundle.putInt("user_id", Constant.UID);
+        bundle.putInt("room_id", ROOM_ID);
 
-        RequestBody requestBody = methods.getRequestBody("method_get_list_friend", bundle, null);
+        RequestBody requestBody = methods.getRequestBody("method_get_group_unmember", bundle, null);
 
         LoadListFriendListener listener = new LoadListFriendListener() {
             @Override
@@ -217,10 +152,10 @@ public class AddGroupActivity extends AppCompatActivity {
                         arrayList_friend.addAll(array_user);
                         SetAdapter();
                     }else {
-                        Toast.makeText(AddGroupActivity.this, "Lỗi server!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddMemberActivity.this, "Lỗi server!", Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    Toast.makeText(AddGroupActivity.this, "Vui lòng kết nối internet!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddMemberActivity.this, "Vui lòng kết nối internet!", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -264,7 +199,7 @@ public class AddGroupActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 for(UserSelect u : arrayList_checklist){
                     if(u.getName().toLowerCase().contains(s.toString().toLowerCase())
-                        || u.getPhone().contains(s.toString())){
+                            || u.getPhone().contains(s.toString())){
                         arrayList_search.add(u);
                     }
                 }
@@ -277,6 +212,4 @@ public class AddGroupActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
