@@ -1,4 +1,4 @@
-package com.example.bkzalo.activitiy;
+package com.example.bkzalo.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

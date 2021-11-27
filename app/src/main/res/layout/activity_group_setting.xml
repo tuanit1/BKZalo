@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.GroupSettingActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/theme_color">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:riv_corner_radius="15dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_back_arrow"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"/>
+
+        <LinearLayout
+            android:layout_toRightOf="@id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tùy chọn"
+                android:textSize="20dp"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+                <RelativeLayout
+                    android:id="@+id/user_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="20dp">
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/iv_user_image"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:riv_corner_radius="90dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/message_placeholder_ic"/>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_group_icon"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="90dp"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="#5696C8">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/tv_img_name_group"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:textSize="22dp"
+                                android:textColor="#ffffff"
+                                android:text="DA"/>
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_group_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_image"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="25dp"
+                    android:text="Group name"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_group_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tùy chỉnh nhóm"
+                    android:layout_margin="15dp"
+                    android:textColor="@color/theme_color"
+                    android:textSize="18dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/ll_gr_edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Đổi tên nhóm"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="8dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_change_nickname"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ll_gr_edit_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Đổi ảnh đại diện nhóm"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="8dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_edit_image"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ll_gr_add_member"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Thêm thành viên"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="8dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_add_member"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll_gr_view_member"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xem thành viên"
+                        android:textSize="20dp"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="5dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_people"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll_gr_leave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rời nhóm"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="10dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_leave"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_private_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tùy chỉnh cá nhân"
+                    android:textColor="@color/theme_color"
+                    android:layout_margin="15dp"
+                    android:textSize="18dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/ll_pr_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xem trang cá nhân"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="8dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_user_profile"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll_pr_block"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chặn"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="8dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_block"
+                            android:background="#0466C8" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_other_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tùy chỉnh khác"
+                    android:textColor="@color/theme_color"
+                    android:layout_margin="15dp"
+                    android:textSize="18dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/ll_oth_search_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tìm kiếm tin nhắn"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="8dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_search_msg"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll_oth_see_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xem ảnh"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="8dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_image_msg"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll_oth_change_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đổi biệt danh"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="3dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_change_nickname"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll_oth_hide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ẩn trò chuyện"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="6dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_hide"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll_oth_delete_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_marginBottom="20dp"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xóa lịch sử trò chuyện"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="8dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_delete"
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
