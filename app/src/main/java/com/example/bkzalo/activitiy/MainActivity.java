@@ -15,6 +15,8 @@ import com.example.bkzalo.fragments.FragmentPhonebook;
 import com.example.bkzalo.fragments.FragmentProfile;
 import com.example.bkzalo.fragments.FragmentSetting;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int currentFragment = FRAGMENT_MESSAGE;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         AnhXa();
 
         ReplaceFragment(new FragmentMessage(), "Message");
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+
+        myRef.setValue("Hello, World!");
     }
 
     private void AnhXa(){

@@ -61,12 +61,13 @@ public class LoadChatListAsync extends AsyncTask<Void, String, Boolean> {
 
                 String phone = obj.getString("phone");
 
-                String password = obj.getString("password");
-
                 String bio = obj.getString("bio");
 
-                User user = new User(id, name, image, birthday, phone, password, bio);
+                String email = obj.getString("email");
 
+                boolean isOnline = obj.getInt("isOnline") == 1 ? true: false;
+
+                User user = new User(id, name, image, birthday, phone, bio, email, isOnline);
                 arrayList_user.add(user);
             }
 

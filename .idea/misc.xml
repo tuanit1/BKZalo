@@ -6,10 +6,38 @@
         <entry key="..\:/Nam3/DoAn/PBL4/BKZalo/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Nam3/DoAn/PBL4/BKZalo/app/src/main/res/layout/activity_main.xml" value="0.346875" />
         <entry key="..\:/Nam3/DoAn/PBL4/BKZalo/app/src/main/res/layout/fragment_message.xml" value="0.346875" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/drawable-anydpi/ic_search.xml" value="0.16203703703703703" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.12222222222222222" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/drawable/bg_blueborder_edt.xml" value="0.296875" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.12222222222222222" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_author.xml" value="0.2" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_create_pf.xml" value="0.33" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_forgot_resetpass.xml" value="0.33" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_forgotpass.xml" value="0.25" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_get_otp.xml" value="0.25412541254125415" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_get_otpactivity.xml" value="0.1037037037037037" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_login.xml" value="0.18" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_main.xml" value="0.20260416666666667" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_phonebook_profile.xml" value="0.3625" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_privacy.xml" value="0.22" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_profile_pb.xml" value="0.2881844380403458" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_resetpass.xml" value="0.25" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_signup.xml" value="0.33" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/activity_update_info.xml" value="0.25" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/fragment_message.xml" value="0.3625" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/fragment_phonebook.xml" value="0.25" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/fragment_profile.xml" value="0.3625" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/fragment_setting.xml" value="0.33" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/item_chatlist.xml" value="0.3625" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/layout/item_phonebook.xml" value="0.25" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/menu/menu_search.xml" value="0.24351851851851852" />
+        <entry key="..\:/Nam3/PBL4/BKZalo/app/src/main/res/menu/menu_search_phonebook.xml" value="0.25" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

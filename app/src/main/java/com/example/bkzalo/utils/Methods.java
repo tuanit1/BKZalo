@@ -41,6 +41,49 @@ public class Methods {
             postObj.addProperty("uid", uid);
         }
 
+        if(method_name.equals("method_get_phonebook_list")){
+            int uid = bundle.getInt("uid");
+            postObj.addProperty("uid", uid);
+        }
+
+        if(method_name.equals("method_delete_phonebook")){
+            int uid1 = bundle.getInt("uid1");
+            postObj.addProperty("uid1", uid1);
+            int uid2 = bundle.getInt("uid2");
+            postObj.addProperty("uid2", uid2);
+        }
+
+        if(method_name.equals("method_block_phonebook")){
+            int uid1 = bundle.getInt("uid1");
+            postObj.addProperty("uid1", uid1);
+            int uid2 = bundle.getInt("uid2");
+            postObj.addProperty("uid2", uid2);
+        }
+
+        if(method_name.equals("method_signup")){
+            String name = bundle.getString("name");
+            String email = bundle.getString("email");
+            String phone = bundle.getString("phone");
+
+            postObj.addProperty("name", name);
+            postObj.addProperty("email", email);
+            postObj.addProperty("phone", phone);
+        }
+
+        if(method_name.equals("method_get_user")){
+            String email = bundle.getString("email");
+            postObj.addProperty("email", email);
+        }
+
+        if(method_name.equals("method_update_info")){
+            String birthday = bundle.getString("birthday");
+            String image = bundle.getString("image");
+            int uid = bundle.getInt("uid");
+            postObj.addProperty("uid", uid);
+            postObj.addProperty("birthday", birthday);
+            postObj.addProperty("image", image);
+        }
+
         String post_data = postObj.toString();
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
