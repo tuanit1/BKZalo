@@ -3,7 +3,6 @@ package com.example.bkzalo.asynctasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.bkzalo.listeners.ChatListListener;
 import com.example.bkzalo.listeners.GetUIDListener;
 import com.example.bkzalo.listeners.PhoneBookListListener;
 import com.example.bkzalo.models.User;

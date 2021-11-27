@@ -1,4 +1,4 @@
-package com.example.bkzalo.activity;
+package com.example.bkzalo.activitiy;
 
 import androidx.appcompat.app.AppCompatActivity;
 

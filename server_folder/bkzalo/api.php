@@ -10,7 +10,7 @@
 
     $postObj = json_decode($post_data, true);
 
-    //Tuan
+    //Tuan make it complicated!
     if($postObj['method_name'] == 'method_get_chat_list'){
         
         $uid = $postObj['uid'];
@@ -47,8 +47,8 @@
                     INNER JOIN tbl_room ON tbl_room.id = tbl_message.room_id
                     INNER JOIN tbl_participant ON (tbl_participant.user_id = tbl_user.id AND tbl_participant.room_id = tbl_room.id)
                     WHERE tbl_room.id = $room_id AND tbl_message.type != 'leave'
-            UNION
-
+            UNION 
+                
             SELECT DISTINCT tbl_message.*, tbl_user.name, tbl_user.image, '' as nickname FROM tbl_message
                     INNER JOIN tbl_user ON tbl_user.id = tbl_message.user_id
                     INNER JOIN tbl_room ON tbl_room.id = tbl_message.room_id
@@ -116,12 +116,12 @@
                             $data2['email'] = $row['email'];
                             $data2['bio'] = $row['bio'];
                             $data2['isOnline'] = $row['isOnline'];
-
+        
                             array_push($jsObj_user, $data2);
-                        }
-                    }
-                }
-            }
+                        }    
+                    }   
+                }    
+            }  
         }
 
         $jsObjAll['array_participant'] = $jsObj_participant;
@@ -140,81 +140,13 @@
 
         $array_friend = array();
 
-        $query = "SELECT tbl_user.* FROM `tbl_relationship`
-                INNER JOIN tbl_user ON (tbl_user.id = user_id1 OR tbl_user.id = user_id2)
+        $query = "SELECT tbl_user.* FROM `tbl_relationship` 
+                INNER JOIN tbl_user ON (tbl_user.id = user_id1 OR tbl_user.id = user_id2) 
                 WHERE (tbl_user.id != $uid AND tbl_relationship.status = 'friend' AND (tbl_relationship.user_id1 = $uid OR tbl_relationship.user_id2 = $uid))";
-
+        
         $query_rs = mysqli_query($connect, $query);
 
         while($row = mysqli_fetch_assoc($query_rs)){
-            $data['id'] = $row['id'];
-            $data['name'] = $row['name'];
-            $data['image'] = $row['image'];
-            $data['birthday'] = $row['birthday'];
-            $data['phone'] = $row['phone'];
-            $data['bio'] = $row['bio'];
-            $data['email'] = $row['email'];
-            $data['isOnline'] = $row['isOnline'];
-
-            array_push($jsObj_user, $data);
-        }
-
-        $jsObjAll['array_user'] = $jsObj_user;
-
-        echo json_encode($jsObjAll);
-
-        die();
-    }
-
-    //Nhi
-    if($postObj['method_name'] == 'method_get_phonebook_list'){
-
-        $uid = $postObj['uid'];
-
-        $query = "SELECT DISTINCT id, name, image, birthday, phone, bio, email  FROM `tbl_relationship` INNER JOIN `tbl_user`
-                    ON tbl_relationship.user_id1=tbl_user.id OR tbl_relationship.user_id2=tbl_user.id
-                    WHERE tbl_relationship.status='friend'
-                    AND (user_id1='$uid' OR user_id2='$uid')
-                    AND (NOT tbl_user.id='$uid')";
-
-        $query_result = mysqli_query($connect, $query);
-
-        $jsObjAll = array();
-        $jsObj_user = array();
-
-        while($row = mysqli_fetch_assoc($query_result)){
-            $data['id'] = $row['id'];
-            $data['name'] = $row['name'];
-            $data['image'] = $row['image'];
-            $data['birthday'] = $row['birthday'];
-            $data['phone'] = $row['phone'];
-            $data['bio'] = $row['bio'];
-            $data['email'] = $row['email'];
-            $data['isOnline'] = $row['isOnline'];
-
-            array_push($jsObj_user, $data);
-        }
-
-        $jsObjAll['array_user'] = $jsObj_user;
-
-        echo json_encode($jsObjAll);
-
-        die();
-    }
-
-    //Nhi
-    if($postObj['method_name'] == 'method_get_user'){
-
-        $email = $postObj['email'];
-
-        $query = "SELECT * FROM tbl_user WHERE `email` = '$email'";
-
-        $query_result = mysqli_query($connect, $query);
-
-        $jsObjAll = array();
-        $jsObj_user = array();
-
-        while($row = mysqli_fetch_assoc($query_result)){
             $data['id'] = $row['id'];
             $data['name'] = $row['name'];
             $data['image'] = $row['image'];
@@ -296,7 +228,7 @@
                     $user_name = $row['name'];
                 }
 
-                $str = "thêm " . $user_name;
+                $str = "thêm " . $user_name; 
 
                 $query_add_user = "INSERT INTO `tbl_message` (`id`, `user_id`, `room_id`, `type`, `message`, `time`, `isRemove`, `isSeen`) VALUES (NULL, '$admin_id', '$room_id', 'noti', '$str', current_timestamp, '0', '0')";
 
@@ -326,8 +258,8 @@
                 INNER JOIN tbl_room ON tbl_room.id = tbl_message.room_id
                 INNER JOIN tbl_participant ON (tbl_participant.user_id = tbl_user.id AND tbl_participant.room_id = tbl_room.id)
                 WHERE tbl_room.id = $room_id AND tbl_message.type != 'leave'
-        UNION
-
+        UNION 
+            
         SELECT DISTINCT tbl_message.*, tbl_user.name, tbl_user.image, '' as nickname FROM tbl_message
                 INNER JOIN tbl_user ON tbl_user.id = tbl_message.user_id
                 INNER JOIN tbl_room ON tbl_room.id = tbl_message.room_id
@@ -467,8 +399,6 @@
         $name = $postObj['name'];
         $room_id = $postObj['room_id'];
         $user_id = $postObj['user_id'];
-            $data['email'] = $row['email'];
-            $data['isOnline'] = $row['isOnline'];
 
         $str = "đổi tên nhóm thành "  .$name;
 
@@ -666,12 +596,12 @@
 
         $jsObj_user = array();
 
-        $query = "SELECT * FROM `tbl_relationship`
+        $query = "SELECT * FROM `tbl_relationship` 
         INNER JOIN tbl_user ON (tbl_user.id = user_id1 OR tbl_user.id = user_id2)
-        WHERE (tbl_user.id != $user_id AND tbl_relationship.status = 'friend' AND (tbl_relationship.user_id1 = $user_id OR tbl_relationship.user_id2 = $user_id))
+        WHERE (tbl_user.id != $user_id AND tbl_relationship.status = 'friend' AND (tbl_relationship.user_id1 = $user_id OR tbl_relationship.user_id2 = $user_id)) 
         AND tbl_user.id NOT IN
         (
-            SELECT tbl_user.id FROM `tbl_relationship`
+            SELECT tbl_user.id FROM `tbl_relationship` 
             INNER JOIN tbl_user ON (tbl_user.id = user_id1 OR tbl_user.id = user_id2)
             INNER JOIN tbl_participant ON tbl_participant.user_id = tbl_user.id AND tbl_participant.room_id = $room_id
             WHERE (tbl_user.id != $user_id AND tbl_relationship.status = 'friend' AND (tbl_relationship.user_id1 = $user_id OR tbl_relationship.user_id2 = $user_id))
@@ -689,7 +619,7 @@
             $data2['email'] = $row['email'];
             $data2['bio'] = $row['bio'];
             $data2['isOnline'] = $row['isOnline'];
-
+        
             array_push($jsObj_user, $data2);
         }
 
@@ -724,7 +654,7 @@
                 $user_name = $row['name'];
             }
 
-            $str = "thêm " . $user_name;
+            $str = "thêm " . $user_name; 
             $query_noti_msg = "INSERT INTO `tbl_message` (`id`, `user_id`, `room_id`, `type`, `message`, `time`, `isRemove`, `isSeen`) VALUES (NULL, '$user_id', '$room_id', 'noti', '$str', current_timestamp, '0', '0')";
 
             if(!mysqli_query($connect, $query_noti_msg)){
@@ -784,7 +714,7 @@
             $data['isAdmin'] = $row['isAdmin'];
             $data['isHide'] = $row['isHide'];
             $data['timestamp'] = $row['timestamp'];
-
+            
             array_push($jsObj_participant, $data);
 
             $data1['id'] = $row['id'];
@@ -826,7 +756,7 @@
             echo "query fail" .$query;
             die();
         }
-
+        
         $query_get_user = "SELECT * FROM tbl_user WHERE `id` = $user_id";
         $query_get_user_rs = mysqli_query($connect, $query_get_user) or die("query fail: " .$query_get_user);
 
@@ -839,7 +769,7 @@
         }else{
             $str = "chỉ định " . $user_name ." làm quản trị viên";
         }
-
+         
         $query_noti_msg = "INSERT INTO `tbl_message` (`id`, `user_id`, `room_id`, `type`, `message`, `time`, `isRemove`, `isSeen`) VALUES (NULL, '$admin_id', '$room_id', 'noti', '$str', current_timestamp, '0', '0')";
 
         if(!mysqli_query($connect, $query_noti_msg)){
@@ -880,93 +810,6 @@
         die();
     }
 
-    //Nhi
-    if ($postObj['method_name']== 'method_signup')
-    {
-        $name = $postObj['name'];
-        $email = $postObj['email'];
-        $phone = $postObj['phone'];
-
-        $query = "INSERT INTO `tbl_user` (`id`, `name`, `image`, `birthday`, `phone`, `bio`, `email`, `isOnline`) VALUES (NULL, '$name', NULL, NULL, '$phone', NULL, '$email', NULL)";
-
-        $query_result = mysqli_query($connect, $query);
-
-        if ($query_result)
-        {
-            echo "success";
-        }
-        else
-        {
-            echo "Failed";
-        }
-        mysqli_close($connect);
-    }
-
-    //Nhi
-    if ($postObj['method_name']== 'method_delete_phonebook')
-    {
-        $uid1 = $postObj['uid1'];
-        $uid2 = $postObj['uid2'];
-
-        $query = "UPDATE `tbl_relationship` SET status='' WHERE (user_id1=$uid1 AND user_id2=$uid2) OR (user_id2=$uid1 AND user_id1=$uid2)";
-
-        $query_result = mysqli_query($connect, $query);
-
-        if ($query_result)
-        {
-            echo "success";
-        }
-        else
-        {
-            echo "Failed";
-        }
-        mysqli_close($connect);
-    }
-
-    //Nhi
-    if ($postObj['method_name']== 'method_update_info')
-    {
-        $birthday = $postObj['birthday'];
-        $image = $postObj['image'];
-        $uid = $postObj['uid'];
-
-        $query = "UPDATE `tbl_user` SET `image`='$image', `birthday`='$birthday' WHERE `id`='$uid'";
-
-        $query_result = mysqli_query($connect, $query);
-
-        if ($query_result)
-        {
-            echo "success";
-        }
-        else
-        {
-            echo "Failed";
-        }
-        mysqli_close($connect);
-    }
-
-    //Nhi
-    if ($postObj['method_name']== 'method_block_phonebook')
-    {
-        $uid1 = $postObj['uid1'];
-        $uid2 = $postObj['uid2'];
-
-        $query = "UPDATE `tbl_relationship` SET `blocker` = '$uid1', `status` = 'block' WHERE (`user_id1` = $uid1 AND `user_id2` = $uid2) OR (`user_id1` = $uid2 AND `user_id2` = $uid1)";
-
-
-        $query_result = mysqli_query($connect, $query);
-
-        if ($query_result)
-        {
-            echo "success";
-        }
-        else
-        {
-            echo "Failed";
-        }
-        mysqli_close($connect);
-    }
-
     if($postObj['method_name'] == 'method_delete_group_member'){
         $admin_id = $postObj['admin_id'];
         $user_id = $postObj['user_id'];
@@ -987,7 +830,7 @@
         }
 
         $str = "xóa " . $user_name ." ra khỏi nhóm";
-
+         
         $query_noti_msg = "INSERT INTO `tbl_message` (`id`, `user_id`, `room_id`, `type`, `message`, `time`, `isRemove`, `isSeen`) VALUES (NULL, '$admin_id', '$room_id', 'noti', '$str', current_timestamp, '0', '0')";
 
         if(!mysqli_query($connect, $query_noti_msg)){
@@ -1046,7 +889,7 @@
         }
 
         $str = "rời khỏi nhóm";
-
+         
         $query_noti_msg = "INSERT INTO `tbl_message` (`id`, `user_id`, `room_id`, `type`, `message`, `time`, `isRemove`, `isSeen`) VALUES (NULL, '$user_id', '$room_id', 'leave', '$str', current_timestamp, '0', '0')";
 
         if(!mysqli_query($connect, $query_noti_msg)){
@@ -1168,7 +1011,7 @@
             $data['nickname'] = $row['nickname'];
 
             array_push($array_message, $data);
-
+            
         }
 
         $jsObjAll = array();
@@ -1199,7 +1042,7 @@
         }
 
         $str = "đặt biệt danh " . $user_name . " thành " .$nickname;
-
+         
         $query_noti_msg = "INSERT INTO `tbl_message` (`id`, `user_id`, `room_id`, `type`, `message`, `time`, `isRemove`, `isSeen`) VALUES (NULL, '$admin_id', '$room_id', 'noti', '$str', current_timestamp, '0', '0')";
 
         if(!mysqli_query($connect, $query_noti_msg)){
@@ -1258,8 +1101,8 @@
         $user_id = $postObj['user_id'];
         $admin_id = $postObj['admin_id'];
 
-        $query = "UPDATE `tbl_relationship` SET `blocker` = '$admin_id', `status` = 'block'
-        WHERE (`tbl_relationship`.`user_id1` = $admin_id AND `tbl_relationship`.`user_id2` = $user_id) OR
+        $query = "UPDATE `tbl_relationship` SET `blocker` = '$admin_id', `status` = 'block' 
+        WHERE (`tbl_relationship`.`user_id1` = $admin_id AND `tbl_relationship`.`user_id2` = $user_id) OR 
         (`tbl_relationship`.`user_id1` = $user_id AND `tbl_relationship`.`user_id2` = $admin_id)";
 
         if(mysqli_query($connect, $query)){
@@ -1275,7 +1118,7 @@
         $user_id = $postObj['user_id'];
         $admin_id = $postObj['admin_id'];
 
-        $query = "SELECT * FROM tbl_relationship WHERE (`tbl_relationship`.`user_id1` = $admin_id AND `tbl_relationship`.`user_id2` = $user_id) OR
+        $query = "SELECT * FROM tbl_relationship WHERE (`tbl_relationship`.`user_id1` = $admin_id AND `tbl_relationship`.`user_id2` = $user_id) OR 
         (`tbl_relationship`.`user_id1` = $user_id AND `tbl_relationship`.`user_id2` = $admin_id)";
 
         $query_rs =  mysqli_query($connect, $query);
@@ -1301,8 +1144,8 @@
         $user_id = $postObj['user_id'];
         $admin_id = $postObj['admin_id'];
 
-        $query = "UPDATE `tbl_relationship` SET `blocker` = null, `status` = 'friend'
-        WHERE (`tbl_relationship`.`user_id1` = $admin_id AND `tbl_relationship`.`user_id2` = $user_id) OR
+        $query = "UPDATE `tbl_relationship` SET `blocker` = null, `status` = 'friend' 
+        WHERE (`tbl_relationship`.`user_id1` = $admin_id AND `tbl_relationship`.`user_id2` = $user_id) OR 
         (`tbl_relationship`.`user_id1` = $user_id AND `tbl_relationship`.`user_id2` = $admin_id)";
 
         if(mysqli_query($connect, $query)){
@@ -1342,6 +1185,161 @@
         }
 
         die();
+    }
+
+    //Nhi
+    if($postObj['method_name'] == 'method_get_phonebook_list'){
+        
+        $uid = $postObj['uid'];
+
+        $query = "SELECT DISTINCT tbl_user.*  FROM `tbl_relationship` INNER JOIN `tbl_user` 
+                    ON tbl_relationship.user_id1=tbl_user.id OR tbl_relationship.user_id2=tbl_user.id 
+                    WHERE tbl_relationship.status='friend' 
+                    AND (user_id1='$uid' OR user_id2='$uid') 
+                    AND (NOT tbl_user.id='$uid')";
+
+        $query_result = mysqli_query($connect, $query);
+
+        $jsObjAll = array();
+        $jsObj_user = array();
+
+        while($row = mysqli_fetch_assoc($query_result)){
+            $data['id'] = $row['id'];
+            $data['name'] = $row['name'];
+            $data['image'] = $row['image'];
+            $data['birthday'] = $row['birthday'];
+            $data['phone'] = $row['phone'];
+            $data['bio'] = $row['bio'];
+            $data['email'] = $row['email'];
+            $data['isOnline'] = $row['isOnline'];
+
+            array_push($jsObj_user, $data);
+        } 
+
+        $jsObjAll['array_user'] = $jsObj_user;
+
+        echo json_encode($jsObjAll);
+
+        die();
+    }
+
+    //Nhi
+    if($postObj['method_name'] == 'method_get_user'){
+        
+        $email = $postObj['email'];
+
+        $query = "SELECT * FROM tbl_user WHERE `email` = '$email'";
+
+        $query_result = mysqli_query($connect, $query);
+
+        $jsObjAll = array();
+        $jsObj_user = array();
+
+        while($row = mysqli_fetch_assoc($query_result)){
+            $data['id'] = $row['id'];
+            $data['name'] = $row['name'];
+            $data['image'] = $row['image'];
+            $data['birthday'] = $row['birthday'];
+            $data['phone'] = $row['phone'];
+            $data['bio'] = $row['bio'];
+            $data['email'] = $row['email'];
+            $data['isOnline'] = $row['isOnline'];
+
+            array_push($jsObj_user, $data);
+        } 
+
+        $jsObjAll['array_user'] = $jsObj_user;
+
+        echo json_encode($jsObjAll);
+
+        die();
+    }
+
+    //Nhi
+    if ($postObj['method_name']== 'method_signup')
+    {
+        $name = $postObj['name'];
+        $email = $postObj['email'];
+        $phone = $postObj['phone'];
+
+        $query = "INSERT INTO `tbl_user` (`id`, `name`, `image`, `birthday`, `phone`, `bio`, `email`, `isOnline`) VALUES (NULL, '$name', NULL, NULL, '$phone', NULL, '$email', NULL)";
+
+        $query_result = mysqli_query($connect, $query);
+
+        if ($query_result)
+        {
+            echo "success";
+        }
+        else
+        {
+            echo "Failed";
+        }
+        mysqli_close($connect);
+    }
+
+    //Nhi
+    if ($postObj['method_name']== 'method_delete_phonebook')
+    {
+        $uid1 = $postObj['uid1'];
+        $uid2 = $postObj['uid2'];
+
+        $query = "UPDATE `tbl_relationship` SET status='' WHERE (user_id1=$uid1 AND user_id2=$uid2) OR (user_id2=$uid1 AND user_id1=$uid2)";
+
+        $query_result = mysqli_query($connect, $query);
+
+        if ($query_result)
+        {
+            echo "success";
+        }
+        else
+        {
+            echo "Failed";
+        }
+        mysqli_close($connect);
+    }
+
+    //Nhi
+    if ($postObj['method_name']== 'method_update_info')
+    {
+        $birthday = $postObj['birthday'];
+        $image = $postObj['image'];
+        $uid = $postObj['uid'];
+
+        $query = "UPDATE `tbl_user` SET `image`='$image', `birthday`='$birthday' WHERE `id`='$uid'";
+
+        $query_result = mysqli_query($connect, $query);
+
+        if ($query_result)
+        {
+            echo "success";
+        }
+        else
+        {
+            echo "Failed";
+        }
+        mysqli_close($connect);
+    }
+
+    //Nhi
+    if ($postObj['method_name']== 'method_block_phonebook')
+    {
+        $uid1 = $postObj['uid1'];
+        $uid2 = $postObj['uid2'];
+
+        $query = "UPDATE `tbl_relationship` SET `blocker` = '$uid1', `status` = 'block' WHERE (`user_id1` = $uid1 AND `user_id2` = $uid2) OR (`user_id1` = $uid2 AND `user_id2` = $uid1)";
+
+
+        $query_result = mysqli_query($connect, $query);
+
+        if ($query_result)
+        {
+            echo "success";
+        }
+        else
+        {
+            echo "Failed";
+        }
+        mysqli_close($connect);
     }
 
 ?>

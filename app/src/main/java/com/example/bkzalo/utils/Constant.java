@@ -15,6 +15,7 @@ public class Constant {
     public static String NAME="";
     public static String IMAGE="";
     public static String SERVER_URL = "http://192.168.2.11:8100/bkzalo/";
+    public static String SERVER_NODE = "http://192.168.1.10:3000/";
     //public static String SERVER_URL = "http://192.168.1.153:8100/bkzalo/";
     //public static String SERVER_URL = "http://172.20.10.2:8100/bkzalo/";
 

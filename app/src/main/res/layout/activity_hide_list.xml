@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/sub_color"
-    tools:context=".activity.HideListActivity">
+    tools:context=".activitiy.HideListActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

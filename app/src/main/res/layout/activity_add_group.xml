@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/main_color"
-    tools:context=".activity.AddGroupActivity">
+    tools:context=".activitiy.AddGroupActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

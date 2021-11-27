@@ -20,9 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bkzalo.R;
-import com.example.bkzalo.activity.AddGroupActivity;
-import com.example.bkzalo.activity.ChatActivity;
-import com.example.bkzalo.activity.HideListActivity;
+import com.example.bkzalo.activitiy.AddGroupActivity;
+import com.example.bkzalo.activitiy.ChatActivity;
+import com.example.bkzalo.activitiy.HideListActivity;
 import com.example.bkzalo.adapters.ChatListAdapter;
 import com.example.bkzalo.asynctasks.LoadChatListAsync;
 import com.example.bkzalo.listeners.ClickChatListListener;
@@ -72,7 +72,7 @@ public class FragmentMessage extends Fragment {
         arrayList_user = new ArrayList<>();
         arrayList_message = new ArrayList<>();
 
-        //LoadChatList();
+        LoadChatList();
 
         return view;
     }

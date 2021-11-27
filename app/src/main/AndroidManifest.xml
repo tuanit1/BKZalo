@@ -16,16 +16,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BKZalo"
-        android:usesCleartextTraffic="true"><activity android:name=".activity.ChangeNicknameActivity" />
-        <activity android:name=".activity.ImageDetailActivity" />
-        <activity android:name=".activity.MessageImageActivity" />
-        <activity android:name=".activity.SearchMessageActivity" />
-        <activity android:name=".activity.MemberListActivity" />
-        <activity android:name=".activity.AddMemberActivity" />
-        <activity android:name=".activity.GroupSettingActivity" />
-        <activity android:name=".activity.HideListActivity" />
-        <activity android:name=".activity.ChatActivity" />
-        <activity android:name=".activity.AddGroupActivity" />
+        android:usesCleartextTraffic="true"><activity android:name=".activitiy.ChangeNicknameActivity" />
+        <activity android:name=".activitiy.ImageDetailActivity" />
+        <activity android:name=".activitiy.MessageImageActivity" />
+        <activity android:name=".activitiy.SearchMessageActivity" />
+        <activity android:name=".activitiy.MemberListActivity" />
+        <activity android:name=".activitiy.AddMemberActivity" />
+        <activity android:name=".activitiy.GroupSettingActivity" />
+        <activity android:name=".activitiy.HideListActivity" />
+        <activity android:name=".activitiy.ChatActivity" />
+        <activity android:name=".activitiy.AddGroupActivity" />
         <activity
             android:name=".activitiy.Update_InfoActivity"
             android:exported="false" />

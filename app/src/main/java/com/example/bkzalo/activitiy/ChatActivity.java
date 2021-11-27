@@ -1,4 +1,4 @@
-package com.example.bkzalo.activity;
+package com.example.bkzalo.activitiy;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;

@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bkzalo.R;
 import com.example.bkzalo.activitiy.Profile_PB_Activity;
 import com.example.bkzalo.fragments.FragmentPhonebook;
-import com.example.bkzalo.listeners.ChatListListener;
 import com.example.bkzalo.listeners.ClickPhoneBookListener;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;

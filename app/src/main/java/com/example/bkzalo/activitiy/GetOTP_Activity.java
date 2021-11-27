@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.chaos.view.PinView;
 import com.example.bkzalo.R;
-import com.example.bkzalo.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;

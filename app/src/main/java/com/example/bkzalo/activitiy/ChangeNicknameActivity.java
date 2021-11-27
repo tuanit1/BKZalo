@@ -1,4 +1,4 @@
-package com.example.bkzalo.activity;
+package com.example.bkzalo.activitiy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,11 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bkzalo.R;
-import com.example.bkzalo.adapters.MemberAdapter;
 import com.example.bkzalo.adapters.NicknameAdapter;
 import com.example.bkzalo.asynctasks.GetMemberListAsync;
 import com.example.bkzalo.asynctasks.SendMessageAsync;
-import com.example.bkzalo.listeners.ClickMemberListener;
 import com.example.bkzalo.listeners.GetMemberListener;
 import com.example.bkzalo.listeners.SendMessageListener;
 import com.example.bkzalo.listeners.UserSelectListener;

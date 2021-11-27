@@ -104,8 +104,7 @@
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
                     app:riv_corner_radius="10dp"
-                    android:visibility="gone"
-                    android:src="@drawable/bg_app1"/>
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <LinearLayout
