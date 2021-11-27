@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyViewHolder>{
@@ -87,6 +88,14 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
             String name = "";
 
+            if(user.isOnline()){
+                holder.iv_on.setVisibility(View.VISIBLE);
+                holder.iv_off.setVisibility(View.GONE);
+            }else {
+                holder.iv_on.setVisibility(View.GONE);
+                holder.iv_off.setVisibility(View.VISIBLE);
+            }
+
             if(parti.getNickname().equals("")){
                 holder.tv_name.setText(user.getName());
                 name = user.getName();
@@ -105,7 +114,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
             holder.rv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(room.getId(),"private", user.getImage(), parti.getNickname().equals("")?user.getName(): parti.getNickname());
+                    listener.onClick(room.getId(), user.getId(),"private");
                 }
             });
         }else {
@@ -154,13 +163,14 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
             holder.rv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(room.getId(), "group", room.getImage(), room.getName());
+                    listener.onClick(room.getId(), 0 ,"group");
                 }
             });
 
         }
 
         Message message = GetMessage(room);
+
 
         if(message != null){
 
@@ -200,6 +210,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
                         if(!message.isSeen()){
                             holder.tv_text.setTextColor(context.getResources().getColor(R.color.text_color));
                             holder.tv_text.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
+
+                            holder.tv_time.setTextColor(context.getResources().getColor(R.color.text_color));
+                            holder.tv_time.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
                         }
                     }
 
@@ -232,11 +245,15 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
                         if(!message.isSeen()){
                             holder.tv_text.setTextColor(context.getResources().getColor(R.color.text_color));
                             holder.tv_text.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
+
+                            holder.tv_time.setTextColor(context.getResources().getColor(R.color.text_color));
+                            holder.tv_time.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
                         }
                     }
 
                     break;
                 case "noti":
+                case "leave":
 
                     if(message.getUser_id() == Constant.UID){
                         holder.tv_text.setText("Bạn đã " + message.getMessage());
@@ -246,6 +263,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
                         if(!message.isSeen()){
                             holder.tv_text.setTextColor(context.getResources().getColor(R.color.text_color));
                             holder.tv_text.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
+
+                            holder.tv_time.setTextColor(context.getResources().getColor(R.color.text_color));
+                            holder.tv_time.setTypeface(holder.tv_text.getTypeface(), Typeface.BOLD);
                         }
                     }
 
@@ -253,6 +273,13 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
                     break;
             }
+
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+
+            String date_txt = formatter.format(message.getTime());
+
+            holder.tv_time.setText(date_txt);
+
         }else {
             holder.tv_text.setText("Không có tin nhắn nào");
         }
@@ -272,9 +299,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView img_private, iv_group_ic;
+        ImageView img_private, iv_group_ic, iv_on, iv_off;
         CardView img_group;
-        TextView tv_name, tv_text, tv_name_group, tv_hide;
+        TextView tv_name, tv_text, tv_name_group, tv_hide, tv_time;
         RelativeLayout rv_item;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
@@ -283,7 +310,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
             rv_item = itemView.findViewById(R.id.rv_item);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_text = itemView.findViewById(R.id.tv_text);
+            iv_on = itemView.findViewById(R.id.iv_on);
+            iv_off = itemView.findViewById(R.id.iv_off);
             tv_hide = itemView.findViewById(R.id.tv_hide);
+            tv_time = itemView.findViewById(R.id.tv_time);
             tv_name_group = itemView.findViewById(R.id.tv_name_group);
             img_private = itemView.findViewById(R.id.img_private);
             img_group = itemView.findViewById(R.id.img_group);

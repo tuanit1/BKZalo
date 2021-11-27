@@ -8,14 +8,26 @@
     android:visibility="visible">
     <TextView
         android:id="@+id/tv_noti"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:textSize="14dp"
-        android:visibility="gone"
+        android:textSize="13dp"
+        android:visibility="visible"
+        android:textAlignment="center"
         android:layout_centerInParent="true"
         android:text="Notification"/>
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:text="sdjfklsdjfklsjdkfdj"/>
     <LinearLayout
         android:id="@+id/ll_msg"
+        android:layout_below="@id/tv_day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="10"
@@ -100,12 +112,25 @@
                 </RelativeLayout>
 
 
-                <TextView
-                    android:id="@+id/tv_time"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="12:00"/>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="12:00"/>
+                    <TextView
+                        android:id="@+id/tv_seen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:text="Đã xem"/>
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

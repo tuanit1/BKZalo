@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activitiy.GroupSettingActivity">
+    tools:context=".activity.GroupSettingActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -134,7 +134,7 @@
                             android:padding="8dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_change_nickname"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
@@ -163,7 +163,7 @@
                             android:padding="8dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_edit_image"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
@@ -192,7 +192,7 @@
                             android:padding="8dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_add_member"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
@@ -220,7 +220,7 @@
                             android:padding="5dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_people"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
                 <RelativeLayout
@@ -247,7 +247,7 @@
                             android:padding="10dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_leave"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
             </LinearLayout>
@@ -291,7 +291,7 @@
                             android:padding="8dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_user_profile"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
                 <RelativeLayout
@@ -318,7 +318,7 @@
                             android:padding="8dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_block"
-                            android:background="#4377A3" />
+                            android:background="#0466C8" />
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
             </LinearLayout>
@@ -361,7 +361,7 @@
                             android:padding="8dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_search_msg"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
                 <RelativeLayout
@@ -388,34 +388,7 @@
                             android:padding="8dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_image_msg"
-                            android:background="#4377A3" />
-                    </androidx.cardview.widget.CardView>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/ll_oth_change_bgrd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:padding="15dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Đổi hình nền"
-                        android:layout_centerVertical="true"
-                        android:textSize="20dp"
-                        android:textColor="@color/text_color"/>
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="20dp"
-                        android:layout_alignParentRight="true">
-                        <com.makeramen.roundedimageview.RoundedImageView
-                            android:layout_width="40dp"
-                            android:padding="8dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_edit_image"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
                 <RelativeLayout
@@ -442,7 +415,34 @@
                             android:padding="3dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_change_nickname"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll_oth_hide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ẩn trò chuyện"
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:textColor="@color/text_color"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        android:layout_alignParentRight="true">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:padding="6dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_hide"
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
                 <RelativeLayout
@@ -470,7 +470,7 @@
                             android:padding="8dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_delete"
-                            android:background="#4377A3" />
+                            android:background="@color/component_blue" />
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
             </LinearLayout>

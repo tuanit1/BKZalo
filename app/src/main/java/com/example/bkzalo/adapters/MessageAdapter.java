@@ -1,41 +1,32 @@
 package com.example.bkzalo.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bkzalo.R;
-import com.example.bkzalo.activitiy.AddGroupActivity;
 import com.example.bkzalo.listeners.ClickChatItemListener;
-import com.example.bkzalo.listeners.ClickChatListListener;
 import com.example.bkzalo.models.Message;
 import com.example.bkzalo.utils.Constant;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder>{
 
@@ -69,8 +60,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Message msg = arrayList_message.get(position);
 
-        if(msg.getType().equals("noti")){
+        if(msg.getType().equals("noti") || msg.getType().equals("leave")){
             holder.ll_msg.setVisibility(View.GONE);
+            holder.tv_message.setVisibility(View.GONE);
+            holder.iv_img_message.setVisibility(View.GONE);
+            holder.cv_remove.setVisibility(View.GONE);
+            holder.tv_day.setVisibility(View.GONE);
             holder.tv_noti.setVisibility(View.VISIBLE);
 
             String text = "";
@@ -83,14 +78,62 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
             holder.tv_noti.setText(text);
 
-            return;
-        }
-
-        if(msg.isRemove()){
+        }else if(msg.isRemove()){
+            holder.ll_msg.setVisibility(View.VISIBLE);
             holder.tv_message.setVisibility(View.GONE);
             holder.iv_img_message.setVisibility(View.GONE);
             holder.cv_remove.setVisibility(View.VISIBLE);
+            holder.tv_noti.setVisibility(View.GONE);
+            holder.tv_day.setVisibility(View.GONE);
+
+            if(msg.getUser_id() != Constant.UID){
+
+                String img_path = Constant.SERVER_URL + "image/image_user/" + msg.getImage();
+
+                Picasso.get()
+                        .load(img_path)
+                        .placeholder(R.drawable.message_placeholder_ic)
+                        .into(holder.iv_user_image);
+
+                if(msg.getNickname().equals("")){
+                    holder.tv_name.setText(msg.getName());
+                }else {
+                    holder.tv_name.setText(msg.getNickname());
+                }
+
+            }
+
+            SimpleDateFormat formatter1= new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            if(position > 0){
+                Date date = msg.getTime();
+                Date date_previous = arrayList_message.get(position-1).getTime();
+                long diffInTime = date.getTime() - date_previous.getTime();
+                long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInTime);
+
+                if(diffInMinutes > 120){
+                    holder.tv_day.setText(formatter1.format(date));
+                    holder.tv_day.setVisibility(View.VISIBLE);
+                }
+            }else {
+                holder.tv_day.setText(formatter1.format(msg.getTime()));
+                holder.tv_day.setVisibility(View.VISIBLE);
+            }
+
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+
+            String date_txt = formatter.format(msg.getTime());
+
+            holder.tv_time.setText(date_txt);
+
+            if(msg.isSeen() && !msg.getType().equals("noti") && !msg.getType().equals("leave") && msg.getUser_id() == Constant.UID && position == arrayList_message.size()-1){
+                holder.tv_seen.setVisibility(View.VISIBLE);
+            }
         }else {
+
+            holder.tv_noti.setVisibility(View.GONE);
+            holder.ll_msg.setVisibility(View.VISIBLE);
+            holder.tv_day.setVisibility(View.GONE);
+
             switch (msg.getType()){
                 case "text":
 
@@ -167,35 +210,63 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                     Picasso.get()
                             .load(img_path)
                             .into(holder.iv_img_message);
+
+                    holder.iv_img_message.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onImageClick(msg);
+                        }
+                    });
                     break;
 
             }
-        }
 
+            if(msg.getUser_id() != Constant.UID){
 
+                String img_path = Constant.SERVER_URL + "image/image_user/" + msg.getImage();
 
-        if(msg.getUser_id() != Constant.UID){
+                Picasso.get()
+                        .load(img_path)
+                        .placeholder(R.drawable.message_placeholder_ic)
+                        .into(holder.iv_user_image);
 
-            String img_path = Constant.SERVER_URL + "image/image_user/" + msg.getImage();
+                if(msg.getNickname().equals("")){
+                    holder.tv_name.setText(msg.getName());
+                }else {
+                    holder.tv_name.setText(msg.getNickname());
+                }
 
-            Picasso.get()
-                    .load(img_path)
-                    .placeholder(R.drawable.message_placeholder_ic)
-                    .into(holder.iv_user_image);
+            }
 
-            if(msg.getNickname().equals("")){
-                holder.tv_name.setText(msg.getName());
+            SimpleDateFormat formatter1= new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            if(position > 0){
+                Date date = msg.getTime();
+                Date date_previous = arrayList_message.get(position-1).getTime();
+                long diffInTime = date.getTime() - date_previous.getTime();
+                long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInTime);
+
+                if(diffInMinutes > 120){
+                    holder.tv_day.setText(formatter1.format(date));
+                    holder.tv_day.setVisibility(View.VISIBLE);
+                }
             }else {
-                holder.tv_name.setText(msg.getNickname());
+                holder.tv_day.setText(formatter1.format(msg.getTime()));
+                holder.tv_day.setVisibility(View.VISIBLE);
+            }
+
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+
+            String date_txt = formatter.format(msg.getTime());
+
+            holder.tv_time.setText(date_txt);
+
+            if(msg.isSeen() && !msg.getType().equals("noti") && !msg.getType().equals("leave") && msg.getUser_id() == Constant.UID && position == arrayList_message.size()-1){
+                holder.tv_seen.setVisibility(View.VISIBLE);
             }
 
         }
 
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 
-        String date_txt = formatter.format(msg.getTime());
-
-        holder.tv_time.setText(date_txt);
     }
 
     @Override
@@ -205,7 +276,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     @Override
     public int getItemViewType(int position) {
-        if(arrayList_message.get(position).getType().equals("noti")){
+        if(arrayList_message.get(position).getType().equals("noti") || arrayList_message.get(position).getType().equals("leave")){
             return MSG_TYPE_RIGHT;
         }else if(arrayList_message.get(position).getUser_id() == Constant.UID){
             return MSG_TYPE_RIGHT;
@@ -216,7 +287,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tv_message,tv_time, tv_name, tv_noti;
+        TextView tv_message,tv_time, tv_name, tv_noti, tv_seen, tv_day;
         ImageView iv_user_image, iv_img_message;
         CardView cv_message;
         LinearLayout cv_remove, ll_msg;
@@ -233,6 +304,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             tv_time = itemView.findViewById(R.id.tv_time);
 
             tv_name = itemView.findViewById(R.id.tv_name);
+
+            tv_seen = itemView.findViewById(R.id.tv_seen);
+
+            tv_day = itemView.findViewById(R.id.tv_day);
 
             tv_noti = itemView.findViewById(R.id.tv_noti);
 

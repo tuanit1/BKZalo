@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sub_color"
-    tools:context=".activitiy.ChatActivity">
+    tools:context=".activity.ChatActivity">
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -120,6 +120,7 @@
         android:layout_height="wrap_content"
         android:elevation="10dp"
         android:layout_margin="5dp"
+        android:visibility="visible"
         app:cardCornerRadius="20dp"
         android:layout_alignParentBottom="true">
         <RelativeLayout
@@ -157,6 +158,59 @@
                 android:src="@drawable/ic_send_button"/>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/ll_for_blocker"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:visibility="gone"
+        android:background="@color/theme_color"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn đã chặn người dùng này"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"
+            android:textSize="17dp"/>
+        <TextView
+            android:id="@+id/tv_unblock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#EDF41E"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="BỎ CHẶN"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_for_blocked"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:visibility="gone"
+        android:background="@color/theme_color"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Người dùng này đã chặn bạn"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"
+            android:textSize="17dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn sẽ không thể thực hiện nhắn tin"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"
+            android:textSize="17dp"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

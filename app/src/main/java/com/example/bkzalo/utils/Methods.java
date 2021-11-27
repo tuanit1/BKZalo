@@ -61,8 +61,10 @@ public class Methods {
 
         if(method_name.equals("method_get_messages")){
             int room_id = bundle.getInt("room_id");
+            int user_id = bundle.getInt("user_id");
 
             postObj.addProperty("room_id", room_id);
+            postObj.addProperty("user_id", user_id);
         }
 
         if(method_name.equals("method_send_message")){
@@ -148,6 +150,122 @@ public class Methods {
             postObj.addProperty("json_member_id", json_member_id);
             postObj.addProperty("user_id", user_id);
             postObj.addProperty("room_id", room_id);
+        }
+
+        if(method_name.equals("method_get_memberlist")){
+            int room_id = bundle.getInt("room_id");
+
+            postObj.addProperty("room_id", room_id);
+        }
+
+        if(method_name.equals("method_set_group_admin")){
+            int admin_id = bundle.getInt("admin_id");
+            int user_id = bundle.getInt("user_id");
+            int room_id = bundle.getInt("room_id");
+            String is_admin = bundle.getString("is_admin");
+
+            postObj.addProperty("admin_id", admin_id);
+            postObj.addProperty("user_id", user_id);
+            postObj.addProperty("room_id", room_id);
+            postObj.addProperty("is_admin", is_admin);
+        }
+
+        if(method_name.equals("method_delete_group_member")){
+            int admin_id = bundle.getInt("admin_id");
+            int user_id = bundle.getInt("user_id");
+            int room_id = bundle.getInt("room_id");
+
+            postObj.addProperty("admin_id", admin_id);
+            postObj.addProperty("user_id", user_id);
+            postObj.addProperty("room_id", room_id);
+        }
+
+        if(method_name.equals("method_leave_room")){
+            int user_id = bundle.getInt("user_id");
+            int room_id = bundle.getInt("room_id");
+
+            postObj.addProperty("user_id", user_id);
+            postObj.addProperty("room_id", room_id);
+        }
+
+        if(method_name.equals("method_check_last_admin")){
+            int room_id = bundle.getInt("room_id");
+
+            postObj.addProperty("room_id", room_id);
+        }
+
+        if(method_name.equals("method_search_message")){
+            int room_id = bundle.getInt("room_id");
+            String text = bundle.getString("text");
+
+            postObj.addProperty("room_id", room_id);
+            postObj.addProperty("text", text);
+        }
+
+        if(method_name.equals("method_image_message")){
+            int room_id = bundle.getInt("room_id");
+
+            postObj.addProperty("room_id", room_id);
+        }
+
+        if(method_name.equals("method_change_nickname")){
+            int admin_id = bundle.getInt("admin_id");
+            int user_id = bundle.getInt("user_id");
+            int room_id = bundle.getInt("room_id");
+            String nickname = bundle.getString("nickname");
+
+            postObj.addProperty("admin_id", admin_id);
+            postObj.addProperty("user_id", user_id);
+            postObj.addProperty("room_id", room_id);
+            postObj.addProperty("nickname", nickname);
+        }
+
+        if(method_name.equals("method_delete_history")){
+            int room_id = bundle.getInt("room_id");
+            int user_id = bundle.getInt("user_id");
+
+            postObj.addProperty("room_id", room_id);
+            postObj.addProperty("user_id", user_id);
+        }
+
+        if(method_name.equals("method_msg_block_user")){
+            int admin_id = bundle.getInt("admin_id");
+            int user_id = bundle.getInt("user_id");
+
+            postObj.addProperty("admin_id", admin_id);
+            postObj.addProperty("user_id", user_id);
+        }
+
+        if(method_name.equals("method_get_user_relationship")){
+            int admin_id = bundle.getInt("admin_id");
+            int user_id = bundle.getInt("user_id");
+
+            postObj.addProperty("admin_id", admin_id);
+            postObj.addProperty("user_id", user_id);
+        }
+
+        if(method_name.equals("method_msg_unblock")){
+            int admin_id = bundle.getInt("admin_id");
+            int user_id = bundle.getInt("user_id");
+
+            postObj.addProperty("admin_id", admin_id);
+            postObj.addProperty("user_id", user_id);
+        }
+
+        if(method_name.equals("method_hide_room")){
+            int room_id = bundle.getInt("room_id");
+            int user_id = bundle.getInt("user_id");
+
+            postObj.addProperty("room_id", room_id);
+            postObj.addProperty("user_id", user_id);
+        }
+
+        if(method_name.equals("method_update_online")){
+            int user_id = bundle.getInt("user_id");
+            int status = bundle.getInt("status");
+
+            postObj.addProperty("user_id", user_id);
+            postObj.addProperty("status", status);
         }
 
         String post_data = postObj.toString();

@@ -15,29 +15,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BKZalo"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".activitiy.AddMemberActivity"></activity>
-        <activity android:name=".activitiy.GroupSettingActivity" />
-        <activity android:name=".activitiy.HideListActivity" />
-        <activity android:name=".activitiy.ChatActivity" />
-        <activity android:name=".activitiy.AddGroupActivity" />
+        android:usesCleartextTraffic="true"><activity android:name=".activity.ChangeNicknameActivity" />
+        <activity android:name=".activity.ImageDetailActivity" />
+        <activity android:name=".activity.MessageImageActivity" />
+        <activity android:name=".activity.SearchMessageActivity" />
+        <activity android:name=".activity.MemberListActivity" />
+        <activity android:name=".activity.AddMemberActivity" />
+        <activity android:name=".activity.GroupSettingActivity" />
+        <activity android:name=".activity.HideListActivity" />
+        <activity android:name=".activity.ChatActivity" />
+        <activity android:name=".activity.AddGroupActivity" />
         <activity
-            android:name=".activitiy.SignupActivity"
+            android:name=".activity.SignupActivity"
             android:exported="false" />
-        <activity android:name=".activitiy.LoginActivity">
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activitiy.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

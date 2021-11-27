@@ -1,4 +1,4 @@
-package com.example.bkzalo.activitiy;
+package com.example.bkzalo.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,11 +16,12 @@ import android.widget.Toast;
 
 import com.example.bkzalo.R;
 import com.example.bkzalo.adapters.SelectUserApdater;
-import com.example.bkzalo.asynctasks.ExecuteQueryAsync;
+import com.example.bkzalo.asynctasks.AddMemberAsync;
 import com.example.bkzalo.asynctasks.LoadListFriendAsync;
-import com.example.bkzalo.listeners.ExecuteQueryListener;
+import com.example.bkzalo.listeners.AddMemberListener;
 import com.example.bkzalo.listeners.LoadListFriendListener;
 import com.example.bkzalo.listeners.UserSelectListener;
+import com.example.bkzalo.models.Message;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.models.UserSelect;
 import com.example.bkzalo.utils.Constant;
@@ -29,6 +30,9 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import okhttp3.RequestBody;
 
 public class AddMemberActivity extends AppCompatActivity {
@@ -41,6 +45,7 @@ public class AddMemberActivity extends AppCompatActivity {
     private ArrayList<User> arrayList_friend;
     private ArrayList<UserSelect> arrayList_checklist;
     private int ROOM_ID;
+    private Socket socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,7 @@ public class AddMemberActivity extends AppCompatActivity {
             ROOM_ID = intent.getIntExtra("room_id", 0);
         }
 
+        InitSocketIO();
         AnhXa();
         LoadListFriend();
     }
@@ -78,6 +84,64 @@ public class AddMemberActivity extends AppCompatActivity {
         edt_search = findViewById(R.id.edt_search);
         rv_friend = findViewById(R.id.rv_friend);
     }
+
+    private void InitSocketIO(){
+        try {
+            socket = IO.socket(Constant.SERVER_NODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        socket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+        socket.on("onDeleteMember", onDeleteMember);
+
+        socket.connect();
+
+    }
+
+    private Emitter.Listener onDeleteMember = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String json = String.valueOf(args[0]);
+                    Bundle bundle = new Gson().fromJson(json, Bundle.class);
+
+                    int user_id = Integer.parseInt(bundle.getString("user_id"));
+                    int room_id = Integer.parseInt(bundle.getString("room_id"));
+
+                    String msg_json = bundle.getString("msg_json");
+
+                    Message message = new Gson().fromJson(msg_json, Message.class);
+
+                    if(user_id == Constant.UID && room_id == message.getRoom_id()){
+
+                        Toast.makeText(AddMemberActivity.this, "Bạn đã bị xóa khỏi nhóm!", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(AddMemberActivity.this, MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onConnectError = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String text = String.valueOf(args[0]);
+                    Toast.makeText(AddMemberActivity.this, "Chưa khỏi động chat socket!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    };
+
 
     private void AddMember() {
 
@@ -109,26 +173,38 @@ public class AddMemberActivity extends AppCompatActivity {
 
         RequestBody requestBody = methods.getRequestBody("method_add_member", bundle, null);
 
-        ExecuteQueryListener listener = new ExecuteQueryListener() {
+        AddMemberListener listener = new AddMemberListener() {
+
             @Override
             public void onStart() {
 
             }
 
             @Override
-            public void onEnd(boolean status) {
-                if(status){
-                    Toast.makeText(AddMemberActivity.this, "Thêm thành viên thành công!", Toast.LENGTH_SHORT).show();
-                    Intent returnIntent = new Intent();
-                    setResult(RESULT_OK, returnIntent);
-                    finish();
+            public void onEnd(boolean status, ArrayList<Message> arrayList) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+
+                        String json = new Gson().toJson(arrayList);
+
+                        socket.emit("add member", json);
+
+                        Toast.makeText(AddMemberActivity.this, "Thêm thành viên thành công!", Toast.LENGTH_SHORT).show();
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK, returnIntent);
+                        finish();
+                    }else {
+                        Toast.makeText(AddMemberActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
                 }else {
-                    Toast.makeText(AddMemberActivity.this, "Lỗi server!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddMemberActivity.this, "Vui lòng kết internet!", Toast.LENGTH_SHORT).show();
                 }
+
             }
         };
 
-        ExecuteQueryAsync async = new ExecuteQueryAsync(requestBody, listener);
+        AddMemberAsync async = new AddMemberAsync(requestBody, listener);
+
         async.execute();
     }
 

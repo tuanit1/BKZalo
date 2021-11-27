@@ -20,10 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bkzalo.R;
-import com.example.bkzalo.activitiy.AddGroupActivity;
-import com.example.bkzalo.activitiy.ChatActivity;
-import com.example.bkzalo.activitiy.HideListActivity;
-import com.example.bkzalo.activitiy.MainActivity;
+import com.example.bkzalo.activity.AddGroupActivity;
+import com.example.bkzalo.activity.ChatActivity;
+import com.example.bkzalo.activity.HideListActivity;
 import com.example.bkzalo.adapters.ChatListAdapter;
 import com.example.bkzalo.asynctasks.LoadChatListAsync;
 import com.example.bkzalo.listeners.ClickChatListListener;
@@ -73,7 +72,6 @@ public class FragmentMessage extends Fragment {
         arrayList_user = new ArrayList<>();
         arrayList_message = new ArrayList<>();
 
-        InitSocketIO();
         LoadChatList();
 
         return view;
@@ -119,7 +117,7 @@ public class FragmentMessage extends Fragment {
 
     private void InitSocketIO(){
         try {
-            socket = IO.socket("http://192.168.1.11:3000/");
+            socket = IO.socket(Constant.SERVER_NODE);
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -127,6 +125,9 @@ public class FragmentMessage extends Fragment {
 
         socket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         socket.on("onNewMessage", onNewMessage);
+        socket.on("onAddMember", onAddMember);
+        socket.on("onDeleteMember", onDeleteMember);
+        socket.on("onUpdateOnline", onUpdateOnline);
 
         socket.connect();
 
@@ -135,25 +136,89 @@ public class FragmentMessage extends Fragment {
     private Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String text = String.valueOf(args[0]);
-                    Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-                }
-            });
+            if(getActivity() != null){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Chưa khởi động chat socket!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        }
+    };
+
+    private Emitter.Listener onAddMember = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if(getActivity() != null){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadChatList();
+                    }
+                });
+            }
+
         }
     };
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    LoadChatList();
-                }
-            });
+            if(getActivity() != null){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadChatList();
+                    }
+                });
+            }
+
+        }
+    };
+
+    private Emitter.Listener onDeleteMember = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if(getActivity() != null){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadChatList();
+                    }
+                });
+            }
+
+        }
+    };
+
+    private Emitter.Listener onUpdateOnline = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if(getActivity() != null){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String json = String.valueOf(args[0]);
+
+                        Bundle bundle = new Gson().fromJson(json, Bundle.class);
+
+                        int user_id = Integer.parseInt(bundle.getString("user_id"));
+                        boolean status = bundle.getString("status").equals("1");
+
+                        for(User u : arrayList_user){
+                            if(u.getId() == user_id){
+                                u.setOnline(status);
+                                break;
+                            }
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
         }
     };
 
@@ -194,6 +259,7 @@ public class FragmentMessage extends Fragment {
                         progressBar.setVisibility(View.GONE);
 
                         SetAdapter();
+                        InitSocketIO();
                     }else {
                         Toast.makeText(getContext(), "Lỗi server!", Toast.LENGTH_SHORT).show();
                     }
@@ -213,11 +279,12 @@ public class FragmentMessage extends Fragment {
 
         adapter = new ChatListAdapter("default", arrayList_parti, arrayList_room, arrayList_user, arrayList_message, getContext(), new ClickChatListListener() {
             @Override
-            public void onClick(int room_id, String type, String room_image, String room_name) {
+            public void onClick(int room_id, int user_id, String type) {
                 Intent intent = new Intent(getContext(), ChatActivity.class);
 
                 intent.putExtra("room_id", room_id);
                 intent.putExtra("type", type);
+                intent.putExtra("user_id", user_id);
 
                 startActivityForResult(intent, 1);
             }
@@ -247,8 +314,10 @@ public class FragmentMessage extends Fragment {
                     if(room.getType().equals("private")){
 
                         User user = GetFriendByRoomId(room.getId());
+                        String nickname = GetNicknameParti(room, user.getId());
 
-                        if(user.getName().toLowerCase().contains(s.toString().toLowerCase())){
+                        if(user.getName().toLowerCase().contains(s.toString().toLowerCase())
+                            || nickname.toLowerCase().contains(s.toString().toLowerCase())){
                             arrayList_search.add(room);
                         }
                     }else {
@@ -320,6 +389,16 @@ public class FragmentMessage extends Fragment {
         return null;
     }
 
+    public String GetNicknameParti(Room room, int uid){
+        for(Participant participant : arrayList_parti){
+            if(participant.getRoom_id() == room.getId() && participant.getUser_id() == uid){
+                return participant.getNickname();
+            }
+        }
+
+        return null;
+    }
+
     public User GetFriendByRoomId(int room_id){
         for(Participant p : arrayList_parti){
             if(p.getUser_id() != Constant.UID && p.getRoom_id() == room_id){
@@ -346,4 +425,6 @@ public class FragmentMessage extends Fragment {
 
         }
     }
+
+
 }

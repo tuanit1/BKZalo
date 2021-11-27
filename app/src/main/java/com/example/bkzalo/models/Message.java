@@ -1,8 +1,9 @@
 package com.example.bkzalo.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Message {
+public class Message implements Serializable {
     private int id;
     private int user_id;
     private int room_id;

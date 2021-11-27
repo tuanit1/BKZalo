@@ -1,9 +1,9 @@
 package com.example.bkzalo.asynctasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.example.bkzalo.listeners.LoadListFriendListener;
+import com.example.bkzalo.listeners.GetMemberListener;
+import com.example.bkzalo.models.Participant;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.JsonUtils;
@@ -17,16 +17,18 @@ import java.util.Date;
 
 import okhttp3.RequestBody;
 
-public class LoadListFriendAsync extends AsyncTask<Void, String, Boolean> {
+public class GetMemberListAsync extends AsyncTask<Void, String, Boolean> {
 
     private RequestBody requestBody;
-    private LoadListFriendListener listener;
+    private GetMemberListener listener;
     private ArrayList<User> arrayList_user;
+    private ArrayList<Participant> arrayList_parti;
 
-    public LoadListFriendAsync(RequestBody requestBody, LoadListFriendListener listener) {
+    public GetMemberListAsync(RequestBody requestBody, GetMemberListener listener) {
         this.requestBody = requestBody;
         this.listener = listener;
         arrayList_user = new ArrayList<>();
+        arrayList_parti = new ArrayList<>();
     }
 
     @Override
@@ -37,7 +39,7 @@ public class LoadListFriendAsync extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... voids) {
-        try{
+        try {
             String api_url = Constant.SERVER_URL+"api.php";
 
             //result is json_string
@@ -45,7 +47,31 @@ public class LoadListFriendAsync extends AsyncTask<Void, String, Boolean> {
 
             //json string -> json object
             JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray_parti = jsonObject.getJSONArray("array_participant");
             JSONArray jsonArray_user = jsonObject.getJSONArray("array_user");
+
+            for(int i = 0; i < jsonArray_parti.length(); i++){
+                JSONObject obj = jsonArray_parti.getJSONObject(i);
+
+                int user_id = obj.getInt("user_id");
+
+                int room_id = obj.getInt("room_id");
+
+                String nickname = obj.getString("nickname");
+
+                Boolean isAdmin = (obj.getInt("isAdmin") == 1)?true:false;
+
+                Boolean isHide = (obj.getInt("isHide") == 1)?true:false;
+
+                String date_string = obj.getString("timestamp");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date timestamp = sdf.parse(date_string);
+
+                Participant ptcp =  new Participant(user_id, room_id, nickname, isAdmin, isHide, timestamp);
+
+                arrayList_parti.add(ptcp);
+
+            }
 
             for(int i = 0; i < jsonArray_user.length(); i++){
                 JSONObject obj = jsonArray_user.getJSONObject(i);
@@ -71,12 +97,12 @@ public class LoadListFriendAsync extends AsyncTask<Void, String, Boolean> {
                 User user = new User(id, name, image, birthday, phone, email, bio, isOnline);
 
                 arrayList_user.add(user);
+
             }
 
             return true;
 
         }catch (Exception e){
-            Log.e("ThongBao", e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -84,7 +110,7 @@ public class LoadListFriendAsync extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean status) {
-        listener.onEnd(status, arrayList_user);
+        listener.onEnd(status, arrayList_user, arrayList_parti);
         super.onPostExecute(status);
     }
 }

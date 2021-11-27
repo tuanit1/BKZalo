@@ -1,18 +1,21 @@
-package com.example.bkzalo.activitiy;
+package com.example.bkzalo.activity;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,21 +23,25 @@ import android.widget.Toast;
 import com.example.bkzalo.R;
 import com.example.bkzalo.adapters.MessageAdapter;
 import com.example.bkzalo.asynctasks.ExecuteQueryAsync;
+import com.example.bkzalo.asynctasks.GetUserRelationshipAsync;
 import com.example.bkzalo.asynctasks.LoadGetRoomAsync;
 import com.example.bkzalo.asynctasks.LoadMessagesAsync;
 import com.example.bkzalo.asynctasks.SendMessageAsync;
 import com.example.bkzalo.listeners.ClickChatItemListener;
 import com.example.bkzalo.listeners.ExecuteQueryListener;
 import com.example.bkzalo.listeners.GetRoomListener;
+import com.example.bkzalo.listeners.GetUserRelationshipListener;
 import com.example.bkzalo.listeners.LoadMessagesListener;
 import com.example.bkzalo.listeners.SendMessageListener;
 import com.example.bkzalo.models.Message;
 import com.example.bkzalo.models.Participant;
+import com.example.bkzalo.models.Relationship;
 import com.example.bkzalo.models.Room;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
 import com.example.bkzalo.utils.PathUtil;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
 import io.socket.client.IO;
@@ -49,9 +56,10 @@ import okhttp3.RequestBody;
 public class ChatActivity extends AppCompatActivity {
 
     private ImageView iv_back, iv_room_image, iv_option, iv_send_media, iv_send_btn;
-    private CardView cv_group_icon;
+    private CardView cv_group_icon, cv_send;
+    private LinearLayout ll_for_blocker, ll_for_blocked;
     private RecyclerView rv_chat;
-    private TextView tv_name, tv_name_group;
+    private TextView tv_name, tv_name_group, tv_unblock;
     private EditText edt_message;
     private Methods methods;
     private ArrayList<Message> arrayList_message;
@@ -59,6 +67,7 @@ public class ChatActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Socket socket;
     private int ROOM_ID;
+    private int USER_ID;
     private String mType;
     private final int PICK_IMAGE_CODE = 1;
 
@@ -77,6 +86,12 @@ public class ChatActivity extends AppCompatActivity {
         if(intent != null){
             ROOM_ID = intent.getIntExtra("room_id", 0);
             mType = intent.getStringExtra("type");
+            USER_ID = intent.getIntExtra("user_id", 0);
+
+        }
+
+        if(mType.equals("private")){
+            InitBlock();
         }
 
         LoadGetRoom();
@@ -86,6 +101,20 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void AnhXa() {
+
+        cv_send = findViewById(R.id.send);
+        ll_for_blocked = findViewById(R.id.ll_for_blocked);
+        ll_for_blocker = findViewById(R.id.ll_for_blocker);
+        tv_unblock = findViewById(R.id.tv_unblock);
+        tv_unblock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mType.equals("private")){
+                    UnblockConfirmDialog();
+                }
+            }
+        });
+
         iv_back = findViewById(R.id.iv_back);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,14 +132,19 @@ public class ChatActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Video"), PICK_IMAGE_CODE);
+                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_CODE);
             }
         });
         iv_send_btn = findViewById(R.id.iv_send_btn);
         iv_send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SendMessage("text", null);
+                if(mType.equals("private")){
+                    CheckBlock("text", null, 0);
+                }else {
+                    SendMessage("text", null);
+                }
+
             }
         });
 
@@ -141,12 +175,20 @@ public class ChatActivity extends AppCompatActivity {
                     return;
                 }
 
-                SendMessage("image", file);
+                if(mType.equals("private")){
+                    CheckBlock("image", file, 0);
+                }else {
+                    SendMessage("image", file);
+                }
+
 
             }
         }else if(requestCode == 2){
 
             if(resultCode == RESULT_OK){
+                if(mType.equals("private")){
+                    InitBlock();
+                }
                 LoadGetRoom();
                 LoadMessages();
             }
@@ -245,11 +287,17 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent1 = new Intent(ChatActivity.this, GroupSettingActivity.class);
-                intent1.putExtra("room_id", ROOM_ID);
-                intent1.putExtra("type", mType);
+                if(mType.equals("private")){
+                    CheckBlock("option", null, 0);
+                }else {
+                    Intent intent1 = new Intent(ChatActivity.this, GroupSettingActivity.class);
+                    intent1.putExtra("room_id", ROOM_ID);
+                    intent1.putExtra("type", mType);
+                    intent1.putExtra("user_id", USER_ID);
 
-                startActivityForResult(intent1, 2);
+                    startActivityForResult(intent1, 2);
+                }
+
 
             }
         });
@@ -257,7 +305,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void InitSocketIO(){
         try {
-            socket = IO.socket("http://192.168.1.11:3000/");
+            socket = IO.socket(Constant.SERVER_NODE);
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -267,6 +315,8 @@ public class ChatActivity extends AppCompatActivity {
         socket.on("onNewMessage", onNewMessage);
         socket.on("onRemoveMessage", onRemoveMessage);
         socket.on("onSeenMessage", onSeenMessage);
+        socket.on("onAddMember", onAddMember);
+        socket.on("onDeleteMember", onDeleteMember);
 
         socket.connect();
 
@@ -279,7 +329,44 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     String text = String.valueOf(args[0]);
-                    Toast.makeText(ChatActivity.this, text, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this, "Chưa khỏi động chat socket!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onDeleteMember = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String json = String.valueOf(args[0]);
+                    Bundle bundle = new Gson().fromJson(json, Bundle.class);
+
+                    int user_id = Integer.parseInt(bundle.getString("user_id"));
+                    int room_id = Integer.parseInt(bundle.getString("room_id"));
+
+                    String msg_json = bundle.getString("msg_json");
+
+                    Message message = new Gson().fromJson(msg_json, Message.class);
+
+                    if(user_id == Constant.UID && room_id == message.getRoom_id()){
+
+                        Toast.makeText(ChatActivity.this, "Bạn đã bị xóa khỏi nhóm!", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(ChatActivity.this, MainActivity.class);
+                        startActivity(intent);
+
+                    }else {
+                        if(message.getRoom_id() == ROOM_ID){
+                            arrayList_message.add(message);
+                            adapter.notifyDataSetChanged();
+                            rv_chat.smoothScrollToPosition(arrayList_message.size());
+
+                            SeenMessage(message);
+                        }
+                    }
                 }
             });
         }
@@ -301,6 +388,28 @@ public class ChatActivity extends AppCompatActivity {
 
                         SeenMessage(message);
                     }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onAddMember = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String json = String.valueOf(args[0]);
+                    ArrayList<Message> arrayList = new Gson().fromJson(json, new TypeToken<ArrayList<Message>>(){}.getType());
+
+                    for(Message message : arrayList){
+                        arrayList_message.add(message);
+                        adapter.notifyDataSetChanged();
+                        rv_chat.smoothScrollToPosition(arrayList_message.size());
+
+                        SeenMessage(message);
+                    }
+
                 }
             });
         }
@@ -444,6 +553,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putInt("room_id", ROOM_ID);
+        bundle.putInt("user_id", Constant.UID);
 
         RequestBody requestBody = methods.getRequestBody("method_get_messages", bundle, null);
 
@@ -481,9 +591,23 @@ public class ChatActivity extends AppCompatActivity {
 
     private void SetAdapter() {
         adapter = new MessageAdapter(arrayList_message, new ClickChatItemListener() {
+
+            @Override
+            public void onImageClick(Message zmessage) {
+                Intent intent = new Intent(ChatActivity.this, ImageDetailActivity.class);
+                intent.putExtra("message", zmessage);
+
+                startActivity(intent);
+            }
+
             @Override
             public void onRemove(int message_id) {
-                RemoveMessage(message_id);
+                if(mType.equals("private")){
+                    CheckBlock("remove", null, message_id);
+                }else {
+                    RemoveMessage(message_id);
+                }
+
             }
         });
 
@@ -500,6 +624,113 @@ public class ChatActivity extends AppCompatActivity {
                 SeenMessage(m);
             }
         }
+    }
+
+    private void InitBlock(){
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", USER_ID);
+        bundle.putInt("admin_id", Constant.UID);
+
+        RequestBody requestBody = methods.getRequestBody("method_get_user_relationship", bundle, null);
+
+        GetUserRelationshipListener listener = new GetUserRelationshipListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onEnd(boolean status, Relationship relationship) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+
+                        if(relationship.getStatus().equals("block")){
+                            if(relationship.getBlocker() == Constant.UID){
+                                cv_send.setVisibility(View.GONE);
+                                ll_for_blocker.setVisibility(View.VISIBLE);
+                                ll_for_blocked.setVisibility(View.GONE);
+                            }else {
+                                cv_send.setVisibility(View.GONE);
+                                ll_for_blocker.setVisibility(View.GONE);
+                                ll_for_blocked.setVisibility(View.VISIBLE);
+                            }
+                        }else {
+                            cv_send.setVisibility(View.VISIBLE);
+                            ll_for_blocker.setVisibility(View.GONE);
+                            ll_for_blocked.setVisibility(View.GONE);
+                        }
+
+                    }else {
+                        Toast.makeText(ChatActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(ChatActivity.this, "Vui lòng kết internet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        GetUserRelationshipAsync async = new GetUserRelationshipAsync(requestBody, listener);
+        async.execute();
+    }
+
+    private void CheckBlock(String type , File file, int message_id){
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", USER_ID);
+        bundle.putInt("admin_id", Constant.UID);
+
+        RequestBody requestBody = methods.getRequestBody("method_get_user_relationship", bundle, null);
+
+        GetUserRelationshipListener listener = new GetUserRelationshipListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onEnd(boolean status, Relationship relationship) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+
+                        if(relationship.getStatus().equals("block")){
+                            if(relationship.getBlocker() == Constant.UID){
+                                Toast.makeText(ChatActivity.this, "Bạn đã chặn người dùng này!", Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(ChatActivity.this, "Người dùng này đã chặn bạn!", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+
+                            switch (type){
+                                case "text":
+                                case "image":
+                                    SendMessage(type, file);
+                                    break;
+                                case "option":
+                                    Intent intent1 = new Intent(ChatActivity.this, GroupSettingActivity.class);
+                                    intent1.putExtra("room_id", ROOM_ID);
+                                    intent1.putExtra("type", mType);
+                                    intent1.putExtra("user_id", USER_ID);
+
+                                    startActivityForResult(intent1, 2);
+                                    break;
+                                case "remove":
+                                    RemoveMessage(message_id);
+                                    break;
+                            }
+
+
+                        }
+
+                    }else {
+                        Toast.makeText(ChatActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(ChatActivity.this, "Vui lòng kết internet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        GetUserRelationshipAsync async = new GetUserRelationshipAsync(requestBody, listener);
+        async.execute();
     }
 
     private void RemoveMessage(int message_id){
@@ -539,6 +770,70 @@ public class ChatActivity extends AppCompatActivity {
 
         ExecuteQueryAsync async = new ExecuteQueryAsync(requestBody, listener);
         async.execute();
+    }
+
+    private void Unblock(){
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", USER_ID);
+        bundle.putInt("admin_id", Constant.UID);
+
+        RequestBody requestBody = methods.getRequestBody("method_msg_unblock", bundle, null);
+
+        ExecuteQueryListener listener = new ExecuteQueryListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onEnd(boolean status) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+                        Toast.makeText(ChatActivity.this, "Đã bỏ chặn người dùng này!", Toast.LENGTH_SHORT).show();
+
+                        cv_send.setVisibility(View.VISIBLE);
+                        ll_for_blocked.setVisibility(View.GONE);
+                        ll_for_blocker.setVisibility(View.GONE);
+                    }else {
+                        Toast.makeText(ChatActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(ChatActivity.this, "Vui lòng kết internet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        ExecuteQueryAsync async = new ExecuteQueryAsync(requestBody, listener);
+        async.execute();
+    }
+
+    protected void UnblockConfirmDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setIcon(R.drawable.ic_warning);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn thật sự muốn bỏ chặn người dùng này");
+
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing but close the dialog
+                Unblock();
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override

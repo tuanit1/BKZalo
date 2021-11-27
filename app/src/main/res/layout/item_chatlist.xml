@@ -30,6 +30,26 @@
                 android:scaleType="centerCrop"
                 android:visibility="visible"
                 android:src="@drawable/message_placeholder_ic"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_on"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                app:civ_border_width="10dp"
+                app:civ_border_color="#05df29"
+                android:visibility="gone"
+                android:src="@mipmap/ic_launcher"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_off"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                app:civ_border_width="10dp"
+                app:civ_border_color="#bfbfbf"
+                android:visibility="gone"
+                android:src="@mipmap/ic_launcher"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"/>
             <androidx.cardview.widget.CardView
                 android:id="@+id/img_group"
                 android:layout_width="70dp"
@@ -80,12 +100,29 @@
                     android:text="Name"/>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:text="Text"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_text"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="18dp"
+                    android:text="sdasdasdsadasdsadasdasdasdsadasd"/>
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="16dp"
+                    android:layout_marginRight="10dp"
+                    android:text="99:99"/>
+
+            </RelativeLayout>
+
 
         </LinearLayout>
     </LinearLayout>

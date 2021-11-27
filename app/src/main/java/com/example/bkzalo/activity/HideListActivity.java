@@ -1,4 +1,4 @@
-package com.example.bkzalo.activitiy;
+package com.example.bkzalo.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,9 +23,7 @@ import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
-import com.google.gson.Gson;
 
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import okhttp3.RequestBody;
@@ -121,13 +119,12 @@ public class HideListActivity extends AppCompatActivity {
     private void SetAdapter() {
         adapter = new ChatListAdapter("hide_list", arrayList_parti, arrayList_room, arrayList_user, arrayList_message, HideListActivity.this, new ClickChatListListener() {
             @Override
-            public void onClick(int room_id, String type, String room_image, String room_name) {
+            public void onClick(int room_id, int user_id, String type) {
                 Intent intent = new Intent(HideListActivity.this, ChatActivity.class);
 
                 intent.putExtra("room_id", room_id);
                 intent.putExtra("type", type);
-                intent.putExtra("room_image", room_image);
-                intent.putExtra("room_name", room_name);
+                intent.putExtra("user_id", user_id);
 
                 startActivityForResult(intent, 1);
             }

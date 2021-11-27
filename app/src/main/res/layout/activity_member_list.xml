@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/sub_color"
-    tools:context=".activity.HideListActivity">
-
+    android:orientation="vertical"
+    tools:context=".activity.MemberListActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -32,14 +31,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Trò chuyện đã ẩn"
+                android:text="Danh sách thành viên"
                 android:textSize="20dp"
                 android:textColor="@color/white"/>
         </LinearLayout>
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_hidelist"
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

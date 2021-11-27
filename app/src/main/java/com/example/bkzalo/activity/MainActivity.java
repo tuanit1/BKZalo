@@ -1,4 +1,4 @@
-package com.example.bkzalo.activitiy;
+package com.example.bkzalo.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,26 +6,35 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.bkzalo.R;
+import com.example.bkzalo.asynctasks.ExecuteQueryAsync;
 import com.example.bkzalo.fragments.FragmentMessage;
 import com.example.bkzalo.fragments.FragmentPhonebook;
 import com.example.bkzalo.fragments.FragmentProfile;
 import com.example.bkzalo.fragments.FragmentSetting;
+import com.example.bkzalo.listeners.ExecuteQueryListener;
 import com.example.bkzalo.utils.Constant;
+import com.example.bkzalo.utils.Methods;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.net.Socket;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private FragmentTransaction fragmentTransaction;
+    private Methods methods;
+    private Socket socket;
 
     private static final int FRAGMENT_MESSAGE = 1;
     private static final int FRAGMENT_PHONEBOOK = 2;
@@ -34,14 +43,29 @@ public class MainActivity extends AppCompatActivity {
 
     private int currentFragment = FRAGMENT_MESSAGE;
 
+
+    @Override
+    protected void onDestroy() {
+        Log.e("check", "main destroy");
+        UpdateOnline(false);
+        super.onDestroy();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.e("check", "main start");
+
         Constant.verifyStoragePermissions(this);
 
+        methods = new Methods(this);
+
+        UpdateOnline(true);
+
         AnhXa();
+        InitSocketIO();
 
         ReplaceFragment(new FragmentMessage(), "Message");
     }
@@ -95,4 +119,57 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_content, fragment, name);
         fragmentTransaction.commit();
     }
+
+    private void InitSocketIO(){
+        try {
+            socket = IO.socket(Constant.SERVER_NODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        socket.connect();
+    }
+
+    private void UpdateOnline(Boolean mStatus){
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", Constant.UID);
+        bundle.putInt("status", mStatus?1:0);
+
+        RequestBody requestBody = methods.getRequestBody("method_update_online", bundle, null);
+
+        ExecuteQueryListener listener = new ExecuteQueryListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onEnd(boolean status) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+                        Bundle bundle = new Bundle();
+
+                        bundle.putString("user_id", String.valueOf(Constant.UID));
+                        bundle.putString("status", mStatus?"1":"0");
+
+                        String json = new Gson().toJson(bundle);
+
+                        socket.emit("update online", json);
+                    }else {
+                        Toast.makeText(MainActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(MainActivity.this, "Vui lòng kết internet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        ExecuteQueryAsync async = new ExecuteQueryAsync(requestBody, listener);
+        async.execute();
+
+
+    }
+
 }

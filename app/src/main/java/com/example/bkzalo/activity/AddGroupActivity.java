@@ -1,4 +1,4 @@
-package com.example.bkzalo.activitiy;
+package com.example.bkzalo.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +24,7 @@ import com.example.bkzalo.asynctasks.LoadListFriendAsync;
 import com.example.bkzalo.listeners.ExecuteQueryListener;
 import com.example.bkzalo.listeners.LoadListFriendListener;
 import com.example.bkzalo.listeners.UserSelectListener;
+import com.example.bkzalo.models.Message;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.models.UserSelect;
 import com.example.bkzalo.utils.Constant;
@@ -35,6 +36,9 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.ArrayList;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import okhttp3.RequestBody;
 
 public class AddGroupActivity extends AppCompatActivity {
@@ -50,6 +54,8 @@ public class AddGroupActivity extends AppCompatActivity {
     private boolean isChangeImage = false;
     private Uri picked_image;
     private File file_image;
+    private Socket socket;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,7 @@ public class AddGroupActivity extends AppCompatActivity {
         arrayList_friend = new ArrayList<>();
         arrayList_checklist = new ArrayList<>();
 
+        InitSocketIO();
         LoadListFriend();
     }
 
@@ -111,6 +118,63 @@ public class AddGroupActivity extends AppCompatActivity {
         });
 
     }
+
+    private void InitSocketIO(){
+        try {
+            socket = IO.socket(Constant.SERVER_NODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        socket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+        socket.on("onDeleteMember", onDeleteMember);
+
+        socket.connect();
+
+    }
+
+    private Emitter.Listener onDeleteMember = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String json = String.valueOf(args[0]);
+                    Bundle bundle = new Gson().fromJson(json, Bundle.class);
+
+                    int user_id = Integer.parseInt(bundle.getString("user_id"));
+                    int room_id = Integer.parseInt(bundle.getString("room_id"));
+
+                    String msg_json = bundle.getString("msg_json");
+
+                    Message message = new Gson().fromJson(msg_json, Message.class);
+
+                    if(user_id == Constant.UID && room_id == message.getRoom_id()){
+
+                        Toast.makeText(AddGroupActivity.this, "Bạn đã bị xóa khỏi nhóm!", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(AddGroupActivity.this, MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onConnectError = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String text = String.valueOf(args[0]);
+                    Toast.makeText(AddGroupActivity.this, "Chưa khỏi động chat socket!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
