@@ -55,7 +55,11 @@
         <activity
             android:name=".activitiy.AuthorActivity"
             android:exported="false" />
-        <activity android:name=".activitiy.SplashScreenActivity">
+        <activity android:name=".activitiy.SplashScreenActivity"/>
+        <activity android:name=".activitiy.ProfileUserActivity"></activity>
+        <activity android:name=".activitiy.EditProfileActivity" />
+        <activity android:name=".activitiy.MainActivity" />
+        <activity android:name=".activitiy.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -111,6 +115,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <activity android:name=".activitiy.BlockActivity" />
+
     </application>
 
 </manifest>

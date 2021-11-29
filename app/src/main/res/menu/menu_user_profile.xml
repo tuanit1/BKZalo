@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/user_friend"
+        android:icon="@drawable/ic_add_friend"
+        android:title="Bạn bè"/>
+    <item
+        android:id="@+id/user_block"
+        android:icon="@drawable/ic_block"
+        android:title="Chặn" />
+</menu>

@@ -68,7 +68,7 @@ public class LoadListFriendAsync extends AsyncTask<Void, String, Boolean> {
 
                 boolean isOnline = obj.getInt("isOnline")==0?false:true;
 
-                User user = new User(id, name, image, birthday, phone, email, bio, isOnline);
+                User user = new User(id, name, image, birthday, phone, bio, email, isOnline);
 
                 arrayList_user.add(user);
             }

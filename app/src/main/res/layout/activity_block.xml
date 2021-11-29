@@ -28,6 +28,7 @@
             android:textSize="15dp"
             />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_search_list"
         android:layout_width="match_parent"
@@ -40,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll1"
         android:layout_width="match_parent"
@@ -51,11 +53,11 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="40dp">
+            app:cardCornerRadius="30dp">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:src="@drawable/ic_bia"
                 android:background="@color/black"/>
         </androidx.cardview.widget.CardView>
@@ -66,26 +68,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="160dp">
+        android:layout_marginTop="200dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="45dp"
-            android:layout_gravity="center_horizontal">
+            app:cardCornerRadius="50dp"
+            android:layout_marginLeft="140dp">
             <ImageView
                 android:id="@+id/iv_user_image"
-                android:layout_width="90dp"
-                android:layout_height="90dp"/>
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_ava"/>
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:layout_gravity="center_horizontal"
             android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
+            android:text="Đỗ Thanh Tuấn"
             android:textColor="#3D5A80"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,38 +99,16 @@
             android:id="@+id/tv_user_bio"
             android:layout_marginTop="5dp"
             android:textColor="#3D5A80"/>
+
         <Button
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/btn_editproflie"
-            android:layout_width="match_parent"
+            android:id="@+id/btn_unblock"
+            android:layout_width="200dp"
             android:layout_height="30dp"
             android:background="@drawable/botron_button"
-            android:text="Chỉnh sửa thông tin cá nhân"
+            android:text="Bỏ chặn"
             android:textColor="@color/white"
             android:textSize="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/menu_user_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:menu="@menu/menu_user_profile"
-                app:backgroundTint="@color/white"
-                android:layout_alignParentBottom="true"
-                app:itemIconTint="#3D5A80"
-                app:itemTextColor="#3D5A80"/>
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_margin="15dp"
-            android:id="@+id/rv_friend"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
     </LinearLayout>
 </FrameLayout>

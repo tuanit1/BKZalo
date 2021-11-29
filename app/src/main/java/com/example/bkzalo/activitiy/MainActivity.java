@@ -70,11 +70,6 @@ public class MainActivity extends AppCompatActivity {
         InitSocketIO();
 
         ReplaceFragment(new FragmentMessage(), "Message");
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, World!");
     }
 
     private void AnhXa(){

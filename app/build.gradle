@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    task wrapper(type: Wrapper) {
+    task wrapper(type: Wrapper){
         gradleVersion = '7.2'
     }
 
@@ -34,7 +34,15 @@ android {
     }
 
     packagingOptions {
-        resources.excludes.add("META-INF/*")
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
     }
     buildFeatures {
         viewBinding true
@@ -79,6 +87,7 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
+    implementation "androidx.cardview:cardview:1.0.0"
 }
 
 
