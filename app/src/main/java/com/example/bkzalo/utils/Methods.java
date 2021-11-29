@@ -311,6 +311,14 @@ public class Methods {
             postObj.addProperty("status", status);
         }
 
+        if(method_name.equals("method_get_private_room")){
+            int uid = bundle.getInt("uid");
+            int friend_id = bundle.getInt("friend_id");
+
+            postObj.addProperty("uid", uid);
+            postObj.addProperty("friend_id", friend_id);
+        }
+
         String post_data = postObj.toString();
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);

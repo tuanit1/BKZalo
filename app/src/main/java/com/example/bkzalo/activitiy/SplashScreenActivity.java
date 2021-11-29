@@ -22,17 +22,24 @@ import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
 
 import okhttp3.RequestBody;
 
@@ -70,12 +77,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         bkzalo = findViewById(R.id.tv_bkzalo);
         lottie = findViewById(R.id.lottie);
         background = findViewById(R.id.linear_background);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1098760652201-es3clrhofv689dge7bpoav34bqt4qsvv.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-
-        Constant.mGoogleSignInClient = GoogleSignIn.getClient(SplashScreenActivity.this, gso);
     }
 
     private void Open()
@@ -83,41 +84,55 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if( Constant.mGoogleSignInClient!=null)
+                if (preferences2.getBoolean("isLoginGG", false))
                 {
-                        FirebaseUser currentUser = mAuth.getCurrentUser();
-                        String email = currentUser.getEmail();
-                        GetUIDFB_GG(email, methods);
+                    if (!preferences2.getString("idtoken", "").equals("")) {
+                        String idtoken = preferences2.getString("idtoken", "");
+                        GoogleLogin(idtoken);
+                    }
                 }
-                else if (AccessToken.getCurrentAccessToken()!=null)
+                else if (preferences2.getBoolean("isLoginFB", false))
                 {
-                    FirebaseUser currentUser = mAuth.getCurrentUser();
-                    String email = currentUser.getEmail();
-                    GetUIDFB_GG(email, methods);
+                    String emailFB = preferences2.getString("emailFB", "");
+                    GetUIDFB_GG(emailFB, methods);
                 }
-                else
-                {
+
+                else {
                     String email = preferences2.getString("email", "");
                     String password = preferences2.getString("password", "");
                     boolean isLogin = preferences2.getBoolean("isLogin", false);
-                    if (isLogin)
-                    {
-                        if (email!="" && password!="")
-                        {
-                            Login (email,password, mAuth, methods, preferences2);
+                    if (isLogin) {
+                        if (email != "" && password != "") {
+                            Login(email, password, mAuth, methods, preferences2);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
                 }
+            }
+                }, 6935);
 
             }
-        }, 6935);
-    }
+
+            private void GoogleLogin(String idtoken)
+            {
+                AuthCredential credential = GoogleAuthProvider.getCredential(idtoken, null);
+                mAuth.signInWithCredential(credential)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+
+                                    String email = preferences2.getString("emailgg", "");
+                                    GetUIDFB_GG(email, methods);
+                                } else {
+                                    task.getException();
+                                }
+                            }
+                        });
+            }
 
 
     public void Login(String username, String password, FirebaseAuth mAuth, Methods methods, SharedPreferences preferences2)
@@ -223,7 +238,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         Constant.UID = 0;
                     }
 
-                    if (Constant.IMAGE.equals("null"))
+                    if (Constant.IMAGE.equals(""))
                     {
                         Intent intent = new Intent(SplashScreenActivity.this, Update_InfoActivity.class);
                         startActivity(intent);
@@ -280,7 +295,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         {
                             FirebaseUser fuser = mAuth.getCurrentUser();
                             if(fuser != null){
-                                if (Constant.IMAGE.equals("null"))
+                                if (Constant.IMAGE.equals(""))
                                 {
                                     Intent intent = new Intent(SplashScreenActivity.this, Update_InfoActivity.class);
                                     startActivity(intent);

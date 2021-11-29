@@ -30,6 +30,7 @@
                 android:scaleType="centerCrop"
                 android:visibility="visible"
                 android:src="@drawable/message_placeholder_ic"/>
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_on"
                 android:layout_width="15dp"
@@ -106,7 +107,10 @@
                 <TextView
                     android:id="@+id/tv_text"
                     android:layout_width="220dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/tv_time"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textSize="18dp"

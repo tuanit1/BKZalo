@@ -15,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bkzalo.R;
@@ -50,6 +52,7 @@ public class FragmentMessage extends Fragment {
     private RecyclerView rv_chat;
     private EditText edt_search;
     private ImageView iv_add_group;
+    private LinearLayout empty_view;
     private Methods methods;
     private ArrayList<Participant> arrayList_parti;
     private ArrayList<Room> arrayList_room;
@@ -72,12 +75,16 @@ public class FragmentMessage extends Fragment {
         arrayList_user = new ArrayList<>();
         arrayList_message = new ArrayList<>();
 
-        LoadChatList();
+        SetAdapter();
+        InitSocketIO();
+        LoadChatList(false);
 
         return view;
     }
 
     private void AnhXa() {
+
+        empty_view = view.findViewById(R.id.empty_view);
         rv_chat = view.findViewById(R.id.rv_chat);
         progressBar = view.findViewById(R.id.progressBar);
         iv_add_group = view.findViewById(R.id.iv_add_group);
@@ -155,7 +162,7 @@ public class FragmentMessage extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        LoadChatList();
+                        LoadChatList(true);
                     }
                 });
             }
@@ -170,7 +177,7 @@ public class FragmentMessage extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        LoadChatList();
+                        LoadChatList(true);
                     }
                 });
             }
@@ -185,7 +192,7 @@ public class FragmentMessage extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        LoadChatList();
+                        LoadChatList(true);
                     }
                 });
             }
@@ -222,7 +229,7 @@ public class FragmentMessage extends Fragment {
         }
     };
 
-    private void LoadChatList() {
+    private void LoadChatList(boolean isReload) {
 
         Bundle bundle = new Bundle();
         bundle.putInt("uid", Constant.UID);
@@ -236,13 +243,22 @@ public class FragmentMessage extends Fragment {
                 arrayList_room.clear();
                 arrayList_user.clear();
                 arrayList_message.clear();
-                progressBar.setVisibility(View.VISIBLE);
+
+                if(!isReload){
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+
+                empty_view.setVisibility(View.GONE);
+
             }
 
             @Override
             public void onEnd(boolean status, ArrayList<Participant> array_parti, ArrayList<Room> array_room , ArrayList<User> array_user, ArrayList<Message> array_message) {
                 if(methods.isNetworkConnected()){
                     if(status){
+
+
+
                         arrayList_parti.addAll(array_parti);
                         arrayList_user.addAll(array_user);
                         arrayList_message.addAll(array_message);
@@ -256,10 +272,16 @@ public class FragmentMessage extends Fragment {
 
                         SortByLatestMessage(arrayList_room);
 
-                        progressBar.setVisibility(View.GONE);
+                        if(!isReload){
+                            progressBar.setVisibility(View.GONE);
+                        }
 
-                        SetAdapter();
-                        InitSocketIO();
+                        adapter.notifyDataSetChanged();
+
+                        if(arrayList_room.isEmpty()){
+                            empty_view.setVisibility(View.VISIBLE);
+                        }
+
                     }else {
                         Toast.makeText(getContext(), "Lỗi server!", Toast.LENGTH_SHORT).show();
                     }
@@ -420,7 +442,7 @@ public class FragmentMessage extends Fragment {
         if (requestCode == 1) {
 
             if(resultCode == RESULT_OK){
-                LoadChatList();
+                LoadChatList(true);
             }
 
         }

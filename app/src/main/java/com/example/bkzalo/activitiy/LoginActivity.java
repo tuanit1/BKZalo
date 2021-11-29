@@ -35,6 +35,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,6 +51,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -157,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1098760652201-es3clrhofv689dge7bpoav34bqt4qsvv.apps.googleusercontent.com")
+                .requestIdToken("221663364431-jlpbjkrj0e9q7ko2p9eomnufhrtt8rd8.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -198,7 +200,12 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            String email = user.getEmail();
+
+                            String email = user.getProviderData().get(1).getEmail();
+                            SharedPreferences.Editor editor = preferences2.edit();
+                            editor.putString("emailFB", email);
+                            editor.putBoolean("isLoginFB", true);
+                            editor.commit();
                             GetUIDGG_FB(email, methods);
 
                         } else {
@@ -226,7 +233,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if (resultCode!=RESULT_CANCELED)
+        if (resultCode == RESULT_OK)
         {
             if (requestCode==100)
             {
@@ -238,6 +245,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 catch (Exception e)
                 {
+                    String err = e.getMessage();
                     e.printStackTrace();
                 }
             }
@@ -253,7 +261,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogleAccount(GoogleSignInAccount account)
     {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        String idtoken = account.getIdToken();
+
+        SharedPreferences.Editor editor = preferences2.edit();
+        editor.putString("idtoken", idtoken);
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(idtoken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -261,8 +274,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             String email = account.getEmail();
+                            editor.putString("emailgg", email);
+                            editor.putBoolean("isLoginGG", true);
+                            editor.commit();
                             GetUIDGG_FB(email, methods);
-
                         } else {
                             task.getException();
                         }

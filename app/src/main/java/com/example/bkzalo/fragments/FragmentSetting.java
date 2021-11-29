@@ -108,6 +108,7 @@ public class FragmentSetting extends Fragment {
 
         Picasso.get()
                 .load(image_path)
+                .placeholder(R.drawable.message_placeholder_ic)
                 .into(imv_user_setting);
     }
 
@@ -128,6 +129,8 @@ public class FragmentSetting extends Fragment {
             FirebaseAuth.getInstance().signOut();
             SharedPreferences.Editor editor = preferences2.edit();
             editor.putBoolean("isLogin", false);
+            editor.putBoolean("isLoginFB", false);
+            editor.putBoolean("isLoginGG", false);
             editor.commit();
         }
         Intent intent = new Intent(getContext(), LoginActivity.class);

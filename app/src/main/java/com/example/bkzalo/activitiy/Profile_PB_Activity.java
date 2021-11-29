@@ -16,7 +16,11 @@ import android.widget.Toast;
 
 import com.example.bkzalo.R;
 import com.example.bkzalo.asynctasks.ExecuteQueryAsync_Nhi;
+import com.example.bkzalo.asynctasks.LoadGetRoomAsync;
 import com.example.bkzalo.listeners.ExecuteQueryListener_Nhi;
+import com.example.bkzalo.listeners.GetRoomListener;
+import com.example.bkzalo.models.Participant;
+import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
@@ -56,6 +60,12 @@ public class Profile_PB_Activity extends AppCompatActivity {
     {
         imv_phonecall_pf = findViewById(R.id.imv_phonecall_pf);
         imv_mess_pf = findViewById(R.id.imv_mess_pf);
+        imv_mess_pf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenMessage();
+            }
+        });
         imv_del_pf = findViewById(R.id.imv_del_pf);
         imv_back_pf = findViewById(R.id.imv_back_pf);
         imv_block_pf = findViewById(R.id.imv_block_pf);
@@ -85,6 +95,7 @@ public class Profile_PB_Activity extends AppCompatActivity {
 
             Picasso.get()
                     .load(image_path)
+                    .placeholder(R.drawable.message_placeholder_ic)
                     .into(imv_user_pf);
 
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -97,6 +108,44 @@ public class Profile_PB_Activity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private void OpenMessage(){
+        Bundle bundle = getIntent().getExtras();
+        User user = (User) bundle.get("user");
+
+        Bundle bundle1 = new Bundle();
+        bundle1.putInt("uid", Constant.UID);
+        bundle1.putInt("friend_id", user.getId());
+
+        RequestBody requestBody = methods.getRequestBody("method_get_private_room", bundle1, null);
+
+        LoadGetRoomAsync async = new LoadGetRoomAsync(requestBody, new GetRoomListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onEnd(boolean status, Room room, Participant participant) {
+
+                if(room != null){
+                    Intent intent = new Intent(Profile_PB_Activity.this, ChatActivity.class);
+
+                    intent.putExtra("room_id", room.getId());
+                    intent.putExtra("type", "private");
+                    intent.putExtra("user_id", user.getId());
+
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(Profile_PB_Activity.this, "Chat room không tồn tại!", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
+        async.execute();
     }
 
     private void Call()

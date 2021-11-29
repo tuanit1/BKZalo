@@ -81,6 +81,7 @@ public class PhoneBookListAdapter extends RecyclerView.Adapter<PhoneBookListAdap
 
         Picasso.get()
                 .load(image_path)
+                .placeholder(R.drawable.message_placeholder_ic)
                 .into(holder.imv_phonebook);
 
     }

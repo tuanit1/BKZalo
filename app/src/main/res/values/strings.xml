@@ -5,5 +5,6 @@
     <string name="webclientid"> 1098760652201-es3clrhofv689dge7bpoav34bqt4qsvv.apps.googleusercontent.com</string>
     <string name="facebook_app_id">4662879910437590</string>
     <string name="fb_login_protocol_scheme">fb4662879910437590</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
