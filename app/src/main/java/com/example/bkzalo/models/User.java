@@ -8,17 +8,27 @@ public class User {
     private String image;
     private Date birthday;
     private String phone;
-    private String password;
+    private String email;
     private String bio;
+    private boolean isOnline;
 
-    public User(int id, String name, String image, Date birthday, String phone, String password, String bio) {
+    public User(int id, String name, String image, Date birthday, String phone, String email, String bio, boolean isOnline) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.birthday = birthday;
         this.phone = phone;
-        this.password = password;
+        this.email = email;
         this.bio = bio;
+        this.isOnline = isOnline;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
     }
 
     public int getId() {
@@ -61,12 +71,12 @@ public class User {
         this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getBio() {

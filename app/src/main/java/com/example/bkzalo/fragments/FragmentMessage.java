@@ -41,7 +41,7 @@ public class FragmentMessage extends Fragment {
 
         arrayList_user = new ArrayList<>();
 
-        LoadChatList();
+        //LoadChatList();
 
         return view;
     }

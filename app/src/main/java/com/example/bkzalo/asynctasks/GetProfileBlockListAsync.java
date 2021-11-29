@@ -3,7 +3,7 @@ package com.example.bkzalo.asynctasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.bkzalo.listeners.ChatListListener;
+import com.example.bkzalo.listeners.GetProfileBlockListener;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.JsonUtils;
@@ -17,12 +17,14 @@ import java.util.Date;
 
 import okhttp3.RequestBody;
 
-public class LoadChatListAsync extends AsyncTask<Void, String, Boolean> {
+public class GetProfileBlockListAsync extends AsyncTask<Void, String, Boolean> {
+
+
     private RequestBody requestBody;
-    private ChatListListener listener;
+    private GetProfileBlockListener listener;
     private ArrayList<User> arrayList_user;
 
-    public LoadChatListAsync(RequestBody requestBody, ChatListListener listener) {
+    public GetProfileBlockListAsync(RequestBody requestBody, GetProfileBlockListener listener) {
         this.requestBody = requestBody;
         this.listener = listener;
         arrayList_user = new ArrayList<>();
@@ -79,7 +81,6 @@ public class LoadChatListAsync extends AsyncTask<Void, String, Boolean> {
             e.printStackTrace();
             return false;
         }
-
     }
 
     @Override

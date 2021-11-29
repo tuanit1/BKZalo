@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.FragmentMessage"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_cancel"
+            android:text="Hủy"
+            android:background="@color/white"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chỉnh sửa trang cá nhân"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:textSize="16dp"/>
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Xong"
+            android:textColor="#0466C8"
+            android:background="@color/white"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="30dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_bia"
+                android:background="@color/black"/>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="50dp"
+            android:layout_gravity="center_horizontal">
+            <ImageView
+                android:id="@+id/iv_user_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_change_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thay đổi ảnh đại diện"
+            android:textColor="#0466C8"
+            android:textStyle="bold"
+            android:background="@color/white"
+            android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Tên"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/et_user_name"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày sinh"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:editable="false"
+                    android:id="@+id/et_user_birth"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Số điện thoai"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/et_user_phone"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Giới thiệu"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/et_user_bio"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="45dp"
+            android:layout_gravity="center_horizontal">
+            <ImageView
+                android:id="@+id/iv_user_image"
+                android:layout_width="90dp"
+                android:layout_height="90dp"/>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_gravity="center_vertical"
+                android:text="Name"
+                android:textColor="#3D5A80"
+                android:textSize="18dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
+                <Button
+                    android:id="@+id/btn_acpt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Chập nhận"
+                    android:background="@drawable/botron_button"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
+                <Button
+                    android:id="@+id/btn_refu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Từ chối"
+                    android:background="@drawable/botron_edittext"
+                    android:textColor="#3D5A80"
+                    android:textSize="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>
