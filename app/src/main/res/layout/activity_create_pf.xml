@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_app12"
+    tools:context=".activitiy.CreatePF_Activity"
+    android:layout_gravity="center"
+    android:focusableInTouchMode="true"
+    android:gravity="center">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:letterSpacing="0.01"
+                android:text="Hãy cập nhật thông tin "
+                android:textColor="#0466C8"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/create_pf_nhi" />
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:elevation="100dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="20dp"
+                            android:src="@drawable/ic_phone_nhi" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            style="@style/CardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
+                            android:padding="10dp"
+                            android:textColorHint="#0466C8">
+
+                            <EditText
+                                android:id="@+id/edt_phone_createpf"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Phone"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:padding="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="18dp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="20dp"
+                            android:src="@drawable/ic_email_nhi" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            style="@style/CardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
+                            android:padding="10dp"
+                            android:textColorHint="#0466C8">
+
+                            <EditText
+                                android:id="@+id/edt_email_createpf"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Email"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:padding="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="18dp" />
+
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="20dp"
+                            android:src="@drawable/ic_name_nhi" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            style="@style/CardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
+                            android:padding="10dp"
+                            android:textColorHint="#0466C8">
+
+                            <EditText
+                                android:id="@+id/edt_name_createpf"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Họ Tên"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:padding="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="18dp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="20dp"
+                            android:src="@drawable/ic_pass_nhi" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            style="@style/CardView"
+                            app:passwordToggleEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
+                            android:padding="10dp"
+                            android:textColorHint="#0466C8"
+                            >
+
+                            <EditText
+                                android:id="@+id/edt_pw1_createpf"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Password"
+                                android:inputType="textPassword"
+                                android:maxLines="1"
+                                android:padding="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="18dp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="20dp"
+                            android:src="@drawable/ic_pass_nhi" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            style="@style/CardView"
+                            app:passwordToggleEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
+                            android:padding="10dp"
+                            android:textColorHint="#0466C8"
+                            >
+
+                            <EditText
+                                android:id="@+id/edt_pw2_createpf"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Password"
+                                android:inputType="textPassword"
+                                android:maxLines="1"
+                                android:padding="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="18dp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
+                android:elevation="100dp"
+                app:cardCornerRadius="20dp">
+
+                <Button
+                    android:id="@+id/next_createpf"
+                    android:layout_width="200dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:background="#0466C8"
+                    android:text="Tiếp theo"
+                    android:textColor="@color/white"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

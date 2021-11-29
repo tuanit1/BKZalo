@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context=".activitiy.SplashScreenActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linear_background"
+        android:layout_width="match_parent"
+        android:layout_height="900dp"
+        android:background="@drawable/ombre_blue3"
+        android:orientation="vertical" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="120dp">
+
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/lexendexa_regular"
+            android:text="CHÀO MỪNG BẠN ĐẾN VỚI"
+            android:textColor="#0b5394"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tv_bkzalo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/lexendexa_regular"
+            android:text="BKZALO"
+            android:textColor="#0b5394"
+            android:textSize="40dp"
+            android:textStyle="bold" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/splash_animation" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

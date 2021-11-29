@@ -1,35 +1,47 @@
 package com.example.bkzalo.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
     private int id;
     private String name;
     private String image;
     private Date birthday;
     private String phone;
-    private String email;
     private String bio;
+    private String email;
+    private String password;
     private boolean isOnline;
 
-    public User(int id, String name, String image, Date birthday, String phone, String email, String bio, boolean isOnline) {
+    public User(int id, String name, String phone, String email)
+    {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(String name, String phone, String email, String password) {
+        this.phone = phone;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+
+    public User(int id, String name, String image, Date birthday, String phone,  String bio, String email, boolean isOnline ) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.birthday = birthday;
         this.phone = phone;
-        this.email = email;
         this.bio = bio;
+        this.email=email;
         this.isOnline = isOnline;
     }
 
-    public boolean isOnline() {
-        return isOnline;
-    }
 
-    public void setOnline(boolean online) {
-        isOnline = online;
-    }
 
     public int getId() {
         return id;
@@ -71,12 +83,12 @@ public class User {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getBio() {
@@ -85,5 +97,21 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean isOnline) {
+        this.isOnline = isOnline;
     }
 }

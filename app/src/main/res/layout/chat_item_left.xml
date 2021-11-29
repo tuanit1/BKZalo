@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="8dp"
+    android:visibility="visible">
+    <TextView
+        android:id="@+id/tv_noti"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textSize="13dp"
+        android:visibility="visible"
+        android:textAlignment="center"
+        android:layout_centerInParent="true"
+        android:text="Notification"/>
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:text="sdjfklsdjfklsjdkfdj"/>
+    <LinearLayout
+        android:id="@+id/ll_msg"
+        android:layout_below="@id/tv_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/iv_user_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:riv_corner_radius="90dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="7dp"
+                android:src="@drawable/message_placeholder_ic"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textColor="@color/text_color"
+                    android:textSize="17dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="2dp"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_message"
+                        android:layout_margin="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp">
+                        <TextView
+                            android:id="@+id/tv_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:text="dsfsdfsdfsdfdfsdf"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/iv_img_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="400dp"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
+                        app:riv_corner_radius="10dp"
+                        android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:id="@+id/cv_remove"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:visibility="gone"
+                        android:background="@drawable/simple_border">
+                        <TextView
+                            android:id="@+id/tv_remove"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:textSize="20dp"
+                            android:textStyle="italic"
+                            android:text="Tin nhắn đã gỡ"/>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="12:00"/>
+                    <TextView
+                        android:id="@+id/tv_seen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:text="Đã xem"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

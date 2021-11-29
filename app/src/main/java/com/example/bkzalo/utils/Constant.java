@@ -1,5 +1,7 @@
 package com.example.bkzalo.utils;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -7,12 +9,15 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 
 public class Constant {
-    public static int UID = 3;
-    //cai nay la IP wifi cua m
-    public static String SERVER_URL = "http://192.168.1.6/bkzalo/";
-    //cai nay la IP 4G cua m
-    // ket noi ok roi, chi la m phai them cai port 8080 phia sau IP moi dung đc nghe
-    //public static String SERVER_URL = "http://172.20.10.2:8080/bkzalo/";
+    public static int UID=0;
+    public static String PHONE="";
+    public static GoogleSignInClient mGoogleSignInClient;
+    public static String NAME="";
+    public static String IMAGE="";
+    public static String SERVER_URL = "http://192.168.2.11:8100/bkzalo/";
+    public static String SERVER_NODE = "http://192.168.1.10:3000/";
+    //public static String SERVER_URL = "http://192.168.1.153:8100/bkzalo/";
+    //public static String SERVER_URL = "http://172.20.10.2:8100/bkzalo/";
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;

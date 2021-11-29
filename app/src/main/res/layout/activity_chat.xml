@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sub_color"
+    tools:context=".activitiy.ChatActivity">
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/theme_color">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:riv_corner_radius="15dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_back_arrow"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"/>
+
+        <RelativeLayout
+            android:id="@+id/user_image"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/iv_back">
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/iv_user_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:riv_corner_radius="90dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/message_placeholder_ic"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_group_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardCornerRadius="90dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="#5696C8">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tv_name_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="22dp"
+                        android:textColor="#ffffff"
+                        android:text="DA"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_toRightOf="@id/user_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Tên nhóm"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="23dp"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_option"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_opt_menu"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/send"
+        android:background="@color/sub_color">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/theme_color"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:layout_margin="5dp"
+        android:visibility="visible"
+        app:cardCornerRadius="20dp"
+        android:layout_alignParentBottom="true">
+        <RelativeLayout
+            android:background="@color/main_color"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_send_media"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_photo_msg"/>
+
+            <EditText
+                android:id="@+id/edt_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_send_btn"
+                android:layout_toRightOf="@id/iv_send_media"
+                android:background="@null"
+                android:hint="Tin nhắn"
+                android:textColor="@color/text_color"
+                android:textSize="22dp" />
+
+            <ImageView
+                android:id="@+id/iv_send_btn"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_send_button"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/ll_for_blocker"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:visibility="gone"
+        android:background="@color/theme_color"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn đã chặn người dùng này"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"
+            android:textSize="17dp"/>
+        <TextView
+            android:id="@+id/tv_unblock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#EDF41E"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="BỎ CHẶN"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_for_blocked"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:visibility="gone"
+        android:background="@color/theme_color"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Người dùng này đã chặn bạn"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"
+            android:textSize="17dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn sẽ không thể thực hiện nhắn tin"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"
+            android:textSize="17dp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

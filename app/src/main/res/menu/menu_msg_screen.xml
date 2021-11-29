@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_add_group"
+        android:icon="@drawable/ic_add_group"
+        android:title="Tạo nhóm"/>
+    <item
+        android:id="@+id/menu_hide_list"
+        android:icon="@drawable/ic_danhba"
+        android:title="Trò chuyện đã ẩn" />
+</menu>

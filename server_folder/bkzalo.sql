@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 26, 2021 lúc 07:58 AM
+-- Thời gian đã tạo: Th10 29, 2021 lúc 12:48 PM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 8.0.10
 
@@ -53,6 +53,19 @@ CREATE TABLE `tbl_participant` (
   `timestamp` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `tbl_participant`
+--
+
+INSERT INTO `tbl_participant` (`user_id`, `room_id`, `nickname`, `isAdmin`, `isHide`, `timestamp`) VALUES
+(1, 1, 'tuan', 0, 0, '2021-10-27 17:05:23'),
+(1, 2, 'tuan', 0, 0, '2021-10-27 17:07:06'),
+(1, 3, '', 0, 0, '2021-10-28 14:03:20'),
+(2, 1, 'Hương Lê', 0, 0, '2021-10-27 17:05:23'),
+(2, 2, 'huong', 0, 0, '2021-10-27 17:07:06'),
+(3, 2, 'nhi', 0, 0, '2021-10-27 17:07:06'),
+(3, 3, '', 0, 0, '2021-10-28 14:03:20');
+
 -- --------------------------------------------------------
 
 --
@@ -62,10 +75,21 @@ CREATE TABLE `tbl_participant` (
 CREATE TABLE `tbl_relationship` (
   `user_id1` int(11) NOT NULL,
   `user_id2` int(11) NOT NULL,
-  `requester` int(11) NOT NULL,
-  `blocker` int(11) NOT NULL,
+  `requester` int(11) DEFAULT NULL,
+  `blocker` int(11) DEFAULT NULL,
   `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `tbl_relationship`
+--
+
+INSERT INTO `tbl_relationship` (`user_id1`, `user_id2`, `requester`, `blocker`, `status`) VALUES
+(1, 2, NULL, NULL, 'friend'),
+(1, 5, NULL, NULL, 'friend'),
+(2, 3, NULL, NULL, 'friend'),
+(3, 1, NULL, NULL, 'friend'),
+(4, 1, NULL, NULL, 'friend');
 
 -- --------------------------------------------------------
 
@@ -80,6 +104,15 @@ CREATE TABLE `tbl_room` (
   `background` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `tbl_room`
+--
+
+INSERT INTO `tbl_room` (`id`, `name`, `image`, `background`, `type`) VALUES
+(1, 'private_tuan_huong', '', '', 'private'),
+(2, 'Đồ án', 'img1.jpg', '', 'group'),
+(3, 'private_nhi_tuan', '', '', 'private');
 
 -- --------------------------------------------------------
 
@@ -102,9 +135,11 @@ CREATE TABLE `tbl_user` (
 --
 
 INSERT INTO `tbl_user` (`id`, `name`, `image`, `birthday`, `phone`, `password`, `bio`) VALUES
-(1, 'Đỗ Thanh Tuấn', 'tuan.jpg', '2001-06-04 10:28:12', '1111', 'tuan', 'hello'),
-(2, 'Lê Thị Thu Hương', 'huong.jpg', '2001-10-10 00:00:00', '1111', 'huong', 'hello'),
-(3, 'Lưu Yến Nhi', 'nhi.jpg', '2001-12-21 00:00:00', '1111', 'nhi', 'helo');
+(1, 'Do Thanh Tuan', 'tuan.jpg', '2001-06-04 10:28:12', '1111', 'tuan', 'hello'),
+(2, 'Le Thi Thu Huong', 'huong.jpg', '2001-10-10 00:00:00', '1111', 'huong', 'hello'),
+(3, 'Luu Yen Nhi', 'nhi.jpg', '2001-12-21 00:00:00', '1111', 'nhi', 'helo'),
+(4, 'Huynh Ngoc Hoa', '', '2021-10-29 07:22:38', '049548955', '1', 'sdfsdf'),
+(5, 'Nguyen Minh Tri', '', '2021-10-29 07:23:05', '039483984', '1', 'fdjdkfdf');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -160,13 +195,13 @@ ALTER TABLE `tbl_message`
 -- AUTO_INCREMENT cho bảng `tbl_room`
 --
 ALTER TABLE `tbl_room`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
