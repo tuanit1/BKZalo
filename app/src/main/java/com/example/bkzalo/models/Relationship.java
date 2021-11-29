@@ -31,16 +31,12 @@ public class Relationship {
         this.user_id2 = user_id2;
     }
 
-    public int getRequester() {
-        return requester;
-    }
-
     public void setRequester(int requester) {
         this.requester = requester;
     }
 
-    public int getRequseter() {
-        return requseter;
+    public int getRequester() {
+        return requester;
     }
 
     public int getBlocker() {

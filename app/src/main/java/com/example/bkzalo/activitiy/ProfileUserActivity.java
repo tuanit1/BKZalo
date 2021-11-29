@@ -247,7 +247,7 @@ public class ProfileUserActivity extends AppCompatActivity {
                                 intent.putExtra("mode", STRANGER_MODE);
                                 break;
                             case "request":
-                                if(relationship.getRequseter() == Constant.UID){
+                                if(relationship.getRequester() == Constant.UID){
                                     intent.putExtra("mode", REQUESTED_MODE);
                                 }else {
                                     intent.putExtra("mode", REQUEST_MODE);

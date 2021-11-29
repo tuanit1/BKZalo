@@ -49,6 +49,7 @@ import com.example.bkzalo.models.Relationship;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
+import com.example.bkzalo.utils.PathUtil;
 import com.example.bkzalo.utils.PathUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
@@ -56,7 +57,6 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.ArrayList;
 
-import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class FragmentProfile extends Fragment{
@@ -422,7 +422,7 @@ public class FragmentProfile extends Fragment{
                                 intent.putExtra("mode", STRANGER_MODE);
                                 break;
                             case "request":
-                                if(relationship.getRequseter() == Constant.UID){
+                                if(relationship.getRequester() == Constant.UID){
                                     intent.putExtra("mode", REQUESTED_MODE);
                                 }else {
                                     intent.putExtra("mode", REQUEST_MODE);
@@ -490,7 +490,7 @@ public class FragmentProfile extends Fragment{
                     File file;
 
                     try{
-                        String filePath = PathUtils.getPath(getContext(), uri);
+                        String filePath = PathUtil.getPath(getContext(), uri);
                         file = new File(filePath);
 
                         UpdateImage(file, uri);

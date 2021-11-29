@@ -22,7 +22,6 @@ import com.example.bkzalo.asynctasks.ExcecuteQueryAsyncHuong;
 import com.example.bkzalo.asynctasks.GetProfileUserAsync;
 import com.example.bkzalo.asynctasks.GetProfileUserListAsync;
 import com.example.bkzalo.asynctasks.GetRelationshipAsync;
-import com.example.bkzalo.fragments.FragmentProfile;
 import com.example.bkzalo.listeners.ClickItemUserListener;
 import com.example.bkzalo.listeners.ExecuteQueryListenerHuong;
 import com.example.bkzalo.listeners.GetProfileUserListListener;
@@ -327,7 +326,7 @@ public class BlockActivity extends AppCompatActivity {
                                 intent.putExtra("mode", STRANGER_MODE);
                                 break;
                             case "request":
-                                if(relationship.getRequseter() == Constant.UID){
+                                if(relationship.getRequester() == Constant.UID){
                                     intent.putExtra("mode", REQUESTED_MODE);
                                 }else {
                                     intent.putExtra("mode", REQUEST_MODE);

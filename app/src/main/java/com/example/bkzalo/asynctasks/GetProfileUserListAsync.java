@@ -69,7 +69,7 @@ public class GetProfileUserListAsync extends AsyncTask<Void, String, Boolean> {
 
                 boolean isOnline = obj.getInt("isOnline") == 1 ? true : false;
 
-                User user = new User(id, name, image, birthday, phone, email, bio, isOnline);
+                User user = new User(id, name, image, birthday, phone, bio, email, isOnline);
 
                 arrayList_user.add(user);
             }
