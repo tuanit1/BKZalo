@@ -8,256 +8,282 @@
     android:orientation="vertical"
     android:background="#eeeeee">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:text="CÀI ĐẶT"
-        android:textColor="@color/main_blue"
-        android:textSize="33dp"
-        android:textStyle="bold" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="6dp"
-        android:textSize="30dp">
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:text="CÀI ĐẶT"
+                android:textColor="@color/main_blue"
+                android:textSize="33dp"
+                android:textStyle="bold" />
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imv_user_setting"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="12dp"
-            android:src="@mipmap/ic_launcher_round"
-            app:riv_corner_radius="50dp" />
+            <androidx.appcompat.widget.LinearLayoutCompat
 
-        <TextView
-            android:id="@+id/tv_name_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="Họ và tên"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="6dp"
+                android:textSize="30dp">
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="90dp"
+                    app:cardBackgroundColor="@color/main_blue"
+                    android:layout_marginLeft="12dp">
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imv_user_setting"
+                        android:layout_margin="1dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@mipmap/ic_launcher_round"
+                        app:riv_corner_radius="90dp" />
+                </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:padding="6dp">
+                <TextView
+                    android:id="@+id/tv_name_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Họ và tên"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="25dp"
-            android:src="@drawable/ic_darkmode_nhi"
-            android:textColor="@color/black" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <TextView
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:text="Chế độ tối"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="6dp">
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_darkmode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:shadowColor="@color/main_blue" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="25dp"
+                    android:src="@drawable/ic_darkmode_nhi"
+                    android:textColor="@color/black" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Trang cá nhân"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="@color/black"
-        android:textSize="18dp"
-        android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:text="Chế độ tối"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:padding="6dp">
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_darkmode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:shadowColor="@color/main_blue" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="25dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trang cá nhân"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
 
-            android:src="@drawable/ic_account_nhi"
-            android:textColor="@color/black" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/ll_edit_profile"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="6dp">
 
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:text="Chỉnh sửa thông tin cá nhân"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="25dp"
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_next_nhi" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:src="@drawable/ic_account_nhi"
+                    android:textColor="@color/black" />
 
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:text="Chỉnh sửa thông tin cá nhân"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/layout_changepass"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:padding="6dp">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="25dp"
-            android:src="@drawable/ic_pass_nhi"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:layout_width="252dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:text="Đổi mật khẩu"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_next_nhi" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Credits"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="@color/black"
-        android:textSize="18dp"
-        android:textStyle="bold"/>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linear_author"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp"
-        android:padding="6dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="25dp"
-            android:src="@drawable/ic_author_nhi"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:text="Về chúng tôi"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_next_nhi" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linear_privacy"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="5dp"
-        android:padding="6dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="25dp"
-            android:src="@drawable/ic_privacy_nhi"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:text="Chính sách và quyền riêng tư"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_next_nhi" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/signout"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:padding="6dp">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="25dp"
-            android:src="@drawable/ic_logout_nhi"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:text="Đăng xuất"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_next_nhi" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_next_nhi" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/layout_changepass"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="25dp"
+                    android:src="@drawable/ic_pass_nhi"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="252dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:text="Đổi mật khẩu"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_next_nhi" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Credits"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/linear_author"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:padding="6dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="25dp"
+                    android:src="@drawable/ic_author_nhi"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:text="Về chúng tôi"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_next_nhi" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/linear_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:padding="6dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="25dp"
+                    android:src="@drawable/ic_privacy_nhi"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:text="Chính sách và quyền riêng tư"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_next_nhi" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/signout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="25dp"
+                    android:src="@drawable/ic_logout_nhi"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:text="Đăng xuất"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_next_nhi" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
 
 
 

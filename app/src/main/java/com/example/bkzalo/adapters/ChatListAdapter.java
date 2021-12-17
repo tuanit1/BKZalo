@@ -282,6 +282,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
         }else {
             holder.tv_text.setText("Không có tin nhắn nào");
+            holder.tv_time.setVisibility(View.GONE);
         }
 
 

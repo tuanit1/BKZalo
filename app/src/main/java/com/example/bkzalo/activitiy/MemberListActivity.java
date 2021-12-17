@@ -15,12 +15,15 @@ import android.widget.Toast;
 import com.example.bkzalo.R;
 import com.example.bkzalo.adapters.MemberAdapter;
 import com.example.bkzalo.asynctasks.GetMemberListAsync;
+import com.example.bkzalo.asynctasks.GetRelationshipAsync;
 import com.example.bkzalo.asynctasks.SendMessageAsync;
 import com.example.bkzalo.listeners.ClickMemberListener;
 import com.example.bkzalo.listeners.GetMemberListener;
+import com.example.bkzalo.listeners.GetRelationshipListener;
 import com.example.bkzalo.listeners.SendMessageListener;
 import com.example.bkzalo.models.Message;
 import com.example.bkzalo.models.Participant;
+import com.example.bkzalo.models.Relationship;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
@@ -44,6 +47,10 @@ public class MemberListActivity extends AppCompatActivity {
     private ArrayList<Participant> arrayList_participant;
     private MemberAdapter adapter;
     private Socket socket;
+    private final int REQUEST_MODE = 1;
+    private final int REQUESTED_MODE = 2;
+    private final int FRIEND_MODE = 3;
+    private final int STRANGER_MODE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +150,7 @@ public class MemberListActivity extends AppCompatActivity {
         adapter = new MemberAdapter(arrayList_user, arrayList_participant, new ClickMemberListener() {
             @Override
             public void onProfile(int user_id) {
-
+                GetRelationship(user_id);
             }
 
             @Override
@@ -167,6 +174,67 @@ public class MemberListActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
+
+    private void GetRelationship(int muid) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("uid", Constant.UID);
+        bundle.putInt("uid2", muid);
+
+        RequestBody requestBody = methods.getRequestBody("method_get_relationship", bundle, null);
+
+        GetRelationshipListener listener = new GetRelationshipListener() {
+            @Override
+            public void onStart() {
+                //hiện progressbar
+            }
+
+            @Override
+            public void onEnd(boolean status, Relationship relationship) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+
+                        String Status = "";
+
+                        if(relationship != null){
+                            Status = relationship.getStatus();
+                        }else {
+                            Status = "stranger";
+                        }
+
+                        Intent intent = new Intent(MemberListActivity.this, ProfileUserActivity.class);
+
+                        intent.putExtra("uid", muid);
+
+                        switch (Status){
+                            case "friend":
+                                intent.putExtra("mode", FRIEND_MODE);
+                                break;
+                            case "stranger":
+                                intent.putExtra("mode", STRANGER_MODE);
+                                break;
+                            case "request":
+                                if(relationship.getRequester() == Constant.UID){
+                                    intent.putExtra("mode", REQUESTED_MODE);
+                                }else {
+                                    intent.putExtra("mode", REQUEST_MODE);
+                                }
+                                break;
+                        }
+
+                        startActivity(intent);
+
+                    }else {
+                        Toast.makeText(MemberListActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(MemberListActivity.this, "Vui lòng kết nối internet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        GetRelationshipAsync async = new GetRelationshipAsync(requestBody, listener);
+        async.execute();
     }
 
     private void SetAdmin(int user_id, boolean isAdmin){

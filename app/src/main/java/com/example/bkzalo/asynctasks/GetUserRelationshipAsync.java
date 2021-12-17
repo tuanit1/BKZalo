@@ -41,25 +41,31 @@ public class GetUserRelationshipAsync extends AsyncTask<Void, String, Boolean> {
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray_relate = jsonObject.getJSONArray("array_relation");
 
-            JSONObject obj = jsonArray_relate.getJSONObject(0);
+            if(jsonArray_relate.length() != 0){
+                JSONObject obj = jsonArray_relate.getJSONObject(0);
 
-            int user_id1 = obj.getInt("user_id1");
-            int user_id2 = obj.getInt("user_id2");
+                int user_id1 = obj.getInt("user_id1");
+                int user_id2 = obj.getInt("user_id2");
 
-            int requester = 0;
-            int blocker = 0;
+                int requester = 0;
+                int blocker = 0;
 
-            if(!obj.getString("requester").equals("null")){
-                requester = obj.getInt("requester");
+                if(!obj.getString("requester").equals("null")){
+                    requester = obj.getInt("requester");
+                }
+
+                if(!obj.getString("blocker").equals("null")){
+                    blocker = obj.getInt("blocker");
+                }
+
+                String status = obj.getString("status");
+
+                relationship = new Relationship(user_id1, user_id2, requester, blocker, status);
+            }else {
+                relationship = new Relationship(0, 0, 0, 0, "stranger");
             }
 
-            if(!obj.getString("blocker").equals("null")){
-                blocker = obj.getInt("blocker");
-            }
 
-            String status = obj.getString("status");
-
-            relationship = new Relationship(user_id1, user_id2, requester, blocker, status);
 
             return true;
 

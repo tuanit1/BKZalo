@@ -54,6 +54,7 @@ public class BlockListAdapter extends RecyclerView.Adapter<BlockListAdapter.MyVi
 
         Picasso.get()
                 .load(image_url)
+                .placeholder(R.drawable.message_placeholder_ic)
                 .into(holder.iview_user_image);
 
         holder.llout_item.setOnClickListener(new View.OnClickListener() {

@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.bkzalo.R;
 import com.example.bkzalo.activitiy.AuthorActivity;
+import com.example.bkzalo.activitiy.EditProfileActivity;
+import com.example.bkzalo.activitiy.MemberListActivity;
 import com.example.bkzalo.activitiy.PrivacyActivity;
 import com.example.bkzalo.activitiy.ResetPassActivity;
 import com.example.bkzalo.activitiy.LoginActivity;
@@ -30,13 +32,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import io.grpc.inprocess.InternalInProcess;
 import okhttp3.RequestBody;
 
 public class FragmentSetting extends Fragment {
 
     private View view;
     private SwitchCompat switch_darkmode;
-    private LinearLayoutCompat signout, changepass, privacy, author;
+    private LinearLayoutCompat signout, changepass, privacy, author, ll_edit_profile;
     private FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private SharedPreferences preferences2;
     private TextView tv_name;
@@ -56,7 +59,8 @@ public class FragmentSetting extends Fragment {
 
         if (Constant.mGoogleSignInClient!=null)
         {
-            GetUser(firebaseUser.getEmail(), methods);
+            String email = firebaseUser.getProviderData().get(1).getEmail();
+            GetUser(email, methods);
         }
         return view;
     }
@@ -99,6 +103,15 @@ public class FragmentSetting extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ResetPassActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ll_edit_profile = view.findViewById(R.id.ll_edit_profile);
+        ll_edit_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
                 startActivity(intent);
             }
         });

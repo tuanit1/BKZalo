@@ -117,6 +117,7 @@ public class BlockActivity extends AppCompatActivity {
 
         Picasso.get()
                 .load(image_url)
+                .placeholder(R.drawable.message_placeholder_ic)
                 .into(iv_user_image);
     }
     private void AnhXa(){

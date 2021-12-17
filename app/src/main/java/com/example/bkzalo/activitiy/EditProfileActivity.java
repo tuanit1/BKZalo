@@ -3,6 +3,7 @@ package com.example.bkzalo.activitiy;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -27,8 +28,10 @@ import com.example.bkzalo.listeners.GetProfileUserListener;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
+import com.example.bkzalo.utils.PathUtil;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -190,13 +193,67 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
-            if(requestCode == PICK_IMAGE_CODE){
-                Uri uri = data.getData();
+        if(resultCode == Activity.RESULT_OK){
 
+            switch (requestCode){
+                case PICK_IMAGE_CODE:
+
+                    Uri uri = data.getData();
+
+                    File file;
+
+                    try{
+                        String filePath = PathUtil.getPath(this, uri);
+                        file = new File(filePath);
+
+                        UpdateImage(file, uri);
+
+                    }catch (Exception e){
+                        Toast.makeText(this, "Không thể sử dụng ảnh này, vui lòng chọn lại!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    break;
+            }
+
+        }
+    }
+
+    private void UpdateImage(File file, Uri uri) {
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("uid", Constant.UID);
+
+        RequestBody requestBody = methods.getRequestBody("method_update_profile_image", bundle, file);
+
+        ExecuteQueryListenerHuong listener = new ExecuteQueryListenerHuong() {
+            @Override
+            public void onStart() {
 
             }
-        }
+
+            @Override
+            public void onEnd(boolean status) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+                        Toast.makeText(EditProfileActivity.this, "Cập nhập ảnh thành công!", Toast.LENGTH_SHORT).show();
+
+                        Picasso.get()
+                                .load(uri)
+                                .into(iv_user_image);
+
+                    }else {
+                        Toast.makeText(EditProfileActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(EditProfileActivity.this, "Vui lòng kết nối internet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        ExcecuteQueryAsyncHuong async = new ExcecuteQueryAsyncHuong(requestBody, listener);
+        async.execute();
+
     }
 
     private void EditProfile(String name, String phone, String bio, String date) {

@@ -23,13 +23,16 @@ import android.widget.Toast;
 
 import com.example.bkzalo.R;
 import com.example.bkzalo.asynctasks.ExecuteQueryAsync;
+import com.example.bkzalo.asynctasks.GetRelationshipAsync;
 import com.example.bkzalo.asynctasks.LoadGetRoomAsync;
 import com.example.bkzalo.asynctasks.SendMessageAsync;
 import com.example.bkzalo.listeners.ExecuteQueryListener;
+import com.example.bkzalo.listeners.GetRelationshipListener;
 import com.example.bkzalo.listeners.GetRoomListener;
 import com.example.bkzalo.listeners.SendMessageListener;
 import com.example.bkzalo.models.Message;
 import com.example.bkzalo.models.Participant;
+import com.example.bkzalo.models.Relationship;
 import com.example.bkzalo.models.Room;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
@@ -58,7 +61,11 @@ public class GroupSettingActivity extends AppCompatActivity {
     private CardView cv_group_icon;
     private Methods methods;
     private Participant mParticipant;
-    private final int PICK_IMAGE_CODE = 1;
+    private final int PICK_IMAGE_CODE = 5;
+    private final int REQUEST_MODE = 1;
+    private final int REQUESTED_MODE = 2;
+    private final int FRIEND_MODE = 3;
+    private final int STRANGER_MODE = 4;
     private Socket socket;
 
 
@@ -135,6 +142,12 @@ public class GroupSettingActivity extends AppCompatActivity {
             }
         });
         ll_pr_profile = findViewById(R.id.ll_pr_profile);
+        ll_pr_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetRelationship(USER_ID);
+            }
+        });
         ll_pr_block = findViewById(R.id.ll_pr_block);
         ll_pr_block.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -433,6 +446,67 @@ public class GroupSettingActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void GetRelationship(int muid) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("uid", Constant.UID);
+        bundle.putInt("uid2", muid);
+
+        RequestBody requestBody = methods.getRequestBody("method_get_relationship", bundle, null);
+
+        GetRelationshipListener listener = new GetRelationshipListener() {
+            @Override
+            public void onStart() {
+                //hiện progressbar
+            }
+
+            @Override
+            public void onEnd(boolean status, Relationship relationship) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+
+                        String Status = "";
+
+                        if(relationship != null){
+                            Status = relationship.getStatus();
+                        }else {
+                            Status = "stranger";
+                        }
+
+                        Intent intent = new Intent(GroupSettingActivity.this, ProfileUserActivity.class);
+
+                        intent.putExtra("uid", muid);
+
+                        switch (Status){
+                            case "friend":
+                                intent.putExtra("mode", FRIEND_MODE);
+                                break;
+                            case "stranger":
+                                intent.putExtra("mode", STRANGER_MODE);
+                                break;
+                            case "request":
+                                if(relationship.getRequester() == Constant.UID){
+                                    intent.putExtra("mode", REQUESTED_MODE);
+                                }else {
+                                    intent.putExtra("mode", REQUEST_MODE);
+                                }
+                                break;
+                        }
+
+                        startActivity(intent);
+
+                    }else {
+                        Toast.makeText(GroupSettingActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(GroupSettingActivity.this, "Vui lòng kết nối internet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        GetRelationshipAsync async = new GetRelationshipAsync(requestBody, listener);
+        async.execute();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {

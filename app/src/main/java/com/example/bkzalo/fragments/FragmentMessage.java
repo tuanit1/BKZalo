@@ -24,10 +24,13 @@ import android.widget.Toast;
 import com.example.bkzalo.R;
 import com.example.bkzalo.activitiy.AddGroupActivity;
 import com.example.bkzalo.activitiy.ChatActivity;
+import com.example.bkzalo.activitiy.EditProfileActivity;
 import com.example.bkzalo.activitiy.HideListActivity;
 import com.example.bkzalo.adapters.ChatListAdapter;
+import com.example.bkzalo.asynctasks.GetProfileUserAsync;
 import com.example.bkzalo.asynctasks.LoadChatListAsync;
 import com.example.bkzalo.listeners.ClickChatListListener;
+import com.example.bkzalo.listeners.GetProfileUserListener;
 import com.example.bkzalo.listeners.LoadChatListListener;
 import com.example.bkzalo.models.Message;
 import com.example.bkzalo.models.Participant;
@@ -36,6 +39,7 @@ import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -51,7 +55,7 @@ public class FragmentMessage extends Fragment {
     private View view;
     private RecyclerView rv_chat;
     private EditText edt_search;
-    private ImageView iv_add_group;
+    private ImageView iv_add_group, iv_user;
     private LinearLayout empty_view;
     private Methods methods;
     private ArrayList<Participant> arrayList_parti;
@@ -77,6 +81,7 @@ public class FragmentMessage extends Fragment {
 
         SetAdapter();
         InitSocketIO();
+        GetUserProfile();
         LoadChatList(false);
 
         return view;
@@ -118,6 +123,8 @@ public class FragmentMessage extends Fragment {
 
             }
         });
+
+        iv_user = view.findViewById(R.id.iv_user);
 
         edt_search = view.findViewById(R.id.edt_search);
     }
@@ -228,6 +235,41 @@ public class FragmentMessage extends Fragment {
 
         }
     };
+
+    private void GetUserProfile() {
+        int uid = Constant.UID;
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("uid", uid);
+
+        RequestBody requestBody = methods.getRequestBody("method_get_profile_user", bundle, null);
+
+        GetProfileUserListener listener = new GetProfileUserListener() {
+            @Override
+            public void onStart() {
+                //hiện progressbar
+            }
+
+            @Override
+            public void onEnd(boolean status, User user) {
+                if(methods.isNetworkConnected()){
+                    if(status){
+                        Picasso.get()
+                                .load(Constant.SERVER_URL + "image/image_user/" + user.getImage())
+                                .placeholder(R.drawable.message_placeholder_ic)
+                                .into(iv_user);
+                    }else {
+                        Toast.makeText(getContext(), "Lỗi Server", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(getContext(), "Vui lòng kết nối internet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        GetProfileUserAsync async = new GetProfileUserAsync(requestBody, listener);
+        async.execute();
+    }
 
     private void LoadChatList(boolean isReload) {
 

@@ -61,9 +61,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         AnhXa();
 
-        welcome.animate().translationY(-1400).setDuration(2700).setStartDelay(5600);
-        bkzalo.animate().translationY(-1400).setDuration(2700).setStartDelay(5600);
-        lottie.animate().translationY(1400).setDuration(2700).setStartDelay(5600);
+        welcome.animate().translationY(-1400).setDuration(600).setStartDelay(2500);
+        bkzalo.animate().translationY(-1400).setDuration(600).setStartDelay(2500);
+        lottie.animate().translationY(1400).setDuration(600).setStartDelay(2500);
 
         Open();
     }
@@ -112,7 +112,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 }
             }
-                }, 6935);
+                }, 2800);
 
             }
 

@@ -12,6 +12,38 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/theme_color">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:cardCornerRadius="90dp"
+                app:cardBackgroundColor="@color/white">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_user"
+                    android:layout_margin="2dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:riv_corner_radius="90dp"
+                    android:src="@mipmap/ic_launcher"/>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tin nhắn"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="26dp"/>
+        </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -20,17 +52,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginRight="7dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginBottom="5dp"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="15dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:padding="8dp">
+                    android:padding="5dp">
                     <ImageView
                         android:id="@+id/iv_search"
                         android:layout_width="30dp"

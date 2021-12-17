@@ -319,6 +319,14 @@ public class Methods {
             postObj.addProperty("friend_id", friend_id);
         }
 
+        if(method_name.equals("method_open_chat_activity")){
+            int uid = bundle.getInt("uid");
+            int friend_id = bundle.getInt("friend_id");
+
+            postObj.addProperty("uid", uid);
+            postObj.addProperty("friend_id", friend_id);
+        }
+
         if(method_name.equals("method_get_profile_user")){
             int uid = bundle.getInt("uid");
             postObj.addProperty("uid", uid);

@@ -53,6 +53,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
         Picasso.get()
                 .load(image_url)
+                .placeholder(R.drawable.message_placeholder_ic)
                 .into(holder.iv_user_image);
 
         holder.ll_item.setOnClickListener(new View.OnClickListener() {

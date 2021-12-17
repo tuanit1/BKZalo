@@ -16,10 +16,13 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="45dp"
+            app:cardCornerRadius="90dp"
+            app:cardBackgroundColor="@color/main_blue"
             android:layout_gravity="center_horizontal">
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/iview_user_image"
+                android:layout_margin="1dp"
+                app:riv_corner_radius="90dp"
                 android:layout_width="90dp"
                 android:layout_height="90dp"/>
         </androidx.cardview.widget.CardView>
@@ -32,24 +35,27 @@
             android:layout_gravity="center">
             <TextView
                 android:id="@+id/tv_namefri"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_gravity="center_vertical"
+                android:textSize="20dp"
                 android:text="Name"
                 android:textColor="#3D5A80"/>
 
             <Button
                 android:id="@+id/btn_unblock"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"
                 android:text="Bỏ chặn"
                 android:background="@drawable/botron_button"
                 android:textColor="@color/white"
-                android:textSize="10dp"/>
+                android:textSize="13dp"/>
         </LinearLayout>
 
     </LinearLayout>

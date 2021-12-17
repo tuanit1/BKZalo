@@ -53,13 +53,21 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="20dp">
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/iv_user_image"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        app:riv_corner_radius="90dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/message_placeholder_ic"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="90dp"
+                        app:cardBackgroundColor="@color/main_blue">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/iv_user_image"
+                            android:layout_margin="2dp"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            app:riv_corner_radius="90dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/message_placeholder_ic"/>
+                    </androidx.cardview.widget.CardView>
+
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cv_group_icon"
                         android:layout_width="80dp"

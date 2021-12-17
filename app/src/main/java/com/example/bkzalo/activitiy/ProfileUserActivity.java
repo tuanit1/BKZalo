@@ -23,12 +23,16 @@ import com.example.bkzalo.asynctasks.ExcecuteQueryAsyncHuong;
 import com.example.bkzalo.asynctasks.GetProfileUserAsync;
 import com.example.bkzalo.asynctasks.GetProfileUserListAsync;
 import com.example.bkzalo.asynctasks.GetRelationshipAsync;
+import com.example.bkzalo.asynctasks.LoadGetRoomAsync;
 import com.example.bkzalo.listeners.ClickItemUserListener;
 import com.example.bkzalo.listeners.ExecuteQueryListenerHuong;
 import com.example.bkzalo.listeners.GetProfileUserListListener;
 import com.example.bkzalo.listeners.GetProfileUserListener;
 import com.example.bkzalo.listeners.GetRelationshipListener;
+import com.example.bkzalo.listeners.GetRoomListener;
+import com.example.bkzalo.models.Participant;
 import com.example.bkzalo.models.Relationship;
+import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
@@ -257,7 +261,6 @@ public class ProfileUserActivity extends AppCompatActivity {
 
                         startActivity(intent);
 
-                        Toast.makeText(ProfileUserActivity.this, "Lấy status thành công!", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(ProfileUserActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
                     }
@@ -312,6 +315,7 @@ public class ProfileUserActivity extends AppCompatActivity {
 
         Picasso.get()
                 .load(image_url)
+                .placeholder(R.drawable.message_placeholder_ic)
                 .into(iv_user_image);
 
         switch (CURRENT_MODE){
@@ -378,6 +382,13 @@ public class ProfileUserActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btn_mess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenChatActivity();
+            }
+        });
     }
 
     private void SetUIRequested(){
@@ -432,6 +443,44 @@ public class ProfileUserActivity extends AppCompatActivity {
         };
 
         ExcecuteQueryAsyncHuong async = new ExcecuteQueryAsyncHuong(requestBody, listener);
+        async.execute();
+    }
+
+    private void OpenChatActivity(){
+        Bundle bundle = getIntent().getExtras();
+        User user = (User) bundle.get("user");
+
+        Bundle bundle1 = new Bundle();
+        bundle1.putInt("uid", Constant.UID);
+        bundle1.putInt("friend_id", mUID);
+
+        RequestBody requestBody = methods.getRequestBody("method_open_chat_activity", bundle1, null);
+
+        LoadGetRoomAsync async = new LoadGetRoomAsync(requestBody, new GetRoomListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onEnd(boolean status, Room room, Participant participant) {
+
+                if(room != null){
+                    Intent intent = new Intent(ProfileUserActivity.this, ChatActivity.class);
+
+                    intent.putExtra("room_id", room.getId());
+                    intent.putExtra("type", "private");
+                    intent.putExtra("user_id", mUID);
+
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(ProfileUserActivity.this, "Chat room không tồn tại!", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
         async.execute();
     }
 

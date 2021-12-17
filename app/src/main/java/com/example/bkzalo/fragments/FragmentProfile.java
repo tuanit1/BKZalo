@@ -74,6 +74,8 @@ public class FragmentProfile extends Fragment{
     private EditText et_tim_kiem;
     private BottomNavigationView menu_user_profile;
     private ArrayList<User> array_user;
+    private ArrayList<User> array_request;
+    private ArrayList<User> array_block;
     private Methods methods;
     private String Status;
     private final int RELOAD_REQUEST_LIST_CODE = 10;
@@ -91,6 +93,8 @@ public class FragmentProfile extends Fragment{
         methods = new Methods(getContext());
 
         array_user = new ArrayList<>();
+        array_request = new ArrayList<>();
+        array_block = new ArrayList<>();
 
         AnhXa();
 
@@ -145,6 +149,7 @@ public class FragmentProfile extends Fragment{
 
         Picasso.get()
                 .load(image_url)
+                .placeholder(R.drawable.message_placeholder_ic)
                 .into(iv_user_image);
     }
 
@@ -157,15 +162,15 @@ public class FragmentProfile extends Fragment{
         tv_user_bio = view.findViewById(R.id.tv_user_bio);
         tv_user_name = view.findViewById(R.id.tv_user_name);
         iv_user_image = view.findViewById(R.id.iv_user_image);
-        iv_user_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_CODE);
-            }
-        });
+//        iv_user_image.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_PICK);
+//                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_CODE);
+//            }
+//        });
 
         et_tim_kiem = view.findViewById(R.id.et_tim_kiem);
 
@@ -299,7 +304,7 @@ public class FragmentProfile extends Fragment{
         GetProfileRequestListener listener = new GetProfileRequestListener() {
             @Override
             public void onStart() {
-                array_user.clear();
+                array_request.clear();
             }
 
             @Override
@@ -307,7 +312,7 @@ public class FragmentProfile extends Fragment{
                 if(methods.isNetworkConnected()){
                     if(status){
 
-                        array_user.addAll(arrayList_user);
+                        array_request.addAll(arrayList_user);
 
                         SetAdapter();
                     }else {
@@ -332,7 +337,7 @@ public class FragmentProfile extends Fragment{
         GetProfileBlockListener listener = new GetProfileBlockListener() {
             @Override
             public void onStart() {
-                array_user.clear();
+                array_block.clear();
             }
 
             @Override
@@ -340,7 +345,7 @@ public class FragmentProfile extends Fragment{
                 if(methods.isNetworkConnected()){
                     if(status){
 
-                        array_user.addAll(arrayList_user);
+                        array_block.addAll(arrayList_user);
 
                         SetAdapterBlock();
                     }else {
@@ -469,7 +474,7 @@ public class FragmentProfile extends Fragment{
             }
         };
 
-        RequestListAdapter adapter = new RequestListAdapter(array_user, listener);
+        RequestListAdapter adapter = new RequestListAdapter(array_request, listener);
 
         rv_friend.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         rv_friend.setAdapter(adapter);
@@ -570,7 +575,7 @@ public class FragmentProfile extends Fragment{
             }
         };
 
-        BlockListAdapter adapter = new BlockListAdapter(array_user, listener);
+        BlockListAdapter adapter = new BlockListAdapter(array_block, listener);
 
         rv_friend.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         rv_friend.setAdapter(adapter);

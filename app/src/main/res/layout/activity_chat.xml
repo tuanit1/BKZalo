@@ -22,6 +22,7 @@
             android:layout_marginLeft="15dp"
             android:layout_centerVertical="true"/>
 
+
         <RelativeLayout
             android:id="@+id/user_image"
             android:layout_width="wrap_content"
@@ -29,33 +30,49 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/iv_back">
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/iv_user_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:riv_corner_radius="90dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/message_placeholder_ic"/>
+
             <androidx.cardview.widget.CardView
-                android:id="@+id/cv_group_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:cardCornerRadius="90dp"
-                android:visibility="gone"
-                app:cardBackgroundColor="#5696C8">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="90dp">
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/tv_name_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:textSize="22dp"
-                        android:textColor="#ffffff"
-                        android:text="DA"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp">
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/iv_user_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:riv_corner_radius="90dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/message_placeholder_ic"/>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_group_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardCornerRadius="90dp"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="#5696C8">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/tv_name_group"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:textSize="22dp"
+                                android:textColor="#ffffff"
+                                android:text="DA"/>
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
+
+
+
+
 
         </RelativeLayout>
 
