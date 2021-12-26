@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021.
+  ~  /**
+  ~ * Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:22 PM
+  ~ * Copyright (c) 2021 . All rights reserved.
+  ~ * Last modified 12/25/21, 3:22 PM
+  ~ */
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -20,7 +29,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="80dp"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -42,6 +51,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/ic_launcher_round"
+                android:visibility="gone"
                 app:riv_corner_radius="80dp" />
 
             <androidx.cardview.widget.CardView

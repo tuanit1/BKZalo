@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:14 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 12/18/21, 2:49 AM
+ * /
+ */
+
 package com.example.bkzalo.adapters;
 
 import android.content.Context;
@@ -122,6 +131,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
             //group
             holder.tv_name.setText(room.getName());
             holder.iv_group_ic.setVisibility(View.VISIBLE);
+            holder.iv_on.setVisibility(View.GONE);
+            holder.iv_off.setVisibility(View.GONE);
 
             if(!room.getImage().equals("")){
 
@@ -171,8 +182,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
         Message message = GetMessage(room);
 
-
         if(message != null){
+
+            holder.tv_time.setVisibility(View.VISIBLE);
 
             String name = "";
 

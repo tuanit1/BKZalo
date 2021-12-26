@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:16 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 10/29/21, 10:42 PM
+ * /
+ */
+
 package com.example.bkzalo.models;
 
 public class UserSelect {

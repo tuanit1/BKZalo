@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BKZalo.iml" filepath="$PROJECT_DIR$/.idea/BKZalo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BKZalo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BKZalo.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PBL4.BKZalo.iml" filepath="$PROJECT_DIR$/.idea/modules/PBL4.BKZalo.iml" />
     </modules>
   </component>
 </project>

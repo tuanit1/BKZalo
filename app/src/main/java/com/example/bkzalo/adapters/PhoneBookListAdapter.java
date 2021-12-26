@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:14 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 11/28/21, 6:45 PM
+ * /
+ */
+
 package com.example.bkzalo.adapters;
 import static android.Manifest.permission.CALL_PHONE;
 

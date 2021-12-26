@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021.
+  ~  /**
+  ~ * Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:17 PM
+  ~ * Copyright (c) 2021 . All rights reserved.
+  ~ * Last modified 12/25/21, 2:08 PM
+  ~ */
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bkzalo">
 
@@ -16,10 +25,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_bkzalo"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_bkzalo3_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BKZalo"
         android:usesCleartextTraffic="true">

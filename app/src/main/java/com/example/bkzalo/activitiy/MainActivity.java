@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:13 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 12/18/21, 3:04 AM
+ * /
+ */
+
 package com.example.bkzalo.activitiy;
 
 import androidx.annotation.NonNull;
@@ -33,7 +42,7 @@ import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
     private FragmentTransaction fragmentTransaction;
     private Methods methods;
     private Socket socket;

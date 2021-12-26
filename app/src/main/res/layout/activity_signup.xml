@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021.
+  ~  /**
+  ~ * Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:22 PM
+  ~ * Copyright (c) 2021 . All rights reserved.
+  ~ * Last modified 12/25/21, 12:02 AM
+  ~ */
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -86,7 +95,7 @@
                                 android:id="@+id/edt_phone_signup"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Phone"
+                                android:hint="Số điện thoại"
                                 android:inputType="phone"
                                 android:maxLength="10"
                                 android:maxLines="1"
@@ -193,7 +202,7 @@
                                 android:id="@+id/edt_pw1_signup"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Password"
+                                android:hint="Mật khẩu"
                                 android:inputType="textPassword"
                                 android:maxLines="1"
                                 android:padding="10dp"
@@ -229,7 +238,7 @@
                                 android:id="@+id/edt_pw2_signup"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Password"
+                                android:hint="Xác nhận mật khẩu"
                                 android:inputType="textPassword"
                                 android:maxLines="1"
                                 android:padding="10dp"

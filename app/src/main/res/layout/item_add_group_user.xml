@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021.
+  ~  /**
+  ~ * Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:22 PM
+  ~ * Copyright (c) 2021 . All rights reserved.
+  ~ * Last modified 10/29/21, 10:42 PM
+  ~ */
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:14 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 11/29/21, 5:25 PM
+ * /
+ */
+
 package com.example.bkzalo.adapters;
 
 import android.content.Context;

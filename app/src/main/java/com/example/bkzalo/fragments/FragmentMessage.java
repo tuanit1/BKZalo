@@ -1,9 +1,20 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:15 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 12/18/21, 3:07 AM
+ * /
+ */
+
 package com.example.bkzalo.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +37,7 @@ import com.example.bkzalo.activitiy.AddGroupActivity;
 import com.example.bkzalo.activitiy.ChatActivity;
 import com.example.bkzalo.activitiy.EditProfileActivity;
 import com.example.bkzalo.activitiy.HideListActivity;
+import com.example.bkzalo.activitiy.MainActivity;
 import com.example.bkzalo.adapters.ChatListAdapter;
 import com.example.bkzalo.asynctasks.GetProfileUserAsync;
 import com.example.bkzalo.asynctasks.LoadChatListAsync;
@@ -125,6 +137,13 @@ public class FragmentMessage extends Fragment {
         });
 
         iv_user = view.findViewById(R.id.iv_user);
+        iv_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReplaceFragment(new FragmentProfile(), "Profile");
+                ((MainActivity)getActivity()).bottomNavigationView.setSelectedItemId(R.id.bottom_nav_canhan);
+            }
+        });
 
         edt_search = view.findViewById(R.id.edt_search);
     }
@@ -475,6 +494,20 @@ public class FragmentMessage extends Fragment {
         }
 
         return null;
+    }
+
+    private void ReplaceFragment(Fragment fragment, String name){
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        int backstackCount = fm.getBackStackEntryCount();
+        for (int i = 0; i < backstackCount; i++){
+            int backStackId = fm.getBackStackEntryAt(i).getId();
+
+            fm.popBackStack(backStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.main_content, fragment, name);
+        fragmentTransaction.commit();
     }
 
 

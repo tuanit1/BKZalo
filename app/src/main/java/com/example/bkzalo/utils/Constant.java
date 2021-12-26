@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:16 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 12/21/21, 7:10 PM
+ * /
+ */
+
 package com.example.bkzalo.utils;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -14,11 +23,10 @@ public class Constant {
     public static GoogleSignInClient mGoogleSignInClient;
     public static String NAME="";
     public static String IMAGE="";
-    public static String SERVER_URL = "http://192.168.1.11/bkzalo/";
-    public static String SERVER_NODE = "http://192.168.1.11:3000/";
-    //public static String SERVER_URL = "http://192.168.1.153:8100/bkzalo/";
-    //public static String SERVER_URL = "http://172.20.10.2:8100/bkzalo/";
-
+//    public static String SERVER_URL = "http://192.168.1.6/bkzalo/";
+//    public static String SERVER_NODE = "http://192.168.1.6:3000/";
+    public static String SERVER_URL = "http://192.168.1.111/bkzalo/";
+    public static String SERVER_NODE = "http://192.168.1.111:3000/";
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {

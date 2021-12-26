@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:15 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 11/27/21, 4:41 PM
+ * /
+ */
+
 package com.example.bkzalo.fragments;
 
 import android.app.Activity;

@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:13 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 12/25/21, 2:08 AM
+ * /
+ */
+
 package com.example.bkzalo.activitiy;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -118,7 +127,7 @@ public class Profile_PB_Activity extends AppCompatActivity {
         bundle1.putInt("uid", Constant.UID);
         bundle1.putInt("friend_id", user.getId());
 
-        RequestBody requestBody = methods.getRequestBody("method_get_private_room", bundle1, null);
+        RequestBody requestBody = methods.getRequestBody("method_open_chat_activity", bundle1, null);
 
         LoadGetRoomAsync async = new LoadGetRoomAsync(requestBody, new GetRoomListener() {
             @Override

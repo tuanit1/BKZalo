@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:14 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 12/25/21, 3:09 PM
+ * /
+ */
+
 package com.example.bkzalo.activitiy;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +42,7 @@ public class Update_InfoActivity extends AppCompatActivity {
     final int ngay = calendar.get(Calendar.DATE);
     final int thang = calendar.get(Calendar.MONTH);
     final int nam = calendar.get(Calendar.YEAR);
-    private String birthday1, image, birthday2;
+    private String birthday1, image = "", birthday2 = "";
     private Integer uid;
     private Methods methods;
     private Button btn_update;
@@ -70,7 +79,7 @@ public class Update_InfoActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int i, int i1, int i2) {
                 //i: năm - i1: tháng - i2: ngày
                 calendar.set(i,i1,i2);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 tv_birthday.setText(simpleDateFormat.format(calendar.getTime()));
 
                 birthday1 = tv_birthday.getText().toString().trim();
@@ -98,6 +107,10 @@ public class Update_InfoActivity extends AppCompatActivity {
     private void Update()
     {
         Bundle bundle = new Bundle();
+
+        if(birthday2.isEmpty()){
+            birthday2 = "1920-01-01 00:00:00";
+        }
 
         bundle.putInt("uid", uid);
         bundle.putString("birthday", birthday2);

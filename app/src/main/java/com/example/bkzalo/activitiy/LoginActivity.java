@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:13 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 11/28/21, 3:36 PM
+ * /
+ */
+
 package com.example.bkzalo.activitiy;
 
 import androidx.annotation.NonNull;

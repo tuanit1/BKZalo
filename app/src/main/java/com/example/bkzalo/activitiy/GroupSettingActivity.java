@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.documentfile.provider.DocumentFile;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -551,6 +552,9 @@ public class GroupSettingActivity extends AppCompatActivity {
             public void onEnd(boolean status, Message message) {
                 if(methods.isNetworkConnected()){
                     if(status){
+
+                        Picasso.get().load(DocumentFile.fromFile(file).getUri()).into(iv_user_image);
+
                         String json = new Gson().toJson(message);
                         socket.emit("new message", json);
                     }else {

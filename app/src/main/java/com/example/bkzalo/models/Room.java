@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ *  /**
+ *  Created by DoThanhTuan-LuuYenNhi-LeThiThuHuong on 12/25/21, 5:16 PM
+ *  Copyright (c) 2021 . All rights reserved.
+ *  Last modified 10/31/21, 4:24 PM
+ * /
+ */
+
 package com.example.bkzalo.models;
 
 import java.io.Serializable;
