@@ -9,6 +9,7 @@
 
 package com.example.bkzalo.activitiy;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,11 +41,20 @@ import com.example.bkzalo.models.UserSelect;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
 import com.example.bkzalo.utils.PathUtil;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -64,7 +75,8 @@ public class AddGroupActivity extends AppCompatActivity {
     private Uri picked_image;
     private File file_image;
     private Socket socket;
-
+    private String image_name = "";
+    private String image_url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +127,31 @@ public class AddGroupActivity extends AppCompatActivity {
         tv_delete_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isChangeImage = false;
 
                 Picasso.get()
                         .load(R.drawable.ic_image)
                         .into(iv_image);
+
+                if(!image_name.isEmpty()){
+                    StorageReference filePath = FirebaseStorage.getInstance().getReference().child("room_image").child(image_name);
+                    filePath.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // File deleted successfully
+                            Log.e("firebasestorage", "onSuccess: deleted file");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Uh-oh, an error occurred!
+                            Log.e("firebasestorage", "onFailure: did not delete file");
+                        }
+                    });
+                }
+
+
+                image_name = "";
+                image_url = "";
 
                 tv_delete_img.setVisibility(View.GONE);
 
@@ -191,21 +223,79 @@ public class AddGroupActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
 
-                picked_image = data.getData();
+//                picked_image = data.getData();
+//
+//                try{
+//                    String filePath = PathUtil.getPath(this, picked_image);
+//                    file_image = new File(filePath);
+//                }catch (Exception e){
+//                    Toast.makeText(this, "Không thể sử dụng ảnh này, vui lòng chọn lại!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                isChangeImage = true;
+//
+//                Picasso.get()
+//                        .load(picked_image)
+//                        .into(iv_image);
 
-                try{
-                    String filePath = PathUtil.getPath(this, picked_image);
-                    file_image = new File(filePath);
-                }catch (Exception e){
-                    Toast.makeText(this, "Không thể sử dụng ảnh này, vui lòng chọn lại!", Toast.LENGTH_SHORT).show();
-                    return;
+                //delete
+                if(!image_name.isEmpty()){
+                    StorageReference filePath2 = FirebaseStorage.getInstance().getReference().child("room_image").child(image_name);
+                    filePath2.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // File deleted successfully
+                            Log.e("firebasestorage", "onSuccess: deleted file");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Uh-oh, an error occurred!
+                            Log.e("firebasestorage", "onFailure: did not delete file");
+                        }
+                    });
                 }
 
-                isChangeImage = true;
 
-                Picasso.get()
-                        .load(picked_image)
-                        .into(iv_image);
+                //add
+                Uri imageUri = data.getData();
+
+                Random rnd = new Random();
+                int rand = 100000 + rnd.nextInt(900000);
+
+                String file_name = methods.getFileName(imageUri);
+                String iimage_name = "IMG_ROOM_" + rand + "_" +file_name;
+                StorageReference filePath = FirebaseStorage.getInstance().getReference().child("room_image").child(iimage_name);
+
+                Toast.makeText(this, "Đang tải ảnh lên, vui lòng kiên nhẫn!", Toast.LENGTH_SHORT).show();
+
+                filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        final Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                        firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                image_name = iimage_name;
+                                image_url = uri.toString();
+
+                                Toast.makeText(AddGroupActivity.this, "Tải ảnh lên thành công!", Toast.LENGTH_SHORT).show();
+
+                                Picasso.get()
+                                        .load(imageUri)
+                                        .placeholder(R.drawable.image_user_holder)
+                                        .into(iv_image);
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        String err = e.getMessage();
+                        Toast.makeText(AddGroupActivity.this, "Đã có lỗi xảy ra, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 tv_delete_img.setVisibility(View.VISIBLE);
             }
@@ -243,7 +333,8 @@ public class AddGroupActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("json_member_id", json_member_id);
         bundle.putString("group_name", edt_name.getText().toString());
-        bundle.putBoolean("is_change_image", isChangeImage);
+        bundle.putString("image_name", image_name);
+        bundle.putString("image_url", image_url);
         bundle.putInt("admin_id", Constant.UID);
 
         RequestBody requestBody = methods.getRequestBody("method_add_group", bundle, file_image);
@@ -305,7 +396,7 @@ public class AddGroupActivity extends AppCompatActivity {
     private void SetAdapter() {
 
         for(User u : arrayList_friend){
-            arrayList_checklist.add(new UserSelect(u.getId(), u.getName(), u.getPhone(), u.getImage(), false));
+            arrayList_checklist.add(new UserSelect(u.getId(), u.getName(), u.getPhone(), u.getImage_url(), false));
         }
 
         UserSelectListener listener = new UserSelectListener() {

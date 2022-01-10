@@ -13,7 +13,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.bkzalo.listeners.GetUIDListener;
-import com.example.bkzalo.listeners.PhoneBookListListener;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.JsonUtils;
@@ -22,7 +21,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import okhttp3.RequestBody;
@@ -46,7 +44,7 @@ public class GetUIDAsync extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         try{
-            String api_url = Constant.SERVER_URL+"api.php";
+            String api_url = Constant.SERVER_URL;
 
             //result is json_string
             String result = JsonUtils.okhttpPost(api_url, requestBody);
@@ -68,6 +66,8 @@ public class GetUIDAsync extends AsyncTask<Void, String, Boolean> {
 
             String image = obj.getString("image");
 
+            String image_url = obj.getString("image_url");
+
             String phone = obj.getString("phone");
 
             String bio = obj.getString("bio");
@@ -82,12 +82,12 @@ public class GetUIDAsync extends AsyncTask<Void, String, Boolean> {
 
             if (date_string.equals("null"))
             {
-                user = new User(id,  name,  image,  null,  phone,   bio,  email, isOnline);
+                user = new User(id,  name,  image, image_url, null,  phone,   bio,  email, isOnline);
             }
             else
             {
                 Date birthday = sdf.parse(date_string);
-                user = new User(id,  name,  image,  birthday,  phone,   bio,  email, isOnline);
+                user = new User(id,  name,  image, image_url, birthday,  phone,   bio,  email, isOnline);
             }
 
             return true;

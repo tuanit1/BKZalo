@@ -15,15 +15,25 @@ public class Room implements Serializable {
     private int id;
     private String name;
     private String image;
+    private String image_url;
     private String background;
     private String type;
 
-    public Room(int id, String name, String image, String background, String type) {
+    public Room(int id, String name, String image, String image_url, String background, String type) {
         this.id = id;
         this.name = name;
         this.image = image;
+        this.image_url = image_url;
         this.background = background;
         this.type = type;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public int getId() {

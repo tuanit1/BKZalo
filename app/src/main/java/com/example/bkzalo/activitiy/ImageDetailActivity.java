@@ -58,17 +58,22 @@ public class ImageDetailActivity extends AppCompatActivity {
         });
         imageview = findViewById(R.id.imageview);
 
-        String img_path = Constant.SERVER_URL + "image/image_user/" + msg.getImage();
+        String img_path = msg.getImage();
 
-        Picasso.get()
-                .load(img_path)
-                .placeholder(R.drawable.message_placeholder_ic)
-                .into(iv_user_image);
+        if(!img_path.isEmpty()){
+            Picasso.get()
+                    .load(img_path)
+                    .placeholder(R.drawable.message_placeholder_ic)
+                    .into(iv_user_image);
+        }
 
-        String img_path_msg = Constant.SERVER_URL + "image/image_message/" + msg.getMessage();
+
+        String img_path_msg = msg.getMessage();
 
         Picasso.get()
                 .load(img_path_msg)
+                .placeholder(R.drawable.image_msg_holder)
+                .error(R.drawable.image_msg_err)
                 .into(imageview);
 
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");

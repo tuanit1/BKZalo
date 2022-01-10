@@ -90,15 +90,22 @@
                             android:text="dsfsdfsdfsdfdfsdf"/>
                     </androidx.cardview.widget.CardView>
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/iv_img_message"
-                        android:layout_width="match_parent"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxHeight="400dp"
-                        android:scaleType="centerCrop"
-                        android:adjustViewBounds="true"
-                        app:riv_corner_radius="10dp"
-                        android:visibility="gone"/>
+                        android:background="@drawable/simple_border">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/iv_img_message"
+                            android:layout_margin="2dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxHeight="400dp"
+                            android:scaleType="centerCrop"
+                            android:adjustViewBounds="true"
+                            app:riv_corner_radius="10dp"
+                            android:visibility="gone"/>
+                    </RelativeLayout>
+
 
                     <LinearLayout
                         android:id="@+id/cv_remove"

@@ -60,12 +60,19 @@ public class NicknameAdapter extends RecyclerView.Adapter<NicknameAdapter.MyView
         User user = arrayList_user.get(position);
         Participant participant = arrayList_participant.get(position);
 
-        String img_path = Constant.SERVER_URL + "image/image_user/" + user.getImage();
+        String image_path = user.getImage_url();
 
-        Picasso.get()
-                .load(img_path)
-                .placeholder(R.drawable.message_placeholder_ic)
-                .into(holder.iv_user_image);
+        if(!image_path.isEmpty()){
+            Picasso.get()
+                    .load(image_path)
+                    .placeholder(R.drawable.image_user_holder)
+                    .error(R.drawable.message_placeholder_ic)
+                    .into(holder.iv_user_image);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.message_placeholder_ic)
+                    .into(holder.iv_user_image);
+        }
 
         if(participant.getNickname().isEmpty()){
             holder.tv_nickname.setText("Chưa có biệt danh");

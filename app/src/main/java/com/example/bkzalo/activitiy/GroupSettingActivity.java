@@ -1,5 +1,6 @@
 package com.example.bkzalo.activitiy;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -38,10 +40,19 @@ import com.example.bkzalo.models.Room;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
 import com.example.bkzalo.utils.PathUtil;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
+import java.util.Random;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -68,6 +79,8 @@ public class GroupSettingActivity extends AppCompatActivity {
     private final int FRIEND_MODE = 3;
     private final int STRANGER_MODE = 4;
     private Socket socket;
+    private String mImage_name = "";
+    private String mImage_url = "";
 
 
     @Override
@@ -83,7 +96,6 @@ public class GroupSettingActivity extends AppCompatActivity {
             mType = intent.getStringExtra("type");
             USER_ID = intent.getIntExtra("user_id", 0);
         }
-
 
         AnhXa();
         InitSocketIO();
@@ -374,12 +386,17 @@ public class GroupSettingActivity extends AppCompatActivity {
             ll_private_all.setVisibility(View.VISIBLE);
             ll_group_all.setVisibility(View.GONE);
 
-            String image_path = Constant.SERVER_URL + "image/image_user/" + image;
-
-            Picasso.get()
-                    .load(image_path)
-                    .placeholder(R.drawable.message_placeholder_ic)
-                    .into(iv_user_image);
+            if(!room.getImage_url().isEmpty()){
+                Picasso.get()
+                        .load(room.getImage_url())
+                        .placeholder(R.drawable.image_user_holder)
+                        .error(R.drawable.message_placeholder_ic)
+                        .into(iv_user_image);
+            }else{
+                Picasso.get()
+                        .load(R.drawable.message_placeholder_ic)
+                        .into(iv_user_image);
+            }
         }else {
 
             ll_private_all.setVisibility(View.GONE);
@@ -390,12 +407,20 @@ public class GroupSettingActivity extends AppCompatActivity {
                 cv_group_icon.setVisibility(View.GONE);
                 iv_user_image.setVisibility(View.VISIBLE);
 
-                String image_path = Constant.SERVER_URL + "image/image_room/" + image;
+                mImage_name = image;
+                mImage_url = room.getImage_url();
 
-                Picasso.get()
-                        .load(image_path)
-                        .placeholder(R.drawable.message_placeholder_ic)
-                        .into(iv_user_image);
+                if(!mImage_url.isEmpty()){
+                    Picasso.get()
+                            .load(mImage_url)
+                            .placeholder(R.drawable.image_user_holder)
+                            .error(R.drawable.message_placeholder_ic)
+                            .into(iv_user_image);
+                }else{
+                    Picasso.get()
+                            .load(R.drawable.message_placeholder_ic)
+                            .into(iv_user_image);
+                }
             }else {
                 //group with default image
                 cv_group_icon.setVisibility(View.VISIBLE);
@@ -515,19 +540,60 @@ public class GroupSettingActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
 
-                Uri uri = data.getData();
-
-                File file;
-
-                try{
-                    String filePath = PathUtil.getPath(this, uri);
-                    file = new File(filePath);
-                }catch (Exception e){
-                    Toast.makeText(this, "Không thể sử dụng ảnh này, vui lòng chọn lại!", Toast.LENGTH_SHORT).show();
-                    return;
+                //delete
+                if(!mImage_name.isEmpty()){
+                    StorageReference filePath2 = FirebaseStorage.getInstance().getReference().child("room_image").child(mImage_name);
+                    filePath2.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // File deleted successfully
+                            Log.e("firebasestorage", "onSuccess: deleted file");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Uh-oh, an error occurred!
+                            Log.e("firebasestorage", "onFailure: did not delete file");
+                        }
+                    });
                 }
 
-                ChangeGroupImage(file);
+
+                //add
+                Uri imageUri = data.getData();
+
+                Random rnd = new Random();
+                int rand = 100000 + rnd.nextInt(900000);
+
+                String file_name = methods.getFileName(imageUri);
+                String iimage_name = "IMG_ROOM_" + rand + "_" +file_name;
+                StorageReference filePath = FirebaseStorage.getInstance().getReference().child("room_image").child(iimage_name);
+
+                Toast.makeText(this, "Đang tải ảnh lên, vui lòng kiên nhẫn!", Toast.LENGTH_SHORT).show();
+
+                filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        final Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                        firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                mImage_name = iimage_name;
+                                mImage_url = uri.toString();
+
+                                Toast.makeText(GroupSettingActivity.this, "Tải ảnh lên thành công!", Toast.LENGTH_SHORT).show();
+
+                                ChangeGroupImage();
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        String err = e.getMessage();
+                        Toast.makeText(GroupSettingActivity.this, "Đã có lỗi xảy ra, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         }else if(requestCode == 2){
@@ -539,12 +605,14 @@ public class GroupSettingActivity extends AppCompatActivity {
         }
     }
 
-    private void ChangeGroupImage(File file){
+    private void ChangeGroupImage(){
         Bundle bundle = new Bundle();
         bundle.putInt("room_id", ROOM_ID);
         bundle.putInt("user_id", Constant.UID);
+        bundle.putString("image_name", mImage_name);
+        bundle.putString("image_url", mImage_url);
 
-        RequestBody requestBody = methods.getRequestBody("method_change_group_image", bundle, file);
+        RequestBody requestBody = methods.getRequestBody("method_change_group_image", bundle, null);
 
         SendMessageListener listener = new SendMessageListener() {
 
@@ -553,7 +621,10 @@ public class GroupSettingActivity extends AppCompatActivity {
                 if(methods.isNetworkConnected()){
                     if(status){
 
-                        Picasso.get().load(DocumentFile.fromFile(file).getUri()).into(iv_user_image);
+                        Picasso.get()
+                                .load(mImage_url)
+                                .placeholder(R.drawable.image_user_holder)
+                                .into(iv_user_image);
 
                         String json = new Gson().toJson(message);
                         socket.emit("new message", json);

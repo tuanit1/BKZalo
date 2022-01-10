@@ -54,9 +54,12 @@ public class ImageMessageAdapter extends RecyclerView.Adapter<ImageMessageAdapte
 
         Message message = arrayList_message.get(position);
 
-        String img_path = Constant.SERVER_URL + "image/image_message/" + message.getMessage();
+        String img_path = message.getMessage();
 
-        Picasso.get().load(img_path).into(holder.imageView);
+        Picasso.get().load(img_path)
+                .placeholder(R.drawable.image_msg_holder)
+                .error(R.drawable.image_msg_err)
+                .into(holder.imageView);
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

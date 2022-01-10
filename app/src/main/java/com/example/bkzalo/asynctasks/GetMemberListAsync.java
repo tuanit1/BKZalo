@@ -49,7 +49,7 @@ public class GetMemberListAsync extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
-            String api_url = Constant.SERVER_URL+"api.php";
+            String api_url = Constant.SERVER_URL;
 
             //result is json_string
             String result = JsonUtils.okhttpPost(api_url, requestBody);
@@ -91,6 +91,8 @@ public class GetMemberListAsync extends AsyncTask<Void, String, Boolean> {
 
                 String image = obj.getString("image");
 
+                String image_url = obj.getString("image_url");
+
                 String date_string = obj.getString("birthday");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date birthday = sdf.parse(date_string);
@@ -103,7 +105,7 @@ public class GetMemberListAsync extends AsyncTask<Void, String, Boolean> {
 
                 boolean isOnline = obj.getInt("isOnline")==0?false:true;
 
-                User user = new User(id, name, image, birthday, phone, bio, email, isOnline);
+                User user = new User(id, name, image, image_url, birthday, phone, bio, email, isOnline);
 
                 arrayList_user.add(user);
 

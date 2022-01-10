@@ -252,7 +252,7 @@ public class AddMemberActivity extends AppCompatActivity {
     private void SetAdapter() {
 
         for(User u : arrayList_friend){
-            arrayList_checklist.add(new UserSelect(u.getId(), u.getName(), u.getPhone(), u.getImage(), false));
+            arrayList_checklist.add(new UserSelect(u.getId(), u.getName(), u.getPhone(), u.getImage_url(), false));
         }
 
         UserSelectListener listener = new UserSelectListener() {

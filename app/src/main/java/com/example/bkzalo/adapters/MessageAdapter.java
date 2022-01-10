@@ -97,12 +97,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
             if(msg.getUser_id() != Constant.UID){
 
-                String img_path = Constant.SERVER_URL + "image/image_user/" + msg.getImage();
+                String img_path = msg.getImage();
 
-                Picasso.get()
-                        .load(img_path)
-                        .placeholder(R.drawable.message_placeholder_ic)
-                        .into(holder.iv_user_image);
+                if(!img_path.isEmpty()){
+                    Picasso.get()
+                            .load(img_path)
+                            .placeholder(R.drawable.image_user_holder)
+                            .error(R.drawable.message_placeholder_ic)
+                            .into(holder.iv_user_image);
+                }else{
+                    Picasso.get()
+                            .load(R.drawable.message_placeholder_ic)
+                            .into(holder.iv_user_image);
+                }
 
                 if(msg.getNickname().equals("")){
                     holder.tv_name.setText(msg.getName());
@@ -187,7 +194,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                     holder.iv_img_message.setVisibility(View.VISIBLE);
                     holder.cv_remove.setVisibility(View.GONE);
 
-                    String img_path = Constant.SERVER_URL + "image/image_message/" + msg.getMessage();
+                    String img_path = msg.getMessage();
 
                     if(msg.getUser_id() == Constant.UID){
                         holder.iv_img_message.setOnLongClickListener(new View.OnLongClickListener() {
@@ -218,6 +225,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
                     Picasso.get()
                             .load(img_path)
+                            .placeholder(R.drawable.image_msg_holder)
+                            .error(R.drawable.image_msg_err)
                             .into(holder.iv_img_message);
 
                     holder.iv_img_message.setOnClickListener(new View.OnClickListener() {
@@ -232,12 +241,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
             if(msg.getUser_id() != Constant.UID){
 
-                String img_path = Constant.SERVER_URL + "image/image_user/" + msg.getImage();
+                String img_path = msg.getImage();
 
-                Picasso.get()
-                        .load(img_path)
-                        .placeholder(R.drawable.message_placeholder_ic)
-                        .into(holder.iv_user_image);
+                if(!img_path.isEmpty()){
+                    Picasso.get()
+                            .load(img_path)
+                            .placeholder(R.drawable.image_user_holder)
+                            .error(R.drawable.message_placeholder_ic)
+                            .into(holder.iv_user_image);
+                }else{
+                    Picasso.get()
+                            .load(R.drawable.message_placeholder_ic)
+                            .into(holder.iv_user_image);
+                }
 
                 if(msg.getNickname().equals("")){
                     holder.tv_name.setText(msg.getName());

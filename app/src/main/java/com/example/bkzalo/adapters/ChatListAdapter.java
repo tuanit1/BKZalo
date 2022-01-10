@@ -113,12 +113,19 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
                 name = parti.getNickname();
             }
 
-            String image_path = Constant.SERVER_URL + "image/image_user/" + user.getImage();
+            String image_path = user.getImage_url();
 
-            Picasso.get()
-                    .load(image_path)
-                    .placeholder(R.drawable.message_placeholder_ic)
-                    .into(holder.img_private);
+            if(!image_path.isEmpty()){
+                Picasso.get()
+                        .load(image_path)
+                        .placeholder(R.drawable.image_user_holder)
+                        .error(R.drawable.message_placeholder_ic)
+                        .into(holder.img_private);
+            }else{
+                Picasso.get()
+                        .load(R.drawable.message_placeholder_ic)
+                        .into(holder.img_private);
+            }
 
             holder.rv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,6 +133,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
                     listener.onClick(room.getId(), user.getId(),"private");
                 }
             });
+
         }else {
 
             //group
@@ -140,12 +148,20 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
                 holder.img_group.setVisibility(View.GONE);
                 holder.img_private.setVisibility(View.VISIBLE);
 
-                String image_path = Constant.SERVER_URL + "image/image_room/" + room.getImage();
+                String image_path = room.getImage_url();
 
-                Picasso.get()
-                        .load(image_path)
-                        .placeholder(R.drawable.message_placeholder_ic)
-                        .into(holder.img_private);
+                if(!image_path.isEmpty()){
+                    Picasso.get()
+                            .load(image_path)
+                            .placeholder(R.drawable.image_user_holder)
+                            .error(R.drawable.message_placeholder_ic)
+                            .into(holder.img_private);
+                }else{
+                    Picasso.get()
+                            .load(R.drawable.message_placeholder_ic)
+                            .into(holder.img_private);
+                }
+
             }else {
 
                 //group default image

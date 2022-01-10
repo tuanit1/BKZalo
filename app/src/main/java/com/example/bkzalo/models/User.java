@@ -16,6 +16,7 @@ public class User implements Serializable {
     private int id;
     private String name;
     private String image;
+    private String image_url;
     private Date birthday;
     private String phone;
     private String bio;
@@ -39,10 +40,11 @@ public class User implements Serializable {
     }
 
 
-    public User(int id, String name, String image, Date birthday, String phone,  String bio, String email, boolean isOnline ) {
+    public User(int id, String name, String image, String image_url, Date birthday, String phone, String bio, String email, boolean isOnline) {
         this.id = id;
         this.name = name;
         this.image = image;
+        this.image_url = image_url;
         this.birthday = birthday;
         this.phone = phone;
         this.bio = bio;
@@ -50,7 +52,13 @@ public class User implements Serializable {
         this.isOnline = isOnline;
     }
 
+    public String getImage_url() {
+        return image_url;
+    }
 
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
 
     public int getId() {
         return id;

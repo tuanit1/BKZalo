@@ -9,18 +9,23 @@
 
 package com.example.bkzalo.activitiy;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,18 +52,33 @@ import com.example.bkzalo.models.Participant;
 import com.example.bkzalo.models.Relationship;
 import com.example.bkzalo.models.Room;
 import com.example.bkzalo.utils.Constant;
+import com.example.bkzalo.utils.EndlessRecyclerViewScrollListener;
 import com.example.bkzalo.utils.Methods;
 import com.example.bkzalo.utils.PathUtil;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
 
 import okhttp3.RequestBody;
 
@@ -66,6 +86,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private ImageView iv_back, iv_room_image, iv_option, iv_send_media, iv_send_btn;
     private CardView cv_group_icon, cv_send;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout ll_for_blocker, ll_for_blocked;
     private RecyclerView rv_chat;
     private TextView tv_name, tv_name_group, tv_unblock;
@@ -78,7 +99,11 @@ public class ChatActivity extends AppCompatActivity {
     private int ROOM_ID;
     private int USER_ID;
     private String mType;
+    private String image_url = "";
     private final int PICK_IMAGE_CODE = 1;
+    private int page = 0;
+    private int step = 20;
+    private int crr_add = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +128,10 @@ public class ChatActivity extends AppCompatActivity {
             InitBlock();
         }
 
+        SetAdapter();
         LoadGetRoom();
         InitSocketIO();
-        LoadMessages();
+        LoadMessages(true);
 
     }
 
@@ -149,9 +175,9 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mType.equals("private")){
-                    CheckBlock("text", null, 0);
+                    CheckBlock("text", 0);
                 }else {
-                    SendMessage("text", null);
+                    SendMessage("text");
                 }
 
             }
@@ -164,6 +190,15 @@ public class ChatActivity extends AppCompatActivity {
         edt_message = findViewById(R.id.edt_message);
         cv_group_icon = findViewById(R.id.cv_group_icon);
 
+        swipeRefreshLayout = findViewById(R.id.swipelayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                LoadMessages(false);
+
+            }
+        });
+
     }
 
     @Override
@@ -172,24 +207,39 @@ public class ChatActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
 
-                Uri uri = data.getData();
+                Uri imageUri = data.getData();
 
-                File file;
+                Random rnd = new Random();
+                int rand = 100000 + rnd.nextInt(900000);
 
-                try{
-                    String filePath = PathUtil.getPath(this, uri);
-                    file = new File(filePath);
-                }catch (Exception e){
-                    Toast.makeText(this, "Không thể sử dụng ảnh này, vui lòng chọn lại!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                String file_name = methods.getFileName(imageUri);
+                String image_name = "IMG_MSG_" + rand + "_" +file_name;
+                StorageReference filePath = FirebaseStorage.getInstance().getReference().child("message_image").child(image_name);
 
-                if(mType.equals("private")){
-                    CheckBlock("image", file, 0);
-                }else {
-                    SendMessage("image", file);
-                }
+                filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        final Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                        firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                image_url = uri.toString();
 
+                                if(mType.equals("private")){
+                                    CheckBlock("image", 0);
+                                }else {
+                                    SendMessage("image");
+                                }
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        String err = e.getMessage();
+                        Toast.makeText(ChatActivity.this, "Đã có lỗi xảy ra, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         }else if(requestCode == 2){
@@ -199,7 +249,9 @@ public class ChatActivity extends AppCompatActivity {
                     InitBlock();
                 }
                 LoadGetRoom();
-                LoadMessages();
+                page = 0;
+                crr_add = 0;
+                LoadMessages(false);
             }
 
         }
@@ -249,12 +301,18 @@ public class ChatActivity extends AppCompatActivity {
             cv_group_icon.setVisibility(View.GONE);
             iv_room_image.setVisibility(View.VISIBLE);
 
-            String image_path = Constant.SERVER_URL + "image/image_user/" + mImage;
+            if(!room.getImage_url().isEmpty()){
+                Picasso.get()
+                        .load(room.getImage_url())
+                        .placeholder(R.drawable.image_user_holder)
+                        .error(R.drawable.message_placeholder_ic)
+                        .into(iv_room_image);
+            }else{
+                Picasso.get()
+                        .load(R.drawable.message_placeholder_ic)
+                        .into(iv_room_image);
+            }
 
-            Picasso.get()
-                    .load(image_path)
-                    .placeholder(R.drawable.message_placeholder_ic)
-                    .into(iv_room_image);
         }else {
 
             if(!mImage.equals("")){
@@ -262,12 +320,17 @@ public class ChatActivity extends AppCompatActivity {
                 cv_group_icon.setVisibility(View.GONE);
                 iv_room_image.setVisibility(View.VISIBLE);
 
-                String image_path = Constant.SERVER_URL + "image/image_room/" + mImage;
-
-                Picasso.get()
-                        .load(image_path)
-                        .placeholder(R.drawable.message_placeholder_ic)
-                        .into(iv_room_image);
+                if(!room.getImage_url().isEmpty()){
+                    Picasso.get()
+                            .load(room.getImage_url())
+                            .placeholder(R.drawable.image_user_holder)
+                            .error(R.drawable.message_placeholder_ic)
+                            .into(iv_room_image);
+                }else{
+                    Picasso.get()
+                            .load(R.drawable.message_placeholder_ic)
+                            .into(iv_room_image);
+                }
             }else {
                 //group with default image
                 cv_group_icon.setVisibility(View.VISIBLE);
@@ -297,7 +360,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(mType.equals("private")){
-                    CheckBlock("option", null, 0);
+                    CheckBlock("option", 0);
                 }else {
                     Intent intent1 = new Intent(ChatActivity.this, GroupSettingActivity.class);
                     intent1.putExtra("room_id", ROOM_ID);
@@ -372,6 +435,7 @@ public class ChatActivity extends AppCompatActivity {
                             arrayList_message.add(message);
                             adapter.notifyDataSetChanged();
                             rv_chat.smoothScrollToPosition(arrayList_message.size());
+                            crr_add++;
 
                             SeenMessage(message);
                         }
@@ -395,6 +459,8 @@ public class ChatActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                         rv_chat.smoothScrollToPosition(arrayList_message.size());
 
+                        crr_add++;
+
                         SeenMessage(message);
                     }
                 }
@@ -415,6 +481,8 @@ public class ChatActivity extends AppCompatActivity {
                         arrayList_message.add(message);
                         adapter.notifyDataSetChanged();
                         rv_chat.smoothScrollToPosition(arrayList_message.size());
+
+                        crr_add++;
 
                         SeenMessage(message);
                     }
@@ -515,22 +583,21 @@ public class ChatActivity extends AppCompatActivity {
         }
     };
 
-    private void SendMessage(String type, File file){
+    private void SendMessage(String type){
 
         if(!(edt_message.getText().toString().isEmpty() && type.equals("text"))){
             Bundle bundle = new Bundle();
             bundle.putInt("user_id", Constant.UID);
             bundle.putInt("room_id",ROOM_ID);
             bundle.putString("type", type);
-            bundle.putString("message", edt_message.getText().toString());
 
             if(type.equals("image")){
-                bundle.putString("is_send_image", "true");
+                bundle.putString("message", image_url);
             }else {
-                bundle.putString("is_send_image", "false");
+                bundle.putString("message", edt_message.getText().toString());
             }
 
-            RequestBody requestBody = methods.getRequestBody("method_send_message", bundle, file);
+            RequestBody requestBody = methods.getRequestBody("method_send_message", bundle, null);
 
             SendMessageListener listener = new SendMessageListener() {
 
@@ -558,31 +625,46 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void LoadMessages(){
+    private void LoadMessages(boolean isFirstSeen){
 
         Bundle bundle = new Bundle();
         bundle.putInt("room_id", ROOM_ID);
         bundle.putInt("user_id", Constant.UID);
+        bundle.putInt("step", step);
+        bundle.putInt("page", page);
+        bundle.putInt("crr_add", crr_add);
 
         RequestBody requestBody = methods.getRequestBody("method_get_messages", bundle, null);
 
         LoadMessagesListener listener = new LoadMessagesListener() {
             @Override
             public void onStart() {
-                arrayList_message.clear();
-                progressBar.setVisibility(View.VISIBLE);
+                if(isFirstSeen){
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+
             }
 
             @Override
             public void onEnd(boolean status, ArrayList<Message> array_message) {
                 if(methods.isNetworkConnected()){
                     if(status){
-                        arrayList_message.addAll(array_message);
+                        if(!array_message.isEmpty()){
+                            arrayList_message.addAll(0,array_message);
+                            adapter.notifyItemRangeInserted(0, step);
 
+                            page++;
+
+                            if(isFirstSeen){
+                                FirstSeen();
+                            }
+                        }else{
+                            Toast.makeText(ChatActivity.this, "Không còn tin nhắn nào!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        swipeRefreshLayout.setRefreshing(false);
                         progressBar.setVisibility(View.GONE);
 
-                        SetAdapter();
-                        FirstSeen();
                     }else {
                         Toast.makeText(ChatActivity.this, "Lỗi server!", Toast.LENGTH_SHORT).show();
                     }
@@ -599,6 +681,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void SetAdapter() {
+
         adapter = new MessageAdapter(arrayList_message, new ClickChatItemListener() {
 
             @Override
@@ -612,7 +695,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onRemove(int message_id) {
                 if(mType.equals("private")){
-                    CheckBlock("remove", null, message_id);
+                    CheckBlock("remove", message_id);
                 }else {
                     RemoveMessage(message_id);
                 }
@@ -627,7 +710,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void FirstSeen(){
-
         for(Message m : arrayList_message){
             if(!m.isSeen()){
                 SeenMessage(m);
@@ -682,7 +764,7 @@ public class ChatActivity extends AppCompatActivity {
         async.execute();
     }
 
-    private void CheckBlock(String type , File file, int message_id){
+    private void CheckBlock(String type, int message_id){
         Bundle bundle = new Bundle();
         bundle.putInt("user_id", USER_ID);
         bundle.putInt("admin_id", Constant.UID);
@@ -711,7 +793,7 @@ public class ChatActivity extends AppCompatActivity {
                             switch (type){
                                 case "text":
                                 case "image":
-                                    SendMessage(type, file);
+                                    SendMessage(type);
                                     break;
                                 case "option":
                                     Intent intent1 = new Intent(ChatActivity.this, GroupSettingActivity.class);

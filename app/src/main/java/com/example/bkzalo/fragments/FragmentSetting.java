@@ -126,12 +126,19 @@ public class FragmentSetting extends Fragment {
         });
 
         imv_user_setting = view.findViewById(R.id.imv_user_setting);
-        String image_path = Constant.SERVER_URL + "image/image_user/" + Constant.IMAGE;
+        String image_path = Constant.IMAGE;
 
-        Picasso.get()
-                .load(image_path)
-                .placeholder(R.drawable.message_placeholder_ic)
-                .into(imv_user_setting);
+        if(!image_path.isEmpty()){
+            Picasso.get()
+                    .load(image_path)
+                    .placeholder(R.drawable.image_user_holder)
+                    .error(R.drawable.message_placeholder_ic)
+                    .into(imv_user_setting);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.message_placeholder_ic)
+                    .into(imv_user_setting);
+        }
     }
 
     private void SignOut()
@@ -180,7 +187,7 @@ public class FragmentSetting extends Fragment {
                         Constant.UID = user.getId();
                         Constant.PHONE = user.getPhone();
                         Constant.NAME = user.getName();
-                        Constant.IMAGE = user.getImage();
+                        Constant.IMAGE = user.getImage_url();
                     }else {
                         Constant.UID = 0;
                     }

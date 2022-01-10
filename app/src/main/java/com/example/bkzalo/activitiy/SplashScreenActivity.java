@@ -50,6 +50,7 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
+import kotlin.jvm.Synchronized;
 import okhttp3.RequestBody;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -124,7 +125,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }, 2800);
 
             }
-
+            @Synchronized
             private void GoogleLogin(String idtoken)
             {
                 AuthCredential credential = GoogleAuthProvider.getCredential(idtoken, null);
@@ -137,7 +138,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                                     String email = preferences2.getString("emailgg", "");
                                     GetUIDFB_GG(email, methods);
                                 } else {
-                                    task.getException();
+                                    Exception e = task.getException();
+                                    String err = e.getMessage();
+
+                                    Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                                    startActivity(intent);
                                 }
                             }
                         });
@@ -242,7 +247,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         Constant.UID = user.getId();
                         Constant.PHONE = user.getPhone();
                         Constant.NAME = user.getName();
-                        Constant.IMAGE = user.getImage();
+                        Constant.IMAGE = user.getImage_url();
                     }else {
                         Constant.UID = 0;
                     }
@@ -290,7 +295,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         Constant.UID = user.getId();
                         Constant.PHONE = user.getPhone();
                         Constant.NAME = user.getName();
-                        Constant.IMAGE = user.getImage();
+                        Constant.IMAGE = user.getImage_url();
                     }else {
                         Constant.UID = 0;
                     }

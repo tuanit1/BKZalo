@@ -46,7 +46,7 @@ public class LoadGetRoomAsync extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         try{
-            String api_url = Constant.SERVER_URL+"api.php";
+            String api_url = Constant.SERVER_URL;
 
             //result is json_string
             String result = JsonUtils.okhttpPost(api_url, requestBody);
@@ -65,11 +65,13 @@ public class LoadGetRoomAsync extends AsyncTask<Void, String, Boolean> {
 
             String image = obj.getString("image");
 
+            String image_url = obj.getString("image_url");
+
             String background = obj.getString("background");
 
             String type = obj.getString("type");
 
-            room = new Room(id, name, image, background, type);
+            room = new Room(id, name, image, image_url, background, type);
 
             //participant
             JSONArray jsonArray_par = jsonObject.getJSONArray("array_participant");

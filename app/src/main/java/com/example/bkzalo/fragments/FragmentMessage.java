@@ -10,6 +10,7 @@
 package com.example.bkzalo.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -50,6 +51,9 @@ import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -273,10 +277,17 @@ public class FragmentMessage extends Fragment {
             public void onEnd(boolean status, User user) {
                 if(methods.isNetworkConnected()){
                     if(status){
-                        Picasso.get()
-                                .load(Constant.SERVER_URL + "image/image_user/" + user.getImage())
-                                .placeholder(R.drawable.message_placeholder_ic)
-                                .into(iv_user);
+                        if(!user.getImage_url().isEmpty()){
+                            Picasso.get()
+                                    .load(user.getImage_url())
+                                    .placeholder(R.drawable.image_user_holder)
+                                    .error(R.drawable.message_placeholder_ic)
+                                    .into(iv_user);
+                        }else{
+                            Picasso.get()
+                                    .load(R.drawable.message_placeholder_ic)
+                                    .into(iv_user);
+                        }
                     }else {
                         Toast.makeText(getContext(), "Lỗi Server", Toast.LENGTH_SHORT).show();
                     }
@@ -317,8 +328,6 @@ public class FragmentMessage extends Fragment {
             public void onEnd(boolean status, ArrayList<Participant> array_parti, ArrayList<Room> array_room , ArrayList<User> array_user, ArrayList<Message> array_message) {
                 if(methods.isNetworkConnected()){
                     if(status){
-
-
 
                         arrayList_parti.addAll(array_parti);
                         arrayList_user.addAll(array_user);

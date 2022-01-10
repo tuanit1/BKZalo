@@ -100,12 +100,19 @@ public class Profile_PB_Activity extends AppCompatActivity {
             tv_phone_pf.setText(user.getPhone());
             tv_email_pf.setText(user.getEmail());
 
-            String image_path = Constant.SERVER_URL + "image/image_user/" + user.getImage();
+            String image_path = user.getImage_url();
 
-            Picasso.get()
-                    .load(image_path)
-                    .placeholder(R.drawable.message_placeholder_ic)
-                    .into(imv_user_pf);
+            if(!image_path.isEmpty()){
+                Picasso.get()
+                        .load(image_path)
+                        .placeholder(R.drawable.image_user_holder)
+                        .error(R.drawable.message_placeholder_ic)
+                        .into(imv_user_pf);
+            }else{
+                Picasso.get()
+                        .load(R.drawable.message_placeholder_ic)
+                        .into(imv_user_pf);
+            }
 
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
             Date bday = user.getBirthday();

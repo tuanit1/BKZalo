@@ -58,12 +58,19 @@ public class BlockListAdapter extends RecyclerView.Adapter<BlockListAdapter.MyVi
 
         holder.tv_namefri.setText(user.getName());
 
-        String image_url = Constant.SERVER_URL + "image/image_user/" + user.getImage();
+        String image_path = user.getImage_url();
 
-        Picasso.get()
-                .load(image_url)
-                .placeholder(R.drawable.message_placeholder_ic)
-                .into(holder.iview_user_image);
+        if(!image_path.isEmpty()){
+            Picasso.get()
+                    .load(image_path)
+                    .placeholder(R.drawable.image_user_holder)
+                    .error(R.drawable.message_placeholder_ic)
+                    .into(holder.iview_user_image);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.message_placeholder_ic)
+                    .into(holder.iview_user_image);
+        }
 
         holder.llout_item.setOnClickListener(new View.OnClickListener() {
             @Override

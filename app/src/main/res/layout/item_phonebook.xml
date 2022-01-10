@@ -15,23 +15,20 @@
     android:orientation="horizontal"
     android:layout_marginLeft="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="90dp"
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imv_phonebook"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        app:cardBackgroundColor="@color/main_blue">
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imv_phonebook"
-            android:layout_margin="1dp"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:riv_corner_radius="40dp"
-            android:src="@drawable/message_placeholder_ic"/>
-    </androidx.cardview.widget.CardView>
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:riv_corner_radius="90dp"
+        android:scaleType="centerCrop"
+        app:riv_border_width="2dp"
+        app:riv_border_color="@color/main_blue"
+        android:src="@drawable/message_placeholder_ic"/>
 
     <LinearLayout
         android:layout_width="250dp"

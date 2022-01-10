@@ -53,12 +53,14 @@ public class SearchMessageAdapter extends RecyclerView.Adapter<SearchMessageAdap
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Message msg = arrayList_message.get(position);
 
-        String img_path = Constant.SERVER_URL + "image/image_user/" + msg.getImage();
+        String img_path = msg.getImage();
 
-        Picasso.get()
-                .load(img_path)
-                .placeholder(R.drawable.message_placeholder_ic)
-                .into(holder.iv_user_image);
+        if(!img_path.isEmpty()){
+            Picasso.get()
+                    .load(img_path)
+                    .placeholder(R.drawable.message_placeholder_ic)
+                    .into(holder.iv_user_image);
+        }
 
         holder.tv_msg.setText(msg.getMessage());
 

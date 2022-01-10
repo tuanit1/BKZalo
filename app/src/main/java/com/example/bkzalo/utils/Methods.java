@@ -10,9 +10,15 @@
 package com.example.bkzalo.utils;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.JsonObject;
 
 import java.io.File;
@@ -33,12 +39,33 @@ public class Methods {
 
     private final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/*");
 
-
     public boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
+
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
 
     public RequestBody getRequestBody(String method_name, Bundle bundle, File file){
 
@@ -100,23 +127,31 @@ public class Methods {
         }
 
         if(method_name.equals("method_add_group")){
-            isImageChange = bundle.getBoolean("is_change_image");
             int admin_id = bundle.getInt("admin_id");
             String json_member_id = bundle.getString("json_member_id");
             String group_name = bundle.getString("group_name");
+            String image_name = bundle.getString("image_name");
+            String image_url = bundle.getString("image_url");
 
             postObj.addProperty("admin_id", admin_id);
             postObj.addProperty("json_member_id", json_member_id);
             postObj.addProperty("group_name", group_name);
-            postObj.addProperty("is_change_image", isImageChange?"true":"false");
+            postObj.addProperty("image_name", image_name);
+            postObj.addProperty("image_url", image_url);
         }
 
         if(method_name.equals("method_get_messages")){
             int room_id = bundle.getInt("room_id");
             int user_id = bundle.getInt("user_id");
+            int page = bundle.getInt("page");
+            int crr_add = bundle.getInt("crr_add");
+            int step = bundle.getInt("step");
 
             postObj.addProperty("room_id", room_id);
             postObj.addProperty("user_id", user_id);
+            postObj.addProperty("page", page);
+            postObj.addProperty("crr_add", crr_add);
+            postObj.addProperty("step", step);
         }
 
         if(method_name.equals("method_send_message")){
@@ -124,17 +159,11 @@ public class Methods {
             int room_id = bundle.getInt("room_id");
             String type = bundle.getString("type");
             String message = bundle.getString("message");
-            String is_send_image = bundle.getString("is_send_image");
-
-            if(is_send_image.equals("true")){
-                isImageChange = true;
-            }
 
             postObj.addProperty("user_id", user_id);
             postObj.addProperty("room_id", room_id);
             postObj.addProperty("type", type);
             postObj.addProperty("message", message);
-            postObj.addProperty("is_send_image", is_send_image);
         }
 
         if(method_name.equals("method_remove_message")){
@@ -178,12 +207,15 @@ public class Methods {
         }
 
         if(method_name.equals("method_change_group_image")){
-            isImageChange = true;
             int room_id = bundle.getInt("room_id");
             int user_id = bundle.getInt("user_id");
+            String image_name = bundle.getString("image_name");
+            String image_url = bundle.getString("image_url");
 
             postObj.addProperty("room_id", room_id);
             postObj.addProperty("user_id", user_id);
+            postObj.addProperty("image_name", image_name);
+            postObj.addProperty("image_url", image_url);
         }
 
         if(method_name.equals("method_get_group_unmember")){
@@ -428,9 +460,12 @@ public class Methods {
         }
 
         if(method_name.equals("method_update_profile_image")){
-            isImageChange = true;
             int uid = bundle.getInt("uid");
+            String image = bundle.getString("image");
+            String image_url = bundle.getString("image_url");
             postObj.addProperty("uid", uid);
+            postObj.addProperty("image", image);
+            postObj.addProperty("image_url", image_url);
         }
 
         String post_data = postObj.toString();

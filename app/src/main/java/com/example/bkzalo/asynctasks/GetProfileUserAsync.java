@@ -45,7 +45,7 @@ public class GetProfileUserAsync extends AsyncTask<Void, String, Boolean> {
     protected Boolean doInBackground(Void... voids) {
 
         try{
-            String api_url = Constant.SERVER_URL+"api.php";
+            String api_url = Constant.SERVER_URL;
 
             //result is json_string
             String result = JsonUtils.okhttpPost(api_url, requestBody);
@@ -61,6 +61,8 @@ public class GetProfileUserAsync extends AsyncTask<Void, String, Boolean> {
             String name = object.getString("name");
             String image = object.getString("image");
 
+            String image_url = object.getString("image_url");
+
             //boolean table = object.getInt("boolean") == 1 ? true : false;
 
             String date_string = object.getString("birthday");
@@ -74,7 +76,7 @@ public class GetProfileUserAsync extends AsyncTask<Void, String, Boolean> {
 
             boolean isOnline = object.getInt("isOnline") == 1 ? true : false;
 
-            user = new User(id, name, image, birthday, phone, bio, email, isOnline);
+            user = new User(id, name, image, image_url, birthday, phone, bio, email, isOnline);
 
             return true;
 

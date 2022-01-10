@@ -42,7 +42,7 @@ public class GetUserRelationshipAsync extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
-            String api_url = Constant.SERVER_URL+"api.php";
+            String api_url = Constant.SERVER_URL;
 
             //result is json_string
             String result = JsonUtils.okhttpPost(api_url, requestBody);

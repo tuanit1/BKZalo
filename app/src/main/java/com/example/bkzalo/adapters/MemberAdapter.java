@@ -60,12 +60,19 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
         User user = arrayList_user.get(position);
         Participant participant = arrayList_parti.get(position);
 
-        String image_path = Constant.SERVER_URL + "image/image_user/" + user.getImage();
+        String image_path = user.getImage_url();
 
-        Picasso.get()
-                .load(image_path)
-                .placeholder(R.drawable.message_placeholder_ic)
-                .into(holder.img_user);
+        if(!image_path.isEmpty()){
+            Picasso.get()
+                    .load(image_path)
+                    .placeholder(R.drawable.image_user_holder)
+                    .error(R.drawable.message_placeholder_ic)
+                    .into(holder.img_user);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.message_placeholder_ic)
+                    .into(holder.img_user);
+        }
 
         holder.tv_name.setText(user.getName());
 

@@ -34,6 +34,7 @@ import com.example.bkzalo.listeners.ClickPhoneBookListener;
 import com.example.bkzalo.listeners.PhoneBookListListener;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
+import com.example.bkzalo.utils.LoadingDialog;
 import com.example.bkzalo.utils.Methods;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class FragmentPhonebook extends Fragment {
     private PhoneBookListAdapter adapter;
     private EditText edt_search;
     private ImageView singout;
+    private LoadingDialog loadingDialog;
 
 
     @Override
@@ -58,6 +60,7 @@ public class FragmentPhonebook extends Fragment {
         AnhXa();
 
         methods = new Methods(getContext());
+        loadingDialog = new LoadingDialog(getActivity(), "Đang tải dữ liệu!");
 
         arrayList_user = new ArrayList<>();
 
@@ -159,11 +162,13 @@ public class FragmentPhonebook extends Fragment {
         PhoneBookListListener listener = new PhoneBookListListener() {
             @Override
             public void onStart() {
+                loadingDialog.StartLoadingDialog();
                 arrayList_user.clear();
             }
 
             @Override
             public void onEnd(boolean status, ArrayList<User> arrayList) {
+                loadingDialog.DismissDialog();
                 if(methods.isNetworkConnected()){
                     if(status){
                         arrayList_user.addAll(arrayList);

@@ -86,12 +86,20 @@ public class PhoneBookListAdapter extends RecyclerView.Adapter<PhoneBookListAdap
             }
         });
 
-        String image_path = Constant.SERVER_URL + "image/image_user/" + user.getImage();
+        String image_path = user.getImage_url();
 
-        Picasso.get()
-                .load(image_path)
-                .placeholder(R.drawable.message_placeholder_ic)
-                .into(holder.imv_phonebook);
+        if(!image_path.isEmpty()){
+            Picasso.get()
+                    .load(image_path)
+                    .placeholder(R.drawable.image_user_holder)
+                    .error(R.drawable.message_placeholder_ic)
+                    .into(holder.imv_phonebook);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.message_placeholder_ic)
+                    .into(holder.imv_phonebook);
+        }
+
 
     }
 

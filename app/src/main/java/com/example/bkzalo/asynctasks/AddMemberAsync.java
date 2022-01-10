@@ -47,7 +47,7 @@ public class AddMemberAsync extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         try{
-            String api_url = Constant.SERVER_URL+"api.php";
+            String api_url = Constant.SERVER_URL;
 
             //result is json_string
             String result = JsonUtils.okhttpPost(api_url, requestBody);
@@ -72,7 +72,7 @@ public class AddMemberAsync extends AsyncTask<Void, String, Boolean> {
                 boolean isRemove = obj.getInt("isRemove") == 1;
                 boolean isSeen = obj.getInt("isSeen") == 1;
                 String name = obj.getString("name");
-                String image = obj.getString("image");
+                String image = obj.getString("image_url");
                 String nickname = obj.getString("nickname");
 
                 Message m = new Message(id, user_id, room_id, type, message, time, isRemove, isSeen, name, image, nickname);

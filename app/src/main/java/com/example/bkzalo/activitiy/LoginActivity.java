@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.example.bkzalo.asynctasks.GetUIDAsync;
 import com.example.bkzalo.listeners.GetUIDListener;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
+import com.example.bkzalo.utils.LoadingDialog;
 import com.example.bkzalo.utils.Methods;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -79,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences preferences1, preferences2;
     private CallbackManager mCallbackManager;
     private AccessToken accessToken;
+    private LoadingDialog loadingDialog;
 
 
     @Override
@@ -89,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         AnhXa();
 
         methods = new Methods(this);
+        loadingDialog = new LoadingDialog(this, "Vui lòng chờ trong giây lát!");
 
         preferences2 = getSharedPreferences("dataLogin", MODE_PRIVATE);
         preferences1 = getSharedPreferences("rememberLogin", MODE_PRIVATE);
@@ -115,6 +119,14 @@ public class LoginActivity extends AppCompatActivity {
         ic_google.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loadingDialog.StartLoadingDialog();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.DismissDialog();
+                    }
+                }, 5000);
                 GoogleLogin();
             }
         });
@@ -139,10 +151,20 @@ public class LoginActivity extends AppCompatActivity {
                 String password = edt_password.getText().toString().trim();
                 if (validateField(username, password))
                 {
+                    loadingDialog.StartLoadingDialog();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.DismissDialog();
+                        }
+                    }, 5000);
+
                     Login(username, password, mAuth, methods, preferences2);
                 }
                 else
                 {
+                    loadingDialog.DismissDialog();
                     return;
                 }
             }
@@ -288,6 +310,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.commit();
                             GetUIDGG_FB(email, methods);
                         } else {
+                            loadingDialog.DismissDialog();
                             task.getException();
                         }
                     }
@@ -408,7 +431,7 @@ public class LoginActivity extends AppCompatActivity {
                         Constant.UID = user.getId();
                         Constant.PHONE = user.getPhone();
                         Constant.NAME = user.getName();
-                        Constant.IMAGE = user.getImage();
+                        Constant.IMAGE = user.getImage_url();
                     }else {
                         Constant.UID = 0;
                     }
@@ -428,6 +451,7 @@ public class LoginActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(LoginActivity.this, "no internet", Toast.LENGTH_SHORT).show();
                 }
+                loadingDialog.DismissDialog();
             }
         };
 
@@ -456,7 +480,7 @@ public class LoginActivity extends AppCompatActivity {
                         Constant.UID = user.getId();
                         Constant.PHONE = user.getPhone();
                         Constant.NAME = user.getName();
-                        Constant.IMAGE = user.getImage();
+                        Constant.IMAGE = user.getImage_url();
                     }else {
                         Constant.UID = 0;
                     }
@@ -487,6 +511,7 @@ public class LoginActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(LoginActivity.this, "no internet", Toast.LENGTH_SHORT).show();
                 }
+                loadingDialog.DismissDialog();
             }
         };
 

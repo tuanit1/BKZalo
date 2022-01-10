@@ -63,12 +63,20 @@ public class SelectUserApdater extends RecyclerView.Adapter<SelectUserApdater.My
 
         holder.tv_phone.setText(user.getPhone());
 
-        String img_path = Constant.SERVER_URL + "image/image_user/" + user.getImage();
+        String image_path = user.getImage();
 
-        Picasso.get()
-                .load(img_path)
-                .placeholder(R.drawable.message_placeholder_ic)
-                .into(holder.imageview);
+        if(!image_path.isEmpty()){
+            Picasso.get()
+                    .load(image_path)
+                    .placeholder(R.drawable.image_user_holder)
+                    .error(R.drawable.message_placeholder_ic)
+                    .into(holder.imageview);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.message_placeholder_ic)
+                    .into(holder.imageview);
+        }
+
 
         holder.ckb.setChecked(user.isChecked());
         holder.ckb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

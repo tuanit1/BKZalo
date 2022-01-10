@@ -9,6 +9,7 @@
 
 package com.example.bkzalo.activitiy;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,12 +39,21 @@ import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
 import com.example.bkzalo.utils.PathUtil;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import okhttp3.RequestBody;
 
@@ -61,6 +71,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Date date_temp;
     private DatePickerDialog.OnDateSetListener DataSetListener;
     private final int PICK_IMAGE_CODE = 3;
+    private String crr_image = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,12 +124,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
         date_temp = user.getBirthday();
 
-        //String im = "http://192.168.1.9/bkzalo/image/image_user/tuan.jpg";
-        String image_url = Constant.SERVER_URL + "image/image_user/" + user.getImage();
+        String image_path = user.getImage_url();
+        crr_image = user.getImage();
 
-        Picasso.get()
-                .load(image_url)
-                .into(iv_user_image);
+        if(!image_path.isEmpty()){
+            Picasso.get()
+                    .load(image_path)
+                    .placeholder(R.drawable.image_user_holder)
+                    .error(R.drawable.message_placeholder_ic)
+                    .into(iv_user_image);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.message_placeholder_ic)
+                    .into(iv_user_image);
+        }
     }
 
     private void AnhXa(){
@@ -207,20 +226,36 @@ public class EditProfileActivity extends AppCompatActivity {
             switch (requestCode){
                 case PICK_IMAGE_CODE:
 
-                    Uri uri = data.getData();
+                    Uri imageUri = data.getData();
 
-                    File file;
+                    Random rnd = new Random();
+                    int rand = 100000 + rnd.nextInt(900000);
 
-                    try{
-                        String filePath = PathUtil.getPath(this, uri);
-                        file = new File(filePath);
+                    String file_name = methods.getFileName(imageUri);
+                    String image_name = "IMG_USER_" + rand + "_" +file_name;
+                    StorageReference filePath = FirebaseStorage.getInstance().getReference().child("user_image").child(image_name);
 
-                        UpdateImage(file, uri);
+                    Toast.makeText(this, "Đang xử lý, vui lòng kiên nhẫn!", Toast.LENGTH_SHORT).show();
 
-                    }catch (Exception e){
-                        Toast.makeText(this, "Không thể sử dụng ảnh này, vui lòng chọn lại!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            final Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                            firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    DeleteExistImage();
+                                    UpdateImage(image_name, uri.toString());
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull @NotNull Exception e) {
+                            String err = e.getMessage();
+                            Toast.makeText(EditProfileActivity.this, "Đã có lỗi xảy ra, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                     break;
             }
@@ -228,12 +263,31 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void UpdateImage(File file, Uri uri) {
+    private void DeleteExistImage() {
+        StorageReference filePath = FirebaseStorage.getInstance().getReference().child("user_image").child(crr_image);
+        filePath.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.e("firebasestorage", "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.e("firebasestorage", "onFailure: did not delete file");
+            }
+        });
+    }
+
+    private void UpdateImage(String image_name, String image_url) {
 
         Bundle bundle = new Bundle();
         bundle.putInt("uid", Constant.UID);
+        bundle.putString("image", image_name);
+        bundle.putString("image_url", image_url);
 
-        RequestBody requestBody = methods.getRequestBody("method_update_profile_image", bundle, file);
+        RequestBody requestBody = methods.getRequestBody("method_update_profile_image", bundle, null);
 
         ExecuteQueryListenerHuong listener = new ExecuteQueryListenerHuong() {
             @Override
@@ -247,9 +301,20 @@ public class EditProfileActivity extends AppCompatActivity {
                     if(status){
                         Toast.makeText(EditProfileActivity.this, "Cập nhập ảnh thành công!", Toast.LENGTH_SHORT).show();
 
-                        Picasso.get()
-                                .load(uri)
-                                .into(iv_user_image);
+                        crr_image = image_name;
+
+                        StorageReference filePath = FirebaseStorage.getInstance().getReference().child("user_image").child(image_name);
+                        filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri downloadUrl) {
+                                Picasso.get()
+                                        .load(downloadUrl.toString())
+                                        .placeholder(R.drawable.image_user_holder)
+                                        .error(R.drawable.message_placeholder_ic)
+                                        .into(iv_user_image);
+                            }
+                        });
+
 
                     }else {
                         Toast.makeText(EditProfileActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
