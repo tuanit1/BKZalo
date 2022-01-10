@@ -75,7 +75,11 @@ public class Methods {
 
         if(method_name.equals("method_get_chat_list")){
             int uid = bundle.getInt("uid");
+            int page = bundle.getInt("page");
+            int step = bundle.getInt("step");
             postObj.addProperty("uid", uid);
+            postObj.addProperty("page", page);
+            postObj.addProperty("step", step);
         }
 
         if(method_name.equals("method_get_phonebook_list")){

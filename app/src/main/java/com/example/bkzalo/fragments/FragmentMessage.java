@@ -50,6 +50,7 @@ import com.example.bkzalo.models.Participant;
 import com.example.bkzalo.models.Room;
 import com.example.bkzalo.models.User;
 import com.example.bkzalo.utils.Constant;
+import com.example.bkzalo.utils.EndlessRecyclerViewScrollListener;
 import com.example.bkzalo.utils.Methods;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -81,6 +82,8 @@ public class FragmentMessage extends Fragment {
     private ChatListAdapter adapter;
     private ProgressBar progressBar;
     private Socket socket;
+    private int page = 0;
+    private int step = 7;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -305,16 +308,20 @@ public class FragmentMessage extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putInt("uid", Constant.UID);
+        bundle.putInt("page", page);
+        bundle.putInt("step", step);
+
 
         RequestBody requestBody = methods.getRequestBody("method_get_chat_list", bundle, null);
 
         LoadChatListListener listener = new LoadChatListListener() {
             @Override
             public void onStart() {
-                arrayList_parti.clear();
-                arrayList_room.clear();
-                arrayList_user.clear();
-                arrayList_message.clear();
+
+//                arrayList_parti.clear();
+//                arrayList_room.clear();
+//                arrayList_user.clear();
+//                arrayList_message.clear();
 
                 if(!isReload){
                     progressBar.setVisibility(View.VISIBLE);
@@ -339,6 +346,8 @@ public class FragmentMessage extends Fragment {
                                 arrayList_room.add(r);
                             }
                         }
+
+                        page++;
 
                         SortByLatestMessage(arrayList_room);
 
@@ -390,6 +399,12 @@ public class FragmentMessage extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rv_chat.setLayoutManager(llm);
         rv_chat.setAdapter(adapter);
+        rv_chat.addOnScrollListener(new EndlessRecyclerViewScrollListener(llm) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Toast.makeText(getContext(), "Load here", Toast.LENGTH_SHORT).show();
+            }
+        });
         adapter.notifyDataSetChanged();
 
         ArrayList<Room> arrayList_search = new ArrayList<>();
