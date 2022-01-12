@@ -38,6 +38,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/lexendexa_regular"
             android:text="CHÀO MỪNG BẠN ĐẾN VỚI"
+            android:textAlignment="center"
             android:textColor="#0b5394"
             android:textSize="25dp"
             android:textStyle="bold"
@@ -51,6 +52,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/lexendexa_regular"
             android:text="BKZALO"
+            android:textAlignment="center"
             android:textColor="#0b5394"
             android:textSize="40dp"
             android:textStyle="bold" />

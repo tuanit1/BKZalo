@@ -44,20 +44,16 @@
                 android:padding="6dp"
                 android:textSize="30dp">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="90dp"
-                    app:cardBackgroundColor="@color/main_blue"
-                    android:layout_marginLeft="12dp">
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/imv_user_setting"
-                        android:layout_margin="1dp"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@mipmap/ic_launcher_round"
-                        app:riv_corner_radius="90dp" />
-                </androidx.cardview.widget.CardView>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/imv_user_setting"
+                    android:layout_marginLeft="12dp"
+                    android:layout_width="80dp"
+                    android:scaleType="centerCrop"
+                    app:riv_border_color="@color/main_blue"
+                    app:riv_border_width="2dp"
+                    android:layout_height="80dp"
+                    android:src="@mipmap/ic_launcher_round"
+                    app:riv_corner_radius="90dp" />
 
                 <TextView
                     android:id="@+id/tv_name_setting"

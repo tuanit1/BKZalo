@@ -23,7 +23,10 @@ import android.widget.Toast;
 
 import com.example.bkzalo.R;
 import com.example.bkzalo.asynctasks.ExecuteQueryAsync_Nhi;
+import com.example.bkzalo.asynctasks.GetSignInIDAsync;
 import com.example.bkzalo.listeners.ExecuteQueryListener_Nhi;
+import com.example.bkzalo.listeners.GetSignInIDListener;
+import com.example.bkzalo.utils.Constant;
 import com.example.bkzalo.utils.Methods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -60,8 +63,9 @@ public class CreatePF_Activity extends AppCompatActivity {
     private void AnhXa()
     {
         mAuth = FirebaseAuth.getInstance();
+        email = mAuth.getCurrentUser().getProviderData().get(1).getEmail();;
         Users = FirebaseDatabase.getInstance().getReference().child("Users");
-        edt_email = findViewById(R.id.edt_email_createpf);
+        //edt_email = findViewById(R.id.edt_email_createpf);
         edt_name = findViewById(R.id.edt_name_createpf);
         edt_phone = findViewById(R.id.edt_phone_createpf);
         edt_password = findViewById(R.id.edt_pw1_createpf);
@@ -131,7 +135,7 @@ public class CreatePF_Activity extends AppCompatActivity {
 
     public boolean validateItem() {
 
-        email = edt_email.getText().toString().trim();
+        //email = edt_email.getText().toString().trim();
         phone = edt_phone.getText().toString().trim();
         name = edt_name.getText().toString().trim();
         password = edt_password.getText().toString().trim();
@@ -190,16 +194,17 @@ public class CreatePF_Activity extends AppCompatActivity {
 
         RequestBody requestBody = methods.getRequestBody("method_signup", bundle, null);
 
-        ExecuteQueryListener_Nhi listener = new ExecuteQueryListener_Nhi() {
+        GetSignInIDListener listener1 = new GetSignInIDListener() {
             @Override
             public void onStart() {
 
             }
 
             @Override
-            public void onEnd(boolean status) {
+            public void onEnd(boolean status, int id) {
                 if(methods.isNetworkConnected()){
                     if(status){
+                        Constant.UID = id;
                         Intent intent = new Intent(CreatePF_Activity.this, Update_InfoActivity.class);
                         startActivity(intent);
                     }else{
@@ -211,7 +216,7 @@ public class CreatePF_Activity extends AppCompatActivity {
             }
         };
 
-        ExecuteQueryAsync_Nhi async = new ExecuteQueryAsync_Nhi(requestBody, listener);
+        GetSignInIDAsync async = new GetSignInIDAsync(requestBody, listener1);
         async.execute();
     }
 }

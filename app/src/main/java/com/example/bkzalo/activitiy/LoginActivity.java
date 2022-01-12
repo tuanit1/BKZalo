@@ -198,6 +198,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        super.onBackPressed();
+    }
+
     private void FacebookLogin()
     {
         ic_facebook.setLoginBehavior(LoginBehavior.WEB_ONLY);

@@ -42,6 +42,28 @@
                 android:layout_gravity="center"
                 android:src="@drawable/g_login" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username: 0905111242"
+                android:layout_gravity="center"
+                android:textSize="20dp"
+                android:letterSpacing="0.01"
+                android:textStyle="bold"
+                android:textColor="#0466C8"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password: 123456"
+                android:layout_gravity="center"
+                android:textSize="20dp"
+                android:letterSpacing="0.01"
+                android:textStyle="bold"
+                android:layout_margin="15dp"
+                android:textColor="#0466C8"
+                />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_edtusername_login"
                 android:layout_width="wrap_content"
@@ -153,7 +175,8 @@
                 android:layout_height="75dp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="30dp">
 
                 <androidx.cardview.widget.CardView
 
