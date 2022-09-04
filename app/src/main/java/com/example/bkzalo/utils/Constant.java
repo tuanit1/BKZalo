@@ -27,7 +27,7 @@ public class Constant {
 //    public static String SERVER_NODE = "http://192.168.1.6:3000/";
 //    public static String SERVER_URL = "http://192.168.1.111/bkzalo/";
     //public static String SERVER_URL = "https://bkzalo-api-server.herokuapp.com/";
-    public static String SERVER_URL = "http://dothanhtuan46.com/bkzalo/";
+    public static String SERVER_URL = "https://tuanpc.pw/bkzalo/";
     public static String SERVER_NODE = "https://bkzalo-nodejs-server.herokuapp.com/";
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;

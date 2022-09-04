@@ -333,23 +333,14 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful())
                     {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user.isEmailVerified())
+                        if (cb_remember!=null)
                         {
-
-                            if (cb_remember!=null)
-                            {
-                                Check_CheckBox(username, password);
-                            }
-
-                            String email = username;
-                            DataLogin(email, password, preferences2);
-                            GetUID(username, methods);
+                            Check_CheckBox(username, password);
                         }
-                        else
-                        {
-                            Toast.makeText(LoginActivity.this, "Hãy xác thực email của bạn", Toast.LENGTH_LONG).show();
-                        }
+
+                        String email = username;
+                        DataLogin(email, password, preferences2);
+                        GetUID(username, methods);
                     }
                     else
                     {
@@ -378,21 +369,16 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful())
                                 {
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user.isEmailVerified())
-                                    {
-                                        if (cb_remember!=null)
-                                        {
-                                            Check_CheckBox(username, password);
-                                        }
+                                    String uid  = user.getUid();
 
-                                        DataLogin(email, password, preferences2);
-                                        GetUID(email, methods);
-
-                                    }
-                                    else
+                                    if (cb_remember!=null)
                                     {
-                                        Toast.makeText(LoginActivity.this, "Hãy xác thực email của bạn", Toast.LENGTH_LONG).show();
+                                        Check_CheckBox(username, password);
                                     }
+
+                                    DataLogin(email, password, preferences2);
+                                    GetUID(email, methods);
+
                                 }
                                 else
                                 {

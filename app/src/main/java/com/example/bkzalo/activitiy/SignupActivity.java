@@ -98,8 +98,7 @@ public class SignupActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful())
-                                    {
+                                    if (task.isSuccessful()) {
                                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(phone);
                                         HashMap<String, Object> hashMap = new HashMap<>();
 
@@ -109,32 +108,28 @@ public class SignupActivity extends AppCompatActivity {
                                         hashMap.put("password", password);
 
                                         reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful())
-                                            {
-                                                mAuth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(@NonNull Void unused) {
-                                                        Toast.makeText(SignupActivity.this, "Đăng ký thành công! Hãy kiểm tra và xác thực email.", Toast.LENGTH_SHORT).show();
-                                                        SignUp(name, email, phone);
-                                                        mAuth.signOut();
-                                                        SignupActivity.super.onBackPressed();
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    mAuth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(@NonNull Void unused) {
+                                                            Toast.makeText(SignupActivity.this, "Đăng ký thành công! Hãy kiểm tra và xác thực email.", Toast.LENGTH_SHORT).show();
+                                                            SignUp(name, email, phone);
+                                                            mAuth.signOut();
+                                                            SignupActivity.super.onBackPressed();
 
-                                                    }
+                                                        }
 
-                                                });
+                                                    });
+                                                } else {
+                                                    //Toast.makeText(SignupActivity.this, "Đăng ký chưa thành công", Toast.LENGTH_LONG).show();
+                                                }
                                             }
-                                            else
-                                            {
-                                                //Toast.makeText(SignupActivity.this, "Đăng ký chưa thành công", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });;
+                                        });
+                                        ;
 
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         //Toast.makeText(SignupActivity.this, "Đăng ký chưa thành công", Toast.LENGTH_LONG).show();
                                     }
                                 }
@@ -149,7 +144,6 @@ public class SignupActivity extends AppCompatActivity {
                     //server
 
 
-
                 }
 
 
@@ -157,68 +151,66 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-        public boolean validateItem() {
+    public boolean validateItem() {
 
-            email = edt_email_signup.getText().toString().trim();
-            phone = edt_phone_signup.getText().toString().trim();
-            name = edt_name_signup.getText().toString().trim();
-            password = edt_pw1_signup.getText().toString().trim();
-            pw2 = edt_pw2_signup.getText().toString().trim();
+        email = edt_email_signup.getText().toString().trim();
+        phone = edt_phone_signup.getText().toString().trim();
+        name = edt_name_signup.getText().toString().trim();
+        password = edt_pw1_signup.getText().toString().trim();
+        pw2 = edt_pw2_signup.getText().toString().trim();
 
-            if (TextUtils.isEmpty(email)) {
-                edt_email_signup.setError("Hãy nhập email");
-                edt_email_signup.requestFocus();
-                return false;
-            }
-            if (TextUtils.isEmpty(name)) {
-                edt_name_signup.setError("Hãy nhập họ tên");
-                edt_name_signup.requestFocus();
-                return false;
-            }
-            if (TextUtils.isEmpty(phone)) {
-                edt_phone_signup.setError("Hãy nhập số điện thoại");
-                edt_phone_signup.requestFocus();
-                return false;
-            }
-            if (TextUtils.isEmpty(password)) {
-                edt_pw1_signup.setError("Hãy nhập password");
-                edt_pw1_signup.requestFocus();
-                return false;
-            }
-            if (TextUtils.isEmpty(pw2)) {
-                edt_pw2_signup.setError("Hãy nhập lại password");
-                edt_pw2_signup.requestFocus();
-                return false;
-            }
-            if (password.length() < 6) {
-                edt_pw1_signup.setError("Password phải có trên 6 kí tự");
-                return false;
-
-            }
-            if (pw2.length() < 6) {
-                edt_pw2_signup.setError("Password phải có trên 6 kí tự");
-                return false;
-
-            }
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                edt_email_signup.setError("Hãy nhập email hợp lệ");
-                edt_email_signup.requestFocus();
-                return false;
-            }
-
-            if (!password.equals(pw2))
-            {
-                edt_pw2_signup.setError("Mật khẩu không trùng khớp");
-                return false;
-            }
-
-            return true;
+        if (TextUtils.isEmpty(email)) {
+            edt_email_signup.setError("Hãy nhập email");
+            edt_email_signup.requestFocus();
+            return false;
+        }
+        if (TextUtils.isEmpty(name)) {
+            edt_name_signup.setError("Hãy nhập họ tên");
+            edt_name_signup.requestFocus();
+            return false;
+        }
+        if (TextUtils.isEmpty(phone)) {
+            edt_phone_signup.setError("Hãy nhập số điện thoại");
+            edt_phone_signup.requestFocus();
+            return false;
+        }
+        if (TextUtils.isEmpty(password)) {
+            edt_pw1_signup.setError("Hãy nhập password");
+            edt_pw1_signup.requestFocus();
+            return false;
+        }
+        if (TextUtils.isEmpty(pw2)) {
+            edt_pw2_signup.setError("Hãy nhập lại password");
+            edt_pw2_signup.requestFocus();
+            return false;
+        }
+        if (password.length() < 6) {
+            edt_pw1_signup.setError("Password phải có trên 6 kí tự");
+            return false;
 
         }
+        if (pw2.length() < 6) {
+            edt_pw2_signup.setError("Password phải có trên 6 kí tự");
+            return false;
+
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edt_email_signup.setError("Hãy nhập email hợp lệ");
+            edt_email_signup.requestFocus();
+            return false;
+        }
+
+        if (!password.equals(pw2)) {
+            edt_pw2_signup.setError("Mật khẩu không trùng khớp");
+            return false;
+        }
+
+        return true;
+
+    }
 
 
-
-    private void SignUp(String name, String email, String phone){
+    private void SignUp(String name, String email, String phone) {
 
         Bundle bundle = new Bundle();
         bundle.putString("name", name);
@@ -235,13 +227,13 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onEnd(boolean status) {
-                if(methods.isNetworkConnected()){
-                    if(status){
+                if (methods.isNetworkConnected()) {
+                    if (status) {
                         //SignupActivity.super.onBackPressed();
-                    }else{
+                    } else {
                         Toast.makeText(SignupActivity.this, "Lỗi Server", Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
                     Toast.makeText(SignupActivity.this, "Chưa kết nối internet!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -252,13 +244,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    private void ChangeStatusBarColor()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+    private void ChangeStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(getResources().getColor(main_blue));
